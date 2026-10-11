@@ -203,6 +203,7 @@ export function GameProvider({ children }) {
     chooseTeam: (team) => emitAction('lobby:choose-team', { team }),
     removePlayer: (playerId) => emitAction('lobby:remove-player', { playerId }),
     selectGame: (gameId) => emitAction('lobby:select-game', { gameId }),
+    gameAction: (payload) => emitAction('game:action', payload),
     startGame: () => emitAction('game:start'),
     giveClue: (word, count) => emitAction('game:give-clue', { word, count }),
     selectCard: (cardId) => emitAction('game:select-card', { cardId }),

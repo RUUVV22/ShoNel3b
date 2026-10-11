@@ -14,7 +14,7 @@ const metadata = Object.freeze({
 
 function canStart(room) {
   const connected = room.players.filter(p => p.connected);
-  return connected.length >= MIN_PLAYERS && Object.values(TEAM).every(team =>
+  return connected.length >= MIN_PLAYERS && connected.length <= MAX_PLAYERS && Object.values(TEAM).every(team =>
     connected.some(p => p.team === team && p.role === ROLE.SPYMASTER) &&
     connected.some(p => p.team === team && p.role === ROLE.AGENT)
   );

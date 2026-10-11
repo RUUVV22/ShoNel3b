@@ -173,11 +173,11 @@ export function LobbyScreen({ navigation }) {
         <ArabicText weight="bold" style={styles.readinessText}>
           {!selectedGame ? t('المضيف يختار اللعبة أولاً', 'Waiting for the host to choose a game')
             : gameState.canStart ? t('جاهزين! يلا نبلّش الجولة', "Everyone's ready to play!")
-              : t('كود نيمز تحتاج ٤: قائد ولاعب في كل فريق', 'Codenames needs 4 players: a spymaster and agent on each team')}
+              : isCodenames ? t('كود نيمز تحتاج ٤: قائد ولاعب في كل فريق', 'Codenames needs 4 players: a spymaster and agent on each team') : t('بانتظار العدد المطلوب من اللاعبين','Waiting for enough players')}
         </ArabicText>
       </View>
       {isHost ? (
-        <PrimaryButton title={selectedGame ? t('يلا نلعب كود نيمز!', 'START CODENAMES!') : t('اختار لعبة أولاً', 'CHOOSE A GAME')}
+        <PrimaryButton title={selectedGame ? t('يلا نلعب!', 'START GAME!') : t('اختار لعبة أولاً', 'CHOOSE A GAME')}
           icon="play" variant="red" disabled={!gameState.canStart}
           loading={busyAction === 'game:start'} onPress={actions.startGame} />
       ) : (

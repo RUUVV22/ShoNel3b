@@ -55,7 +55,7 @@ class RoomManager {
     const cleanName = this.validateName(name);
 
     if (room.status !== STATUS.LOBBY) throw new GameError('ROOM_STARTED');
-    if (room.players.length >= MAX_PLAYERS) throw new GameError('ROOM_FULL');
+    if (room.players.length >= 20) throw new GameError('ROOM_FULL');
     if (room.players.some((player) => normalizeArabic(player.name) === normalizeArabic(cleanName))) {
       throw new GameError('DUPLICATE_NAME');
     }
@@ -247,7 +247,7 @@ class RoomManager {
   createGameSession(room, game) {
     const round = (room.roundCounts[room.selectedGameId] || 0) + 1;
     room.roundCounts[room.selectedGameId] = round;
-    room.gameSession = game.createSession(round, this.random);
+    room.gameSession = game.createSession(round, this.random, room);
     room.status = room.gameSession.status;
     this.touch(room);
   }
@@ -314,7 +314,7 @@ class RoomManager {
       ...(game && room.gameSession ? game.serialize(room.gameSession, viewer) : {}),
       canStart: Boolean(game?.canStart(room)),
       minPlayers: game?.metadata.minPlayers || 4,
-      maxPlayers: game?.metadata.maxPlayers || MAX_PLAYERS,
+      maxPlayers: room.status === STATUS.LOBBY ? 20 : (game?.metadata.maxPlayers || 20),
       stateVersion: room.stateVersion,
       serverTime: Date.now(),
     };
@@ -322,6 +322,23 @@ class RoomManager {
 
   canStart(room) {
     return Boolean(getGame(room.selectedGameId)?.canStart(room));
+  }
+
+  gameAction(socketId, payload) {
+    const {room,player}=this.requireSocketPlayer(socketId);
+    const game=getGame(room.selectedGameId);
+    if(!game||room.status!==STATUS.ACTIVE)throw new GameError('GAME_NOT_ACTIVE');
+    if(room.selectedGameId==='WEREWOLF'){
+      if(payload.action==='advance'){
+        this.assertHost(room,player);
+        game.advance(room.gameSession);
+      }else if(payload.action==='vote')game.vote(room.gameSession,player,payload.target);
+      else game.action(room.gameSession,player,payload);
+    }else if(room.selectedGameId==='KHASERNY')game.act(room.gameSession,player,payload);
+    else throw new GameError('INVALID_GAME_ACTION');
+    room.status=room.gameSession.status;
+    this.touch(room);
+    return room;
   }
 
   requireRoom(roomCode) {

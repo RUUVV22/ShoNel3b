@@ -99,7 +99,7 @@ export function HomeScreen({ navigation }) {
       <View style={styles.gameShelf}>
         <View style={styles.gameShelfHeading}>
           <ArabicText weight="extraBold" style={styles.shelfTitle}>{t('على الطاولة', 'ON THE TABLE')}</ArabicText>
-          <View style={styles.shelfPill}><ArabicText weight="bold" style={styles.shelfPillText}>01 / 01</ArabicText></View>
+          <View style={styles.shelfPill}><ArabicText weight="bold" style={styles.shelfPillText}>03 / 03</ArabicText></View>
         </View>
         <View style={styles.gameFeature}>
           <View style={styles.cardArt}>
@@ -112,7 +112,23 @@ export function HomeScreen({ navigation }) {
           </View>
           <View style={styles.playTag}><ArabicText weight="bold" style={styles.playTagText}>{t('جاهزة', 'PLAYABLE')}</ArabicText></View>
         </View>
-        <ArabicText style={styles.comingSoon}>{t('ألعاب أكثر جاية بالطريق... استعدّوا!', 'More games are coming to this table!')}</ArabicText>
+        <View style={[styles.gameFeature, { marginTop: 12, backgroundColor: colors.coral }]}>
+          <View style={styles.cardArt}><ArabicText style={{fontSize:40}}>🐺</ArabicText></View>
+          <View style={styles.featureCopy}>
+            <ArabicText weight="extraBold" style={styles.featureTitle}>{t('ليلة العقارب','WEREWOLF')}</ArabicText>
+            <ArabicText style={styles.featureDescription}>{t('أسرار القرية.. الذئاب والعقارب','Secret roles and a night of mystery')}</ArabicText>
+          </View>
+          <View style={styles.playTag}><ArabicText style={styles.playTagText}>NEW</ArabicText></View>
+        </View>
+        <View style={[styles.gameFeature, { marginTop: 12, backgroundColor: colors.cream }]}>
+          <View style={styles.cardArt}><ArabicText style={{fontSize:40}}>🎲</ArabicText></View>
+          <View style={styles.featureCopy}>
+            <ArabicText weight="extraBold" style={styles.featureTitle}>{t('خسّرني!','STUMP ME!')}</ArabicText>
+            <ArabicText style={styles.featureDescription}>{t('ست فئات.. مين رح يخسّر مين؟','Six categories. One winner.')}</ArabicText>
+          </View>
+          <View style={styles.playTag}><ArabicText style={styles.playTagText}>NEW</ArabicText></View>
+        </View>
+        <ArabicText style={styles.comingSoon}>{t('ثلاث ألعاب، غرفة واحدة!','Three games, one room!')}</ArabicText>
       </View>
       <View style={styles.bottomActions}>
         <Pressable onPress={() => navigation.navigate('HowToPlay')} style={styles.helpButton}>

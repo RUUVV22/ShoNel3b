@@ -3,10 +3,12 @@ import { ScreenContainer } from '../components/ScreenContainer';
 import { ArabicText } from '../components/ArabicText';
 import { useGame } from '../context/GameContext';
 import { GameScreen as CodenamesScreen } from './GameScreen';
+import { WerewolfScreen } from './WerewolfScreen';
+import { KhasernyScreen } from './KhasernyScreen';
 import { colors } from '../theme/colors';
 
 // Games own their UI; the shell owns room and navigation.
-const GAME_SCREENS = { CODENAMES: CodenamesScreen };
+const GAME_SCREENS = { CODENAMES: CodenamesScreen, WEREWOLF: WerewolfScreen, KHASERNY: KhasernyScreen };
 export function GameSessionScreen(props) {
   const { gameState } = useGame();
   if (!gameState) return null;
