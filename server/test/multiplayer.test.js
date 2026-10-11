@@ -287,7 +287,7 @@ test('Sho Nel3b game catalogue, host selection, live start, and same-room replay
   sockets[1].on('state:update', state => { guestState = state; });
   assert.equal((await emitAck(sockets[0], 'lobby:select-game', { gameId: 'CODENAMES' })).ok, true);
   await waitUntil(() => guestState?.selectedGameId === 'CODENAMES');
-  assert.equal(guestState.availableGames.length, 3);
+  assert.equal(guestState.availableGames.length, 4);
   assert.equal(guestState.canStart, true);
   assert.equal((await emitAck(sockets[1], 'game:start')).code, 'NOT_HOST');
   assert.equal((await emitAck(sockets[0], 'game:start')).ok, true);

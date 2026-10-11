@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View,Pressable,StyleSheet} from 'react-native';
 import {ScreenContainer} from '../components/ScreenContainer';
 import {GameHeader} from '../components/GameHeader';
+import {GameLogo} from '../components/GameLogo';
 import {ArabicText} from '../components/ArabicText';
 import {PrimaryButton} from '../components/PrimaryButton';
 import {useGame} from '../context/GameContext';
@@ -14,6 +15,7 @@ export function KhasernyScreen(){
  const current=s.players.find(p=>p.id===g.currentPlayerId);
  return <ScreenContainer contentStyle={styles.wrap}>
  <GameHeader title="خسّرني؟ لا تحاول!" subtitle={'جولة '+g.round+' • '+s.roomId}/>
+ <GameLogo id="KHASERNY" size={76}/>
  <View style={styles.intro}><ArabicText weight="extraBold" style={styles.heading}>ست فئات • تحدٍ واحد</ArabicText><ArabicText style={styles.subtitle}>الدور على {current?.name||'الشلة'}</ArabicText></View>
  <View style={styles.score}>{s.players.map(p=><View key={p.id} style={styles.scoreCard}><ArabicText style={styles.scoreText}>{p.name} • {g.scores[p.id]} نقطة</ArabicText></View>)}</View>
  {g.phase==='PICK'?<View style={styles.panel}><ArabicText weight="extraBold" style={styles.title}>اختار لاعب بدك تخسّره ثم اختار الفئة</ArabicText><View style={styles.categories}>{s.players.filter(p=>p.id!==me.id).map(p=><Pressable key={p.id} onPress={()=>setOpponentId(p.id)} style={styles.category}><ArabicText style={styles.categoryText}>{opponentId===p.id?'✓ ':''}{p.name}</ArabicText></Pressable>)}</View><View style={styles.categories}>{g.categories.map(c=><Pressable key={c.id} disabled={!turn||!opponentId} onPress={()=>actions.gameAction({category:c.id,opponentId})} style={[styles.category,!turn&&{opacity:.6}]}><ArabicText style={styles.emoji}>{c.emoji}</ArabicText><ArabicText weight="bold" style={styles.categoryText}>{c.title}</ArabicText></Pressable>)}</View></View>:null}

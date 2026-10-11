@@ -10,6 +10,7 @@ import { PrimaryButton } from '../components/PrimaryButton';
 import { ArabicText } from '../components/ArabicText';
 import { ConnectionPill } from '../components/ConnectionPill';
 import { CharacterAvatar } from '../components/CharacterAvatar';
+import { GameLogo } from '../components/GameLogo';
 import { WerewolfRoleSetup } from '../components/WerewolfRoleSetup';
 import { useGame } from '../context/GameContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -48,7 +49,7 @@ export function LobbyScreen({ navigation }) {
   const isHost = Boolean(me?.isHost);
   const isCodenames = gameState.selectedGameId === 'CODENAMES';
   const selectedGame = (gameState.availableGames || []).find(game => game.id === gameState.selectedGameId);
-  const serverNeedsUpdate = !(gameState.availableGames || []).some(game => game.id === 'WEREWOLF') || !(gameState.availableGames || []).some(game => game.id === 'KHASERNY');
+  const serverNeedsUpdate = !['CODENAMES','WEREWOLF','KHASERNY','BOMB'].every(id => (gameState.availableGames || []).some(game => game.id === id));
   const redPlayers = gameState.players.filter(p => p.team === TEAM.RED);
   const bluePlayers = gameState.players.filter(p => p.team === TEAM.BLUE);
   const connectedCount = gameState.players.filter(p => p.connected).length;
@@ -133,14 +134,11 @@ export function LobbyScreen({ navigation }) {
             disabled={!isHost || busyAction === 'lobby:select-game'}
             onPress={() => actions.selectGame(game.id)}
             style={({ pressed }) => [styles.gameOption, selected && styles.gameSelected, pressed && styles.pressed]}>
-            <View style={styles.gameSymbol}>
-              <View style={[styles.tinyCard, { backgroundColor: colors.coral, transform: [{ rotate: '-13deg' }] }]} />
-              <View style={[styles.tinyCard, { backgroundColor: colors.mustard, transform: [{ rotate: '13deg' }] }]} />
-            </View>
+            <GameLogo id={game.id} size={65} compact />
             <View style={styles.gameCopy}>
               <ArabicText weight="extraBold" style={styles.gameTitle}>{t(game.title, game.englishTitle || game.title)}</ArabicText>
               <ArabicText style={styles.gameDesc}>{t(game.description, 'The secret-word party challenge')}</ArabicText>
-              <ArabicText weight="medium" style={styles.gamePlayers}>{game.minPlayers}–{game.maxPlayers} {t('لاعبين', 'players')}</ArabicText>
+              <ArabicText weight="medium" style={styles.gamePlayers}>{connectedCount} {t('بالغرفة', 'in room')} • {game.minPlayers}–{game.maxPlayers} {t('لاعبين', 'players')}</ArabicText>
             </View>
             <View style={[styles.selectMark, selected && styles.selectMarkActive]}>
               <Ionicons name={selected ? 'checkmark' : 'add'} color={colors.plum} size={23} />

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { GameHeader } from '../components/GameHeader';
+import { GameLogo } from '../components/GameLogo';
 import { TurnIndicator } from '../components/TurnIndicator';
 import { CluePanel } from '../components/CluePanel';
 import { CARD_SUSPENSE_MS, GameCard } from '../components/GameCard';
@@ -115,6 +116,7 @@ export function GameScreen({ navigation }) {
         onRightPress={toggleMute}
       />
 
+      <GameLogo id="CODENAMES" size={70}/>
       <TurnTransitionOverlay team={gameState.currentTeam} />
 
       <View style={styles.scoreRow}>

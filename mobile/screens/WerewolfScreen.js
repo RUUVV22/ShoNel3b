@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View,Pressable,StyleSheet} from 'react-native';
 import {ScreenContainer} from '../components/ScreenContainer';
 import {GameHeader} from '../components/GameHeader';
+import {GameLogo} from '../components/GameLogo';
 import {ArabicText} from '../components/ArabicText';
 import {PrimaryButton} from '../components/PrimaryButton';
 import {RolePortrait} from '../components/RolePortrait';
@@ -25,6 +26,7 @@ export function WerewolfScreen(){
  const choice=(target,second)=>actions.gameAction({action:'role',target,second});
  return <ScreenContainer contentStyle={styles.wrap}>
   <GameHeader title="ليلة العقارب" subtitle={'الجولة '+g.round+' • '+s.roomId}/>
+  <GameLogo id="WEREWOLF" size={76}/>
   <View style={styles.banner}><ArabicText style={styles.ornament}>☾ ✶ ☽</ArabicText><ArabicText weight="extraBold" style={styles.heading}>{steps[g.phase]}</ArabicText><ArabicText style={styles.small}>قصص القرية وأسرار الليل</ArabicText></View>
   <View style={styles.role}><RolePortrait role={g.role} size={155}/><ArabicText style={styles.label}>بطاقتك السرية</ArabicText><ArabicText weight="extraBold" style={styles.roleName}>{g.roleName}</ArabicText>
   <ArabicText style={styles.small}>{g.role==='WOLF'&&g.wolves?.length>1?'الذئاب: '+s.players.filter(p=>g.wolves.includes(p.id)).map(p=>p.name).join('، '):''}</ArabicText>

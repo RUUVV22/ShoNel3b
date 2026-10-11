@@ -9,6 +9,7 @@ import { ConnectionPill } from '../components/ConnectionPill';
 import { FormField } from '../components/FormField';
 import { InstallAppButton } from '../components/InstallAppButton';
 import { CharacterAvatar } from '../components/CharacterAvatar';
+import { GameLogo } from '../components/GameLogo';
 import { PaperTexture } from '../components/PaperTexture';
 import { useGame } from '../context/GameContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -99,36 +100,20 @@ export function HomeScreen({ navigation }) {
       <View style={styles.gameShelf}>
         <View style={styles.gameShelfHeading}>
           <ArabicText weight="extraBold" style={styles.shelfTitle}>{t('على الطاولة', 'ON THE TABLE')}</ArabicText>
-          <View style={styles.shelfPill}><ArabicText weight="bold" style={styles.shelfPillText}>03 / 03</ArabicText></View>
+          <View style={styles.shelfPill}><ArabicText weight="bold" style={styles.shelfPillText}>04 / 04</ArabicText></View>
         </View>
-        <View style={styles.gameFeature}>
-          <View style={styles.cardArt}>
-            <View style={styles.avatarFanOne}><CharacterAvatar name="عاصم" size={48} accent={colors.coral} /></View>
-            <View style={styles.avatarFanTwo}><CharacterAvatar name="ليلى" size={48} accent={colors.mustard} /></View>
+        {[
+          { id: 'CODENAMES', ar: 'تلميحة وحدة... ومليون احتمال!', en: 'One clue. A million possibilities.' },
+          { id: 'WEREWOLF', ar: 'أسرار القرية والذئاب والعقارب', en: 'A village full of secret roles' },
+          { id: 'KHASERNY', ar: 'ست فئات... ومين رح يخسّر مين؟', en: 'Six categories. Challenge your friends.' },
+          { id: 'BOMB', ar: 'احزر مين بعثلك القنبلة!', en: 'Guess who secretly sent the bomb!' },
+        ].map((game, index) => (
+          <View key={game.id} style={[styles.gameShelfTile, index > 0 && {marginTop: 12}]}>
+            <GameLogo id={game.id} size={76}/>
+            <ArabicText style={styles.gameShelfDesc}>{t(game.ar, game.en)}</ArabicText>
           </View>
-          <View style={styles.featureCopy}>
-            <ArabicText weight="extraBold" style={styles.featureTitle}>{t('كود نيمز', 'CODENAMES')}</ArabicText>
-            <ArabicText style={styles.featureDescription}>{t('تلميحة وحدة.. ومليون احتمال!', 'One clue. A million possibilities.')}</ArabicText>
-          </View>
-          <View style={styles.playTag}><ArabicText weight="bold" style={styles.playTagText}>{t('جاهزة', 'PLAYABLE')}</ArabicText></View>
-        </View>
-        <View style={[styles.gameFeature, { marginTop: 12, backgroundColor: colors.coral }]}>
-          <View style={styles.cardArt}><ArabicText style={{fontSize:40}}>🐺</ArabicText></View>
-          <View style={styles.featureCopy}>
-            <ArabicText weight="extraBold" style={styles.featureTitle}>{t('ليلة العقارب','WEREWOLF')}</ArabicText>
-            <ArabicText style={styles.featureDescription}>{t('أسرار القرية.. الذئاب والعقارب','Secret roles and a night of mystery')}</ArabicText>
-          </View>
-          <View style={styles.playTag}><ArabicText style={styles.playTagText}>NEW</ArabicText></View>
-        </View>
-        <View style={[styles.gameFeature, { marginTop: 12, backgroundColor: colors.cream }]}>
-          <View style={styles.cardArt}><ArabicText style={{fontSize:40}}>🎲</ArabicText></View>
-          <View style={styles.featureCopy}>
-            <ArabicText weight="extraBold" style={styles.featureTitle}>{t('خسّرني!','STUMP ME!')}</ArabicText>
-            <ArabicText style={styles.featureDescription}>{t('ست فئات.. مين رح يخسّر مين؟','Six categories. One winner.')}</ArabicText>
-          </View>
-          <View style={styles.playTag}><ArabicText style={styles.playTagText}>NEW</ArabicText></View>
-        </View>
-        <ArabicText style={styles.comingSoon}>{t('ثلاث ألعاب، غرفة واحدة!','Three games, one room!')}</ArabicText>
+        ))}
+        <ArabicText style={styles.comingSoon}>{t('أربع ألعاب، غرفة وحدة، ونفس الشِلّة!', 'Four games, one room, all your friends!')}</ArabicText>
       </View>
       <View style={styles.bottomActions}>
         <Pressable onPress={() => navigation.navigate('HowToPlay')} style={styles.helpButton}>
@@ -179,6 +164,8 @@ const styles = StyleSheet.create({
   shelfTitle: { color: colors.plum, fontSize: 19 },
   shelfPill: { backgroundColor: colors.plum, borderRadius: radius.pill, paddingHorizontal: 12, paddingVertical: 4 },
   shelfPillText: { color: colors.cream, fontSize: 11 },
+  gameShelfTile: { backgroundColor: colors.cream, padding: 8, borderRadius: radius.md, borderWidth: 2, borderColor: colors.plum, gap: 6 },
+  gameShelfDesc: { color: colors.plum, fontSize: 12, textAlign: 'right', paddingHorizontal: 8 },
   gameFeature: { flexDirection: 'row-reverse', alignItems: 'center', gap: spacing.md, backgroundColor: colors.mustard,
     borderWidth: 2, borderColor: colors.plum, borderRadius: radius.md, padding: spacing.md },
   cardArt: { width: 74, height: 62, justifyContent: 'center' },

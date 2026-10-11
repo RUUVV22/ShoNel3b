@@ -33,5 +33,5 @@ module.exports = {
   STATUS,
   RESULT_REASON,
   MIN_PLAYERS: 4,
-  MAX_PLAYERS: 12,
+  MAX_PLAYERS: 20,
 };

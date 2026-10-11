@@ -7,8 +7,8 @@ const roles={WOLF:'ذئب',SEER:'عرافة',ROBBER:'لص',TROUBLEMAKER:'مشا�
 const defaults=['WOLF','WOLF','SEER','ROBBER','TROUBLEMAKER','DRUNK','INSOMNIAC','MINION','MASON','MASON','TANNER','HUNTER','SCORPION','SCORPIONESS'];
 const starting=n=>[...defaults.slice(0,n+3),...Array(Math.max(0,n+3-defaults.length)).fill('VILLAGER')];
 export function WerewolfRoleSetup({players,initial,editable,onSave}){
- const [deck,setDeck]=useState(initial||starting(players));
- useEffect(()=>setDeck(initial||starting(players)),[players,initial?.join(',')]);
+ const [deck,setDeck]=useState(initial?.length===players+3?initial:starting(players));
+ useEffect(()=>setDeck(initial?.length===players+3?initial:starting(players)),[players,initial?.join(',')]);
  const change=(id,delta)=>setDeck(old=>delta>0?(old.length<players+3?[...old,id]:old):old.includes(id)?old.filter((x,i)=>i!==old.lastIndexOf(id)):old);
  return <View style={{padding:16,backgroundColor:colors.plum,borderRadius:18,gap:10}}>
  <ArabicText weight="extraBold" style={{color:colors.mustard,fontSize:19}}>اختار التشكيلة • {deck.length}/{players+3}</ArabicText>

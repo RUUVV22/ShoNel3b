@@ -71,6 +71,7 @@ class RoomManager {
     });
 
     room.players.push(player);
+    room.werewolfRoleDeck = null;
     this.touch(room);
     this.indexSocket(socketId, room.roomId, player.id);
     return this.sessionResult(room, player);
@@ -125,6 +126,7 @@ class RoomManager {
       if (!currentRoom || !currentPlayer || currentPlayer.connected) return;
 
       currentRoom.players = currentRoom.players.filter((candidate) => candidate.id !== player.id);
+      currentRoom.werewolfRoleDeck = null;
       if (currentRoom.players.length === 0) {
         this.rooms.delete(currentRoom.roomId);
       } else {
@@ -191,6 +193,7 @@ class RoomManager {
     if (target.socketId) this.socketIndex.delete(target.socketId);
     this.clearDisconnectTimer(room.roomId, target.id);
     room.players = room.players.filter((candidate) => candidate.id !== target.id);
+    room.werewolfRoleDeck = null;
     this.touch(room);
     return { room, removedPlayer: target };
   }
@@ -200,6 +203,7 @@ class RoomManager {
     this.socketIndex.delete(socketId);
     this.clearDisconnectTimer(room.roomId, player.id);
     room.players = room.players.filter((candidate) => candidate.id !== player.id);
+    room.werewolfRoleDeck = null;
 
     if (room.players.length === 0) {
       this.rooms.delete(room.roomId);
@@ -315,7 +319,7 @@ class RoomManager {
       hostId: room.hostId,
       selectedGameId: room.selectedGameId,
       availableGames: listGames(),
-      gameCatalogVersion: 3,
+      gameCatalogVersion: 4,
       werewolfRoleDeck: room.status===STATUS.LOBBY ? room.werewolfRoleDeck : undefined,
       players: room.players.map(player => ({
         id: player.id,
@@ -350,7 +354,10 @@ class RoomManager {
       }else if(payload.action==='vote')game.vote(room.gameSession,player,payload.target);
       else game.action(room.gameSession,player,payload);
     }else if(room.selectedGameId==='KHASERNY')game.act(room.gameSession,player,payload);
-    else throw new GameError('INVALID_GAME_ACTION');
+    else if(room.selectedGameId==='BOMB'){
+      if(payload.action==='next') this.assertHost(room,player);
+      game.act(room.gameSession,player,payload,this.random);
+    }else throw new GameError('INVALID_GAME_ACTION');
     room.status=room.gameSession.status;
     this.touch(room);
     return room;
