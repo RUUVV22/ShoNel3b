@@ -20,7 +20,7 @@ export function GameResultModal({ visible, winner, reason, myTeam, isHost, loadi
       <View style={styles.overlay}>
         <LinearGradient colors={[colors.panelRaised, colors.inkSoft]} style={[styles.card, { borderColor: teamColor(winner) }]}>
           <View style={[styles.iconShell, { backgroundColor: teamColor(winner) }]}>
-            <Ionicons name={didWin ? 'trophy' : 'flag'} size={38} color={colors.white} />
+            <Ionicons name={didWin ? 'trophy' : 'flag'} size={38} color={colors.plum} />
           </View>
           <ArabicText weight="extraBold" style={styles.eyebrow}>{didWin ? 'انتصار!' : 'انتهت الجولة'}</ArabicText>
           <ArabicText weight="extraBold" style={[styles.winner, { color: teamColor(winner) }]}>
@@ -30,7 +30,7 @@ export function GameResultModal({ visible, winner, reason, myTeam, isHost, loadi
           {isHost ? (
             <View style={styles.actions}>
               <PrimaryButton title="جولة جديدة" icon="refresh" loading={loading} onPress={onReplay} />
-              <PrimaryButton title="العودة إلى الردهة" icon="people-outline" variant="ghost" onPress={onLobby} />
+              <PrimaryButton title="ارجع لِلّمّتنا" icon="people-outline" variant="ghost" onPress={onLobby} />
             </View>
           ) : (
             <ArabicText style={styles.waiting}>بانتظار المضيف لبدء جولة جديدة…</ArabicText>

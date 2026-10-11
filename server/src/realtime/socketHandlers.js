@@ -91,6 +91,12 @@ function registerSocketHandlers(io, roomManager) {
       return {};
     });
 
+    handle('lobby:select-game', ({ gameId }) => {
+      const room = roomManager.selectGame({ socketId: socket.id, gameId });
+      emitRoom(room.roomId);
+      return {};
+    });
+
     handle('game:start', () => {
       const room = roomManager.startGame(socket.id);
       emitRoom(room.roomId);

@@ -11,31 +11,22 @@ export function RoomCode({ code, onCopied }) {
     await Clipboard.setStringAsync(code);
     onCopied?.();
   };
-
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`رمز الغرفة ${code}`} onPress={copy} style={styles.container}>
+    <Pressable accessibilityRole="button" accessibilityLabel={'رمز الغرفة ' + code} onPress={copy} style={styles.container}>
       <View>
-        <ArabicText style={styles.caption}>رمز الغرفة</ArabicText>
+        <ArabicText weight="bold" style={styles.caption}>✦ رمز اللمّة ✦</ArabicText>
         <ArabicText weight="extraBold" style={styles.code}>{code}</ArabicText>
       </View>
-      <Ionicons name="copy-outline" size={22} color={colors.gold} />
+      <View style={styles.copy}><Ionicons name="copy-outline" size={19} color={colors.plum} /></View>
     </Pressable>
   );
 }
-
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: spacing.md,
-    backgroundColor: colors.panelRaised,
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: radius.md,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-  },
-  caption: { color: colors.muted, fontSize: 12 },
-  code: { color: colors.gold, fontSize: 26, letterSpacing: 4, writingDirection: 'ltr', textAlign: 'right' },
+  container: { flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between', gap: spacing.md,
+    backgroundColor: colors.cream, borderWidth: 2, borderBottomWidth: 5, borderColor: colors.plum,
+    borderRadius: radius.md, paddingVertical: spacing.md, paddingHorizontal: spacing.lg },
+  caption: { color: colors.inkMuted, fontSize: 12 },
+  code: { color: colors.plum, fontSize: 30, letterSpacing: 5, writingDirection: 'ltr', textAlign: 'right' },
+  copy: { backgroundColor: colors.mustard, borderWidth: 1.5, borderColor: colors.plum,
+    width: 35, height: 35, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
 });

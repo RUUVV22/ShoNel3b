@@ -9,8 +9,8 @@ export const CARD = Object.freeze({
 export const STATUS = Object.freeze({ LOBBY: 'LOBBY', ACTIVE: 'ACTIVE', FINISHED: 'FINISHED' });
 
 export const TEAM_LABEL = Object.freeze({
-  [TEAM.RED]: 'الفريق الأحمر',
-  [TEAM.BLUE]: 'الفريق الأزرق',
+  [TEAM.RED]: 'الفريق المرجاني',
+  [TEAM.BLUE]: 'الفريق الذهبي',
 });
 
 export const ROLE_LABEL = Object.freeze({

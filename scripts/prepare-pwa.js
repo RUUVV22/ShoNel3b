@@ -23,17 +23,17 @@ fs.copyFileSync(path.join(projectRoot, 'assets', 'pwa-icon-192.png'), path.join(
 fs.copyFileSync(path.join(projectRoot, 'assets', 'pwa-icon-512.png'), path.join(outputDir, 'pwa-icon-512.png'));
 
 const manifest = {
-  name: 'الشفرة العربية',
-  short_name: 'الشفرة',
-  description: 'لعبة الشفرة العربية الجماعية',
+  name: 'شو نلعب؟',
+  short_name: 'شو نلعب',
+  description: 'ألعاب طاولة جماعية أونلاين في غرفة واحدة',
   lang: 'ar',
   dir: 'rtl',
   start_url: '.',
   scope: './',
   display: 'standalone',
   orientation: 'portrait',
-  theme_color: '#08121F',
-  background_color: '#08121F',
+  theme_color: '#351326',
+  background_color: '#FFF0CF',
   icons: [
     { src: './pwa-icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
     { src: './pwa-icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
@@ -48,7 +48,7 @@ const pwaHead = [
   '  <meta name="mobile-web-app-capable" content="yes">',
   '  <meta name="apple-mobile-web-app-capable" content="yes">',
   '  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">',
-  '  <meta name="apple-mobile-web-app-title" content="الشفرة">',
+  '  <meta name="apple-mobile-web-app-title" content="شو نلعب؟">',
 ].join('\n');
 html = html.replace('</head>', `${pwaHead}\n</head>`);
 const registration = `<script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('${rootUrl}sw.js',{scope:'${rootUrl}'});});}</script>`;
@@ -59,7 +59,7 @@ fs.writeFileSync(path.join(outputDir, '404.html'), html);
 const precache = [rootUrl, ...walk(outputDir)
   .filter((file) => !file.endsWith('sw.js') && !file.endsWith('metadata.json'))
   .map((file) => `${rootUrl}${path.relative(outputDir, file).split(path.sep).join('/')}`)];
-const serviceWorker = `const CACHE_NAME = 'arabic-codenames-${buildId}';
+const serviceWorker = `const CACHE_NAME = 'sho-nel3b-${buildId}';
 const ROOT_URL = ${JSON.stringify(rootUrl)};
 const PRECACHE = ${JSON.stringify(precache, null, 2)};
 self.addEventListener('install', (event) => {

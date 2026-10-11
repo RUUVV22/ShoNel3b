@@ -18,7 +18,7 @@ const steps = [
 export function HowToPlayScreen({ navigation }) {
   return (
     <ScreenContainer>
-      <GameHeader title="كيفية اللعب" subtitle="قواعد الشِّفرة باختصار" onBack={() => navigation.goBack()} />
+      <GameHeader title="كيف نلعب كود نيمز؟" subtitle="قواعد اللعب على طاولتنا" onBack={() => navigation.goBack()} />
       <View style={styles.hero}>
         <ArabicText weight="extraBold" style={styles.heroTitle}>25 كلمة. تلميح واحد.</ArabicText>
         <ArabicText style={styles.heroText}>المطلوب أن يفهم فريقك ما تقصده قبل أن تقوده الكلمة إلى بطاقة الخصم.</ArabicText>
@@ -45,15 +45,15 @@ export function HowToPlayScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  hero: { padding: spacing.lg, borderRadius: radius.lg, backgroundColor: colors.panel, borderWidth: 1, borderColor: colors.line, marginBottom: spacing.lg },
+  hero: { padding: spacing.lg, borderRadius: radius.lg, backgroundColor: colors.plum, borderWidth: 2, borderBottomWidth: 6, borderColor: colors.plum, marginBottom: spacing.lg },
   heroTitle: { color: colors.gold, fontSize: 25 },
   heroText: { color: colors.paperMuted, fontSize: 14, lineHeight: 24, marginTop: spacing.sm },
   steps: { gap: spacing.md },
-  step: { flexDirection: 'row-reverse', gap: spacing.md, padding: spacing.md, borderRadius: radius.md, backgroundColor: 'rgba(255,255,255,0.045)' },
-  iconShell: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.08)' },
+  step: { flexDirection: 'row-reverse', gap: spacing.md, padding: spacing.md, borderRadius: radius.md, borderWidth: 2, borderBottomWidth: 5, borderColor: colors.plum, backgroundColor: colors.cream },
+  iconShell: { width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.mustard, borderWidth: 1, borderColor: colors.plum },
   copy: { flex: 1 },
-  stepTitle: { fontSize: 16 },
-  stepText: { color: colors.muted, fontSize: 13, lineHeight: 21, marginTop: 2 },
-  tip: { flexDirection: 'row-reverse', alignItems: 'center', gap: spacing.sm, padding: spacing.md, marginTop: spacing.lg, borderRadius: radius.md, borderWidth: 1, borderColor: colors.goldDark, backgroundColor: 'rgba(245,196,81,0.08)' },
-  tipText: { flex: 1, color: colors.paperMuted, fontSize: 13 },
+  stepTitle: { fontSize: 16, color: colors.plum },
+  stepText: { color: colors.inkMuted, fontSize: 13, lineHeight: 21, marginTop: 2 },
+  tip: { flexDirection: 'row-reverse', alignItems: 'center', gap: spacing.sm, padding: spacing.md, marginTop: spacing.lg, borderRadius: radius.md, borderWidth: 2, borderColor: colors.plum, backgroundColor: colors.mustard },
+  tipText: { flex: 1, color: colors.plum, fontSize: 13 },
 });

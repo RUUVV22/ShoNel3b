@@ -9,7 +9,7 @@ import { CreateRoomScreen } from '../screens/CreateRoomScreen';
 import { JoinRoomScreen } from '../screens/JoinRoomScreen';
 import { QRScannerScreen } from '../screens/QRScannerScreen';
 import { LobbyScreen } from '../screens/LobbyScreen';
-import { GameScreen } from '../screens/GameScreen';
+import { GameSessionScreen } from '../screens/GameSessionScreen';
 import { HowToPlayScreen } from '../screens/HowToPlayScreen';
 import { useGame } from '../context/GameContext';
 import { STATUS } from '../constants/game';
@@ -26,7 +26,7 @@ function normalizeJoinUrl(url) {
 }
 
 const nativeLinking = {
-  prefixes: ['codenames://', Linking.createURL('/')],
+  prefixes: ['shonel3b://', 'codenames://', Linking.createURL('/')],
   async getInitialURL() {
     return normalizeJoinUrl(await Linking.getInitialURL());
   },
@@ -90,8 +90,8 @@ export function AppNavigator() {
       dark: true,
       colors: {
         primary: colors.gold,
-        background: colors.ink,
-        card: colors.inkSoft,
+        background: colors.cream,
+        card: colors.plum,
         text: colors.paper,
         border: colors.line,
         notification: colors.red,
@@ -108,7 +108,7 @@ export function AppNavigator() {
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_left',
-          contentStyle: { backgroundColor: colors.ink },
+          contentStyle: { backgroundColor: colors.cream },
         }}
       >
         <Stack.Screen name="Splash" component={SplashScreen} options={{ animation: 'fade' }} />
@@ -117,7 +117,7 @@ export function AppNavigator() {
         <Stack.Screen name="JoinRoom" component={JoinRoomScreen} />
         <Stack.Screen name="QRScanner" component={QRScannerScreen} options={{ animation: 'fade' }} />
         <Stack.Screen name="Lobby" component={LobbyScreen} options={{ gestureEnabled: false }} />
-        <Stack.Screen name="Game" component={GameScreen} options={{ gestureEnabled: false, animation: 'fade' }} />
+        <Stack.Screen name="Game" component={GameSessionScreen} options={{ gestureEnabled: false, animation: 'fade' }} />
         <Stack.Screen name="HowToPlay" component={HowToPlayScreen} />
       </Stack.Navigator>
     </NavigationContainer>

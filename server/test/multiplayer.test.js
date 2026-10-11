@@ -75,6 +75,8 @@ async function createFourPlayerRoom() {
   sessions.push(await emitAck(sockets[1], 'room:join', { roomCode, name: 'سارة' }));
   sessions.push(await emitAck(sockets[2], 'room:join', { roomCode, name: 'ليان' }));
   sessions.push(await emitAck(sockets[3], 'room:join', { roomCode, name: 'خالد' }));
+  const chosen = await emitAck(sockets[0], 'lobby:select-game', { gameId: 'CODENAMES' });
+  assert.equal(chosen.ok, true);
   return { sockets, sessions, roomCode, room: server.roomManager.rooms.get(roomCode) };
 }
 
@@ -124,6 +126,7 @@ test('lobby auto-assigns both teams, enforces host controls, and blocks an unrea
   const created = await emitAck(host, 'room:create', { name: 'المضيف' });
   const joined = await emitAck(guest, 'room:join', { roomCode: created.roomCode, name: 'الضيف' });
 
+  await emitAck(host, 'lobby:select-game', { gameId: 'CODENAMES' });
   const earlyStart = await emitAck(host, 'game:start');
   assert.equal(earlyStart.code, 'NOT_READY');
   const unauthorized = await emitAck(guest, 'lobby:update-player', {
@@ -152,7 +155,7 @@ test('starting a game sends hidden identities only to spymasters and blocks late
   const started = await emitAck(sockets[0], 'game:start');
   assert.equal(started.ok, true);
   assert.equal(room.status, STATUS.ACTIVE);
-  assert.equal(room.board.length, 25);
+  assert.equal(room.gameSession.board.length, 25);
 
   const redSpymaster = room.players.find((player) => player.team === TEAM.RED && player.role === ROLE.SPYMASTER);
   const redAgent = room.players.find((player) => player.team === TEAM.RED && player.role === ROLE.AGENT);
@@ -170,33 +173,33 @@ test('starting a game sends hidden identities only to spymasters and blocks late
 test('server validates clue giver, clue text, agent selection, correct/opponent/neutral turn rules', async () => {
   const { sockets, room } = await createFourPlayerRoom();
   await emitAck(sockets[0], 'game:start');
-  const team = room.currentTeam;
+  const team = room.gameSession.currentTeam;
   const { socket: spySocket } = socketFor(room, sockets, team, ROLE.SPYMASTER);
   const { socket: agentSocket, player: agent } = socketFor(room, sockets, team, ROLE.AGENT);
   const otherTeam = team === TEAM.RED ? TEAM.BLUE : TEAM.RED;
   const { socket: wrongSpy } = socketFor(room, sockets, otherTeam, ROLE.SPYMASTER);
-  const firstClue = unusedArabicClue(room.board, 'فضاء');
-  const secondClue = unusedArabicClue(room.board, 'فكرة');
+  const firstClue = unusedArabicClue(room.gameSession.board, 'فضاء');
+  const secondClue = unusedArabicClue(room.gameSession.board, 'فكرة');
 
   assert.equal((await emitAck(wrongSpy, 'game:give-clue', { word: 'فضاء', count: 2 })).code, 'NOT_YOUR_TURN');
   assert.equal((await emitAck(agentSocket, 'game:give-clue', { word: 'فضاء', count: 2 })).code, 'SPYMASTER_ONLY');
-  assert.equal((await emitAck(spySocket, 'game:give-clue', { word: room.board[0].word, count: 2 })).code, 'CLUE_MATCHES_CARD');
+  assert.equal((await emitAck(spySocket, 'game:give-clue', { word: room.gameSession.board[0].word, count: 2 })).code, 'CLUE_MATCHES_CARD');
   assert.equal((await emitAck(spySocket, 'game:give-clue', { word: 'space', count: 2 })).code, 'INVALID_CLUE');
   assert.equal((await emitAck(spySocket, 'game:give-clue', { word: firstClue, count: 2 })).ok, true);
   let clueView = server.roomManager.serializeFor(room.roomId, agent.id);
   assert.deepEqual(clueView.clueHistory.map(({ word, count, team }) => ({ word, count, team })), [
     { word: firstClue, count: 2, team },
   ]);
-  assert.equal((await emitAck(spySocket, 'game:select-card', { cardId: room.board[0].id })).code, 'AGENT_ONLY');
+  assert.equal((await emitAck(spySocket, 'game:select-card', { cardId: room.gameSession.board[0].id })).code, 'AGENT_ONLY');
 
-  const correct = room.board.find((card) => card.type === team);
+  const correct = room.gameSession.board.find((card) => card.type === team);
   assert.equal((await emitAck(agentSocket, 'game:select-card', { cardId: correct.id })).revealedType, team);
   const agentView = server.roomManager.serializeFor(room.roomId, agent.id);
   assert.equal(agentView.board.find((card) => card.id === correct.id).type, team);
 
-  const opponent = room.board.find((card) => card.type === otherTeam && !card.revealed);
+  const opponent = room.gameSession.board.find((card) => card.type === otherTeam && !card.revealed);
   assert.equal((await emitAck(agentSocket, 'game:select-card', { cardId: opponent.id })).turnEnded, true);
-  assert.equal(room.currentTeam, otherTeam);
+  assert.equal(room.gameSession.currentTeam, otherTeam);
 
   const nextSpy = socketFor(room, sockets, otherTeam, ROLE.SPYMASTER).socket;
   const nextAgent = socketFor(room, sockets, otherTeam, ROLE.AGENT).socket;
@@ -204,45 +207,45 @@ test('server validates clue giver, clue text, agent selection, correct/opponent/
   clueView = server.roomManager.serializeFor(room.roomId, agent.id);
   assert.equal(clueView.clueHistory.length, 2);
   assert.equal(clueView.clueHistory[1].word, secondClue);
-  const neutral = room.board.find((card) => card.type === CARD.NEUTRAL && !card.revealed);
+  const neutral = room.gameSession.board.find((card) => card.type === CARD.NEUTRAL && !card.revealed);
   assert.equal((await emitAck(nextAgent, 'game:select-card', { cardId: neutral.id })).turnEnded, true);
-  assert.equal(room.currentTeam, team);
+  assert.equal(room.gameSession.currentTeam, team);
 });
 
 test('assassin ends the game immediately, host can replay, and all team words produce a win', async () => {
   const { sockets, room } = await createFourPlayerRoom();
   await emitAck(sockets[0], 'game:start');
-  const firstTeam = room.currentTeam;
+  const firstTeam = room.gameSession.currentTeam;
   const firstSpy = socketFor(room, sockets, firstTeam, ROLE.SPYMASTER).socket;
   const firstAgent = socketFor(room, sockets, firstTeam, ROLE.AGENT).socket;
   await emitAck(firstSpy, 'game:give-clue', { word: 'مجهول', count: 1 });
-  const assassin = room.board.find((card) => card.type === CARD.ASSASSIN);
+  const assassin = room.gameSession.board.find((card) => card.type === CARD.ASSASSIN);
   await emitAck(firstAgent, 'game:select-card', { cardId: assassin.id });
   assert.equal(room.status, STATUS.FINISHED);
-  assert.equal(room.resultReason, RESULT_REASON.ASSASSIN);
-  assert.equal(room.winner, firstTeam === TEAM.RED ? TEAM.BLUE : TEAM.RED);
+  assert.equal(room.gameSession.resultReason, RESULT_REASON.ASSASSIN);
+  assert.equal(room.gameSession.winner, firstTeam === TEAM.RED ? TEAM.BLUE : TEAM.RED);
 
   assert.equal((await emitAck(sockets[0], 'game:restart')).ok, true);
   assert.equal(room.status, STATUS.ACTIVE);
-  assert.equal(room.round, 2);
+  assert.equal(room.gameSession.round, 2);
 
-  room.currentTeam = TEAM.RED;
-  room.clue = null;
+  room.gameSession.currentTeam = TEAM.RED;
+  room.gameSession.clue = null;
   const redSpy = socketFor(room, sockets, TEAM.RED, ROLE.SPYMASTER).socket;
   const redAgent = socketFor(room, sockets, TEAM.RED, ROLE.AGENT).socket;
   await emitAck(redSpy, 'game:give-clue', { word: 'مجموعة', count: 9 });
-  const redCards = room.board.filter((card) => card.type === TEAM.RED);
+  const redCards = room.gameSession.board.filter((card) => card.type === TEAM.RED);
   for (const card of redCards) {
     const response = await emitAck(redAgent, 'game:select-card', { cardId: card.id });
     assert.equal(response.ok, true);
   }
   assert.equal(room.status, STATUS.FINISHED);
-  assert.equal(room.winner, TEAM.RED);
-  assert.equal(room.resultReason, RESULT_REASON.ALL_WORDS);
+  assert.equal(room.gameSession.winner, TEAM.RED);
+  assert.equal(room.gameSession.resultReason, RESULT_REASON.ALL_WORDS);
 
   assert.equal((await emitAck(sockets[0], 'game:return-lobby')).ok, true);
   assert.equal(room.status, STATUS.LOBBY);
-  assert.equal(room.board.length, 0);
+  assert.equal(room.gameSession, null);
 });
 
 test('disconnect marks a player offline, session token reconnects, and host handoff works', async () => {
@@ -266,4 +269,44 @@ test('disconnect marks a player offline, session token reconnects, and host hand
   const newHost = room.players.find((player) => player.id === room.hostId);
   assert.ok(newHost.connected);
   assert.equal(newHost.isHost, true);
+});
+
+test('Sho Nel3b game catalogue, host selection, live start, and same-room replay', async () => {
+  const sockets = await Promise.all([connectClient(), connectClient(), connectClient(), connectClient()]);
+  const host = await emitAck(sockets[0], 'room:create', { name: 'مضيف' });
+  const roomCode = host.roomCode;
+  for (let i = 1; i < 4; i++) {
+    assert.equal((await emitAck(sockets[i], 'room:join', { roomCode, name: 'لاعب ' + i })).ok, true);
+  }
+  const room = server.roomManager.rooms.get(roomCode);
+  assert.equal(room.selectedGameId, null);
+  assert.equal((await emitAck(sockets[0], 'game:start')).code, 'GAME_NOT_SELECTED');
+  assert.equal((await emitAck(sockets[1], 'lobby:select-game', { gameId: 'CODENAMES' })).code, 'NOT_HOST');
+  assert.equal((await emitAck(sockets[0], 'lobby:select-game', { gameId: 'INVALID' })).code, 'INVALID_GAME');
+  let guestState;
+  sockets[1].on('state:update', state => { guestState = state; });
+  assert.equal((await emitAck(sockets[0], 'lobby:select-game', { gameId: 'CODENAMES' })).ok, true);
+  await waitUntil(() => guestState?.selectedGameId === 'CODENAMES');
+  assert.equal(guestState.availableGames.length, 1);
+  assert.equal(guestState.canStart, true);
+  assert.equal((await emitAck(sockets[1], 'game:start')).code, 'NOT_HOST');
+  assert.equal((await emitAck(sockets[0], 'game:start')).ok, true);
+  await waitUntil(() => guestState?.status === STATUS.ACTIVE);
+  assert.equal(room.gameSession.board.length, 25);
+  assert.equal((await emitAck(sockets[0], 'lobby:select-game', { gameId: 'CODENAMES' })).code, 'LOBBY_ONLY');
+  const team = room.gameSession.currentTeam;
+  const spy = socketFor(room, sockets, team, ROLE.SPYMASTER).socket;
+  const agent = socketFor(room, sockets, team, ROLE.AGENT).socket;
+  const clue = unusedArabicClue(room.gameSession.board, 'لغز');
+  assert.equal((await emitAck(spy, 'game:give-clue', { word: clue, count: 1 })).ok, true);
+  const assassin = room.gameSession.board.find(card => card.type === CARD.ASSASSIN);
+  assert.equal((await emitAck(agent, 'game:select-card', { cardId: assassin.id })).ok, true);
+  assert.equal((await emitAck(sockets[1], 'game:return-lobby')).code, 'NOT_HOST');
+  assert.equal((await emitAck(sockets[0], 'game:return-lobby')).ok, true);
+  await waitUntil(() => guestState?.status === STATUS.LOBBY);
+  assert.equal(room.selectedGameId, 'CODENAMES');
+  assert.equal(room.gameSession, null);
+  assert.equal(room.players.length, 4);
+  assert.equal((await emitAck(sockets[0], 'game:start')).ok, true);
+  assert.equal(room.gameSession.round, 2);
 });

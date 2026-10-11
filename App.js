@@ -10,6 +10,7 @@ import {
   useFonts,
 } from '@expo-google-fonts/tajawal';
 import { GameProvider } from './mobile/context/GameContext';
+import { LanguageProvider } from './mobile/context/LanguageContext';
 import { AppNavigator } from './mobile/navigation/AppNavigator';
 import { GlobalNotice } from './mobile/components/GlobalNotice';
 import { GameAudio } from './mobile/components/GameAudio';
@@ -37,16 +38,18 @@ export default function App() {
   if (!fontsLoaded) return <View style={styles.loading} />;
   return (
     <SafeAreaProvider>
+      <LanguageProvider>
       <GameProvider>
         <GameAudio />
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
         <AppNavigator />
         <GlobalNotice />
       </GameProvider>
+      </LanguageProvider>
     </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  loading: { flex: 1, backgroundColor: colors.ink },
+  loading: { flex: 1, backgroundColor: colors.cream },
 });

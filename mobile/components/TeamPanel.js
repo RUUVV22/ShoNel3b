@@ -9,66 +9,44 @@ import { radius, spacing } from '../theme/layout';
 
 export function TeamPanel({ team, players, remaining, selected, joining, onJoin, ...playerListProps }) {
   const color = teamColor(team);
-  const selectedBackground = team === 'RED' ? 'rgba(232,74,95,0.12)' : 'rgba(50,132,214,0.12)';
   return (
-    <View
-      style={[
-        styles.panel,
-        { borderTopColor: color },
-        selected && { borderColor: color, backgroundColor: selectedBackground },
-      ]}
-    >
-      <View style={styles.header}>
-        <View style={[styles.teamDot, { backgroundColor: color }]} />
-        <ArabicText weight="bold" style={styles.title}>{TEAM_LABEL[team]}</ArabicText>
-        <View style={styles.playerCount}>
-          <Ionicons name="people" size={14} color={colors.paperMuted} />
-          <ArabicText weight="bold" style={styles.playerCountText}>{players.length}</ArabicText>
-        </View>
+    <View style={[styles.panel, selected && styles.selected]}>
+      <View style={[styles.header, { backgroundColor: color }]}>
+        <View style={[styles.teamDot, { backgroundColor: colors.plum }]} />
+        <ArabicText weight="extraBold" style={styles.title}>
+          {team === 'RED' ? 'الفريق المرجاني' : 'الفريق الذهبي'}
+        </ArabicText>
+        <View style={styles.playerCount}><ArabicText weight="bold" style={styles.playerCountText}>{players.length} ✦</ArabicText></View>
         {onJoin ? (
-          <Pressable
-            accessibilityRole="button"
-            accessibilityState={{ selected, disabled: selected || joining }}
-            disabled={selected || joining}
-            onPress={onJoin}
-            style={[styles.joinButton, { borderColor: color }, selected && { backgroundColor: color }]}
-          >
-            <Ionicons name={selected ? 'checkmark-circle' : 'people-outline'} size={17} color={selected ? colors.white : color} />
-            <ArabicText weight="bold" style={[styles.joinText, { color: selected ? colors.white : color }]}>
-              {selected ? 'تم الاختيار' : 'انضم'}
-            </ArabicText>
+          <Pressable accessibilityRole="button" accessibilityState={{ selected, disabled: selected || joining }}
+            disabled={selected || joining} onPress={onJoin} style={[styles.joinButton, selected && styles.joined]}>
+            <Ionicons name={selected ? 'checkmark' : 'add'} size={16} color={colors.plum} />
+            <ArabicText weight="extraBold" style={styles.joinText}>{selected ? 'فريقك' : 'انضم'}</ArabicText>
           </Pressable>
         ) : null}
         {Number.isInteger(remaining) ? (
-          <View style={[styles.remaining, { backgroundColor: color }]}>
-            <ArabicText weight="bold" style={styles.remainingText}>{remaining}</ArabicText>
-          </View>
+          <View style={styles.remaining}><ArabicText weight="extraBold" style={styles.remainingText}>{remaining}</ArabicText></View>
         ) : null}
       </View>
-      <PlayerList players={players} {...playerListProps} />
+      <View style={styles.players}><PlayerList players={players} {...playerListProps} /></View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
-  panel: {
-    flex: 1,
-    minWidth: 0,
-    gap: 14,
-    padding: 16,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderTopWidth: 6,
-    borderColor: colors.line,
-    backgroundColor: colors.panel,
-  },
-  header: { flexDirection: 'row-reverse', alignItems: 'center', gap: spacing.sm },
-  teamDot: { width: 14, height: 14, borderRadius: 7 },
-  title: { flex: 1, fontSize: 18 },
-  playerCount: { minWidth: 38, minHeight: 30, flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'center', gap: 4, paddingHorizontal: 7, borderRadius: radius.pill, backgroundColor: 'rgba(255,255,255,0.08)' },
-  playerCountText: { color: colors.paperMuted, fontSize: 12, textAlign: 'center' },
-  remaining: { minWidth: 27, height: 27, paddingHorizontal: 6, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
-  remainingText: { color: colors.white, fontSize: 13, textAlign: 'center' },
-  joinButton: { minHeight: 38, flexDirection: 'row-reverse', alignItems: 'center', gap: 5, paddingHorizontal: 12, borderWidth: 1, borderRadius: radius.pill },
-  joinText: { fontSize: 12 },
+  panel: { flex: 1, minWidth: 0, borderRadius: radius.lg, borderWidth: 2.5, borderBottomWidth: 6,
+    borderColor: colors.plum, backgroundColor: colors.cream, overflow: 'hidden',
+    shadowColor: colors.plum, shadowOffset: { width: 3, height: 4 }, shadowOpacity: 0.2, shadowRadius: 0 },
+  selected: { borderBottomWidth: 8 },
+  header: { flexDirection: 'row-reverse', flexWrap: 'wrap', alignItems: 'center', gap: spacing.sm, padding: spacing.md, minHeight: 56 },
+  teamDot: { width: 11, height: 11, borderRadius: 6 },
+  title: { flex: 1, minWidth: 95, color: colors.plum, fontSize: 17 },
+  playerCount: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: radius.pill, backgroundColor: colors.cream },
+  playerCountText: { color: colors.plum, fontSize: 11 },
+  joinButton: { flexDirection: 'row-reverse', alignItems: 'center', gap: 4,
+    borderWidth: 1.5, borderColor: colors.plum, borderRadius: radius.pill, paddingVertical: 5, paddingHorizontal: 10, backgroundColor: colors.cream },
+  joined: { backgroundColor: '#FFEAC0' },
+  joinText: { color: colors.plum, fontSize: 11 },
+  remaining: { backgroundColor: colors.plum, minWidth: 28, height: 28, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center' },
+  remainingText: { color: colors.cream, fontSize: 12 },
+  players: { padding: spacing.sm },
 });

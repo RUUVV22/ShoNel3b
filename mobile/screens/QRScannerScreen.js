@@ -66,7 +66,7 @@ export function QRScannerScreen({ navigation }) {
 const corner = { position: 'absolute', width: 38, height: 38, borderColor: colors.gold };
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.ink },
-  scrim: { flex: 1, paddingTop: 52, paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl, backgroundColor: 'rgba(4,10,16,0.48)', justifyContent: 'space-between' },
+  scrim: { flex: 1, paddingTop: 52, paddingHorizontal: spacing.lg, paddingBottom: spacing.xxl, backgroundColor: 'rgba(53,19,38,0.48)', justifyContent: 'space-between' },
   scanArea: { alignSelf: 'center', width: 260, height: 260, borderRadius: radius.lg, backgroundColor: 'rgba(255,255,255,0.04)' },
   cornerTopRight: { ...corner, top: 0, right: 0, borderTopWidth: 4, borderRightWidth: 4, borderTopRightRadius: radius.md },
   cornerTopLeft: { ...corner, top: 0, left: 0, borderTopWidth: 4, borderLeftWidth: 4, borderTopLeftRadius: radius.md },

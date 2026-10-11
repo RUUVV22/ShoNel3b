@@ -39,8 +39,8 @@ export function GameScreen({ navigation }) {
   const isMyTurn = me?.team === gameState?.currentTeam;
   const isSpymaster = me?.role === ROLE.SPYMASTER;
   const canSelect = gameState?.status === STATUS.ACTIVE && isMyTurn && !isSpymaster && Boolean(gameState.clue);
-  const boardWidth = Math.min(width - 16, 520);
-  const cardGap = 4;
+  const boardWidth = Math.min(width - 58, 492);
+  const cardGap = 5;
   const cardWidth = (boardWidth - cardGap * 4) / 5;
   const playerRole = isSpymaster ? 'قائد الفريق — ترى هويات البطاقات' : 'لاعب — اختر كلمات فريقك';
 
@@ -106,9 +106,9 @@ export function GameScreen({ navigation }) {
   );
 
   return (
-    <ScreenContainer scroll={false} contentStyle={styles.screen}>
+    <ScreenContainer contentStyle={styles.screen}>
       <GameHeader
-        title={`الجولة ${gameState.round}`}
+        title={`كود نيمز | الجولة ${gameState.round}`}
         subtitle={`${gameState.roomId} • ${playerRole}`}
         onBack={leave}
         rightIcon={muted ? 'volume-mute-outline' : 'volume-high-outline'}
@@ -129,6 +129,7 @@ export function GameScreen({ navigation }) {
 
       <TurnIndicator team={gameState.currentTeam} isMyTurn={isMyTurn} />
 
+      <View style={[styles.tabletop, { width: boardWidth + 16 }]}>
       <View style={[styles.board, { width: boardWidth, gap: cardGap }]}>
         {gameState.board.map((card) => (
           <GameCard
@@ -140,6 +141,7 @@ export function GameScreen({ navigation }) {
             onPress={handleSelect}
           />
         ))}
+      </View>
       </View>
 
       <CluePanel
@@ -177,13 +179,17 @@ export function GameScreen({ navigation }) {
 const styles = StyleSheet.create({
   screen: { paddingHorizontal: spacing.sm, paddingBottom: spacing.sm },
   center: { alignItems: 'center', justifyContent: 'center' },
-  muted: { color: colors.muted },
+  muted: { color: colors.plum },
+  tabletop: { alignSelf: 'center', backgroundColor: colors.plum, borderColor: colors.plum,
+    borderWidth: 2, borderBottomWidth: 6, borderRadius: radius.lg, padding: 6,
+    shadowColor: colors.plum, shadowOffset: { width: 3, height: 4 }, shadowOpacity: 0.22, shadowRadius: 0 },
   scoreRow: { flexDirection: 'row-reverse', gap: spacing.sm, marginBottom: spacing.sm },
-  score: { flex: 1, minHeight: 38, flexDirection: 'row-reverse', alignItems: 'center', gap: 5, paddingHorizontal: spacing.sm, borderWidth: 1, borderRadius: radius.sm, backgroundColor: colors.panel },
+  score: { flex: 1, minHeight: 43, flexDirection: 'row-reverse', alignItems: 'center', gap: 5, paddingHorizontal: spacing.sm,
+    borderWidth: 2, borderBottomWidth: 5, borderRadius: radius.sm, backgroundColor: colors.plum },
   scoreDot: { width: 7, height: 22, borderRadius: 4 },
   scoreName: { flex: 1, fontSize: 11 },
   scoreNumber: { fontSize: 18, textAlign: 'center' },
-  board: { alignSelf: 'center', flexDirection: 'row', flexWrap: 'wrap', marginVertical: spacing.sm },
+  board: { alignSelf: 'center', flexDirection: 'row', flexWrap: 'wrap', marginVertical: spacing.xs },
   agentActions: { flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm, marginTop: spacing.sm },
-  guesses: { color: colors.gold, fontSize: 12 },
+  guesses: { color: colors.plum, fontSize: 12 },
 });

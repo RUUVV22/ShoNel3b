@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "الشفرة",
-    "slug": "arabic-codenames",
+    "name": "شو نلعب؟",
+    "slug": "sho-nel3b",
     "version": "1.0.0",
     "orientation": "portrait",
-    "scheme": "codenames",
-    "icon": "./assets/app-icon.png",
-    "userInterfaceStyle": "dark",
-    "backgroundColor": "#08121F",
+    "scheme": "shonel3b",
+    "icon": "./assets/Warm retro Arabic-only game logo.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#FFF0CF",
     "plugins": [
       "expo-font",
       "expo-asset",
@@ -32,7 +32,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.arabiccodenames.game",
-      "icon": "./assets/app-icon.png",
+      "icon": "./assets/Warm retro Arabic-only game logo.png",
       "infoPlist": {
         "CFBundleDevelopmentRegion": "ar",
         "NSCameraUsageDescription": "نحتاج إلى الكاميرا لمسح رمز الغرفة"
@@ -41,41 +41,64 @@
     "android": {
       "package": "com.arabiccodenames.game",
       "adaptiveIcon": {
-        "backgroundColor": "#08121F",
-        "foregroundImage": "./assets/game-icon.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#351326",
+        "foregroundImage": "./assets/Warm retro Arabic-only game logo.png"
       },
-      "permissions": ["CAMERA"],
+      "permissions": [
+        "CAMERA"
+      ],
       "intentFilters": [
         {
           "action": "VIEW",
           "autoVerify": false,
-          "data": [{ "scheme": "codenames", "host": "join" }],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "data": [
+            {
+              "scheme": "shonel3b",
+              "host": "join"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        },
+        {
+          "action": "VIEW",
+          "autoVerify": false,
+          "data": [
+            {
+              "scheme": "codenames",
+              "host": "join"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
     "web": {
       "bundler": "metro",
       "output": "single",
-      "favicon": "./assets/favicon.png",
-      "name": "الشفرة العربية",
-      "shortName": "الشفرة",
-      "description": "لعبة الشفرة العربية الجماعية",
+      "favicon": "./assets/Warm retro Arabic-only game logo.png",
+      "name": "شو نلعب؟",
+      "shortName": "شو نلعب",
+      "description": "ألعاب جماعية أونلاين مع الأصحاب في غرفة واحدة",
       "lang": "ar",
       "dir": "rtl",
       "display": "standalone",
       "startUrl": ".",
       "scope": ".",
       "orientation": "portrait",
-      "themeColor": "#08121F",
-      "backgroundColor": "#08121F",
+      "themeColor": "#351326",
+      "backgroundColor": "#FFF0CF",
       "barStyle": "black-translucent",
       "preferRelatedApplications": false,
       "splash": {
-        "image": "./assets/splash-icon.png",
+        "image": "./assets/Warm retro Arabic-only game logo.png",
         "resizeMode": "contain",
-        "backgroundColor": "#08121F"
+        "backgroundColor": "#FFF0CF"
       }
     }
   }

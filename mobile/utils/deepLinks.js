@@ -15,7 +15,7 @@ export function parseRoomCode(value) {
   const directCode = decoded.toUpperCase();
   if (/^[A-Z2-9]{5}$/.test(directCode)) return directCode;
 
-  const deepLinkMatch = decoded.match(/^codenames:\/\/join\/([A-Z2-9]{5})(?:[/?#].*)?$/i);
+  const deepLinkMatch = decoded.match(/^(?:shonel3b|codenames):\/\/join\/([A-Z2-9]{5})(?:[/?#].*)?$/i);
   if (deepLinkMatch) return deepLinkMatch[1].toUpperCase();
 
   try {
@@ -31,7 +31,7 @@ export function parseRoomCode(value) {
 }
 
 export function roomDeepLink(roomCode) {
-  return `codenames://join/${String(roomCode || '').toUpperCase()}`;
+  return `shonel3b://join/${String(roomCode || '').toUpperCase()}`;
 }
 
 export function publicAppUrl() {

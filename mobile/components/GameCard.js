@@ -11,6 +11,8 @@ export const CARD_SUSPENSE_MS = 900;
 export const GameCard = memo(function GameCard({ card, width, disabled, selecting, onPress }) {
   const shakeX = useRef(new Animated.Value(0)).current;
   const scale = useRef(new Animated.Value(1)).current;
+  const flip = useRef(new Animated.Value(0)).current;
+  const wasRevealed = useRef(card.revealed);
   const rotation = useRef(new Animated.Value(0)).current;
   const reveal = useRef(new Animated.Value(card.type ? 1 : 0)).current;
   const hadIdentity = useRef(Boolean(card.type));
@@ -65,6 +67,20 @@ export const GameCard = memo(function GameCard({ card, width, disabled, selectin
     return () => tween?.kill();
   }, [card.type, reveal]);
 
+  // An actual 3D turn with a slight spring landing when a word is revealed.
+  // Only animate NEW reveals; joining/reconnecting players see settled cards.
+  useEffect(() => {
+    if (card.revealed && !wasRevealed.current) {
+      flip.setValue(0);
+      Animated.sequence([
+        Animated.timing(flip, { toValue: 1, duration: 440, useNativeDriver: true }),
+        Animated.spring(scale, { toValue: 1.08, friction: 4, tension: 110, useNativeDriver: true }),
+        Animated.spring(scale, { toValue: 1, friction: 5, tension: 100, useNativeDriver: true }),
+      ]).start();
+    }
+    wasRevealed.current = card.revealed;
+  }, [card.revealed, flip, scale]);
+
   const fontSize = useMemo(() => {
     if (card.word.length >= 8) return 10;
     if (card.word.length >= 6) return 11;
@@ -72,9 +88,10 @@ export const GameCard = memo(function GameCard({ card, width, disabled, selectin
   }, [card.word]);
 
   const rotate = rotation.interpolate({ inputRange: [-3, 3], outputRange: ['-3deg', '3deg'] });
+  const flipY = flip.interpolate({ inputRange: [0, 0.5, 1], outputRange: ['0deg', '92deg', '360deg'] });
   const identityScale = reveal.interpolate({ inputRange: [0, 0.55, 1], outputRange: [0.78, 1.045, 1] });
   return (
-    <Animated.View style={{ width, transform: [{ translateX: shakeX }, { rotate }, { scale }] }}>
+    <Animated.View style={{ width, transform: [{ translateX: shakeX }, { rotate }, { rotateY: flipY }, { scale }] }}>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={`${card.word}${card.revealed ? '، مكشوفة' : ''}`}
@@ -136,13 +153,17 @@ const styles = StyleSheet.create({
   card: {
     overflow: 'hidden',
     borderRadius: radius.sm,
-    borderWidth: 1,
-    borderColor: '#D9CBB2',
+    borderWidth: 2,
+    borderBottomWidth: 5,
+    borderColor: colors.plum,
     backgroundColor: colors.paper,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 3,
-    ...shadow,
+    shadowColor: colors.plum,
+    shadowOffset: { width: 2, height: 3 },
+    shadowOpacity: 0.16,
+    shadowRadius: 0,
   },
   identity: {
     ...StyleSheet.absoluteFillObject,
@@ -153,8 +174,8 @@ const styles = StyleSheet.create({
   word: { color: colors.ink, textAlign: 'center', writingDirection: 'rtl', lineHeight: 18 },
   identityWord: { textAlign: 'center', writingDirection: 'rtl', lineHeight: 18, textShadowColor: 'rgba(0,0,0,0.2)', textShadowRadius: 2, textShadowOffset: { width: 0, height: 1 } },
   assassin: { position: 'absolute', top: 1, left: 5, color: colors.gold, fontSize: 12 },
-  revealedCard: { borderWidth: 3, borderColor: colors.gold },
-  revealedShade: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(3,9,16,0.30)' },
+  revealedCard: { borderWidth: 3, borderBottomWidth: 5, borderColor: colors.mustard },
+  revealedShade: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(53,19,38,0.16)' },
   revealedLabel: {
     position: 'absolute',
     right: 0,
@@ -166,9 +187,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 2,
     paddingHorizontal: 2,
-    backgroundColor: 'rgba(3,9,16,0.88)',
+    backgroundColor: colors.plum,
   },
   revealedText: { flexShrink: 1, color: colors.white, fontSize: 8, lineHeight: 11, textAlign: 'center' },
-  disabled: { opacity: 0.68 },
+  disabled: { opacity: 0.9 },
   pressed: { opacity: 0.92 },
 });

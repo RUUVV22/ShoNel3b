@@ -10,8 +10,8 @@ import { radius, spacing } from '../theme/layout';
 export function QRCodeDisplay({ roomCode, compact = false }) {
   const link = roomJoinUrl(roomCode);
   const share = () => Share.share({
-    title: 'انضم إلى غرفة الشفرة',
-    message: `انضم إلى غرفة الشفرة برمز ${roomCode}\n${link}`,
+    title: 'انضم إلى غرفة شو نلعب',
+    message: `انضم إلى غرفة شو نلعب برمز ${roomCode}\n${link}`,
     url: link,
   });
 
@@ -36,13 +36,13 @@ const styles = StyleSheet.create({
   panel: {
     alignItems: 'center',
     gap: spacing.md,
-    backgroundColor: 'rgba(255,255,255,0.045)',
+    backgroundColor: 'rgba(255,240,207,0.07)',
     borderRadius: radius.lg,
     padding: spacing.lg,
     borderWidth: 1,
     borderColor: colors.line,
   },
-  compactPanel: { flex: 1, padding: spacing.md },
+  compactPanel: { flex: 1, padding: spacing.sm, borderWidth: 1.5, borderColor: colors.cream },
   qrShell: { padding: spacing.sm, backgroundColor: colors.white, borderRadius: radius.md },
   help: { color: colors.muted, fontSize: 13, textAlign: 'center' },
 });
