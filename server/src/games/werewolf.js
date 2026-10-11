@@ -1,6 +1,6 @@
 const { STATUS } = require('../game/constants');
 const { GameError } = require('../game/errors');
-const metadata = { id:'WEREWOLF', title:'ليلة العقارب', englishTitle:'Werewolf', subtitle:'أسرار القرية', description:'أدوار خفية ونقاش وتصويت ليلي', minPlayers:4, maxPlayers:20 };
+const metadata = { id:'WEREWOLF', title:'ليلة العقارب', englishTitle:'Scorpion Night', subtitle:'أسرار القرية', description:'أدوار خفية ونقاش وتصويت ليلي', minPlayers:4, maxPlayers:20 };
 const roles = [
   {id:'WOLF',name:'الذئب',team:'WOLF',action:'peek'},
   {id:'SEER',name:'العرافة',team:'VILLAGE',action:'peek'},

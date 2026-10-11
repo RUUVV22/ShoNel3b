@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { GameHeader } from '../components/GameHeader';
 import { BrandLogo } from '../components/BrandLogo';
@@ -15,7 +16,8 @@ import { radius, spacing } from '../theme/layout';
 export function JoinRoomScreen({ navigation, route }) {
   const { actions, busyAction, lastName } = useGame();
   const { t } = useLanguage();
-  const [name, setName] = useState(lastName);
+  const [name, setName] = useState('');
+  useFocusEffect(useCallback(() => { setName(''); }, []));
   const [roomCode, setRoomCode] = useState(parseRoomCode(route.params?.roomCode) || '');
   useEffect(() => {
     const parsed = parseRoomCode(route.params?.roomCode);

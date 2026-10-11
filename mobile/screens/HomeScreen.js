@@ -104,7 +104,7 @@ export function HomeScreen({ navigation }) {
         </View>
         {[
           { id: 'CODENAMES', ar: 'تلميحة وحدة... ومليون احتمال!', en: 'One clue. A million possibilities.' },
-          { id: 'WEREWOLF', ar: 'أسرار القرية والذئاب والعقارب', en: 'A village full of secret roles' },
+          { id: 'WEREWOLF', ar: 'أسرار قرية العقارب، مين رح ينجو؟', en: 'Scorpion Night: hidden roles and mystery' },
           { id: 'KHASERNY', ar: 'ست فئات... ومين رح يخسّر مين؟', en: 'Six categories. Challenge your friends.' },
           { id: 'BOMB', ar: 'احزر مين بعثلك القنبلة!', en: 'Guess who secretly sent the bomb!' },
         ].map((game, index) => (

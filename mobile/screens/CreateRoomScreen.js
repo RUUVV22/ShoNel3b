@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { GameHeader } from '../components/GameHeader';
 import { BrandLogo } from '../components/BrandLogo';
@@ -14,7 +15,8 @@ import { radius, spacing } from '../theme/layout';
 export function CreateRoomScreen({ navigation }) {
   const { actions, busyAction, lastName } = useGame();
   const { t } = useLanguage();
-  const [name, setName] = useState(lastName);
+  const [name, setName] = useState('');
+  useFocusEffect(useCallback(() => { setName(''); }, []));
   const submit = async () => {
     const response = await actions.createRoom(name);
     if (response.ok) navigation.replace('Lobby');
