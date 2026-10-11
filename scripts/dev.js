@@ -25,7 +25,9 @@ function isGameServerRunning() {
         response.on('end', () => {
           try {
             const health = JSON.parse(body);
-            resolve(response.statusCode === 200 && health.service === 'arabic-codenames-server');
+            const found = response.statusCode === 200 && health.service === 'arabic-codenames-server';
+            const available = new Set(health.games || []);
+            resolve(found ? (['CODENAMES', 'WEREWOLF', 'KHASERNY'].every(id => available.has(id)) ? 'current' : 'stale') : false);
           } catch {
             resolve(false);
           }
@@ -69,10 +71,12 @@ function terminate(child) {
 }
 
 async function main() {
-  console.log('[dev] Starting the Arabic Codenames development environment...');
+  console.log('[dev] Starting the Sho Nel3b development environment...');
 
   let server = null;
-  if (await isGameServerRunning()) {
+  const serverState = await isGameServerRunning();
+  if (serverState === 'stale') throw new Error('Old Sho Nel3b server detected on port 3001. Stop it before starting the updated game.');
+  if (serverState === 'current') {
     console.log(`[dev] Reusing the game server already running on port ${serverPort}.`);
   } else {
     server = start('server', [serverEntry]);

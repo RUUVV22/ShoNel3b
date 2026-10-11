@@ -9,13 +9,21 @@ const roles = [
   {id:'SCORPION',name:'العقرب',team:'VILLAGE',action:'peek'},
   {id:'SCORPIONESS',name:'العقربة',team:'VILLAGE',action:'protect'},
   {id:'VILLAGER',name:'المواطن',team:'VILLAGE',action:null},
+  {id:'DRUNK',name:'السكّير',team:'VILLAGE',action:'swap-center'},
+  {id:'INSOMNIAC',name:'السهران',team:'VILLAGE',action:'final-peek'},
+  {id:'MINION',name:'التابع',team:'WOLF',action:'wolves'},
+  {id:'MASON',name:'الماسوني',team:'VILLAGE',action:'partner'},
+  {id:'TANNER',name:'الدبّاغ',team:'TANNER',action:null},
+  {id:'HUNTER',name:'الصياد',team:'VILLAGE',action:null},
 ];
 const roleById = id => roles.find(r=>r.id===id);
 function canStart(room){return room.players.filter(p=>p.connected).length>=4 && room.players.length<=20;}
 function createSession(round, random=Math.random, room) {
   const players=room.players.filter(p=>p.connected);
   const n=players.length;
-  const deck=['WOLF','WOLF','SEER','ROBBER','TROUBLEMAKER','SCORPION','SCORPIONESS'];
+  const defaultRoles=['WOLF','WOLF','SEER','ROBBER','TROUBLEMAKER','DRUNK','INSOMNIAC','MINION','MASON','MASON','TANNER','HUNTER','SCORPION','SCORPIONESS'];
+  const requested=room.werewolfRoleDeck;
+  const deck=Array.isArray(requested)&&requested.length===n+3 ? [...requested] : defaultRoles.slice(0,n+3);
   while(deck.length<n+3) deck.push('VILLAGER');
   while(deck.length>n+3) {
     const idx=deck.lastIndexOf('VILLAGER');
@@ -25,7 +33,7 @@ function createSession(round, random=Math.random, room) {
   const assignments=Object.fromEntries(players.map((p,i)=>[p.id,deck[i]]));
   return {status:STATUS.ACTIVE,round,phase:'NIGHT',step:0,assignments,
     original:{...assignments},center:deck.slice(n),votes:{},actions:{},log:[], protectedId:null,
-    activeOrder:['WOLF','SEER','ROBBER','TROUBLEMAKER','SCORPION','SCORPIONESS'],winner:null};
+    activeOrder:['WOLF','MINION','MASON','SEER','ROBBER','TROUBLEMAKER','DRUNK','INSOMNIAC','SCORPION','SCORPIONESS'].filter(role=>deck.includes(role) && !(role==='SCORPIONESS'&&Object.values(assignments).includes('SCORPION'))),winner:null};
 }
 function currentRole(s){return s.activeOrder[s.step]||null;}
 function action(s,player,payload) {
@@ -41,8 +49,14 @@ function action(s,player,payload) {
     if(solo && (!Number.isInteger(target)||target<0||target>2))throw new GameError('INVALID_CARD');
     s.actions[player.id]={centerIndex:solo?target:null,seen:solo?s.center[target]:null};
   }else if(role==='SEER'){
-    if(!playerIds.includes(target)&& !(Number.isInteger(target)&&target>=0&&target<3))throw new GameError('INVALID_CARD');
-    s.actions[player.id]={target,seen:typeof target==='number'?s.center[target]:s.assignments[target]};
+    const second=payload?.second;
+    if (Number.isInteger(target) && Number.isInteger(second)) {
+      if (target<0 || target>2 || second<0 || second>2 || target===second) throw new GameError('INVALID_CARD');
+      s.actions[player.id]={target,second,seen:[s.center[target],s.center[second]]};
+    } else {
+      if (!playerIds.includes(target)||target===player.id) throw new GameError('INVALID_CARD');
+      s.actions[player.id]={target,seen:s.assignments[target]};
+    }
   }else if(role==='ROBBER'){
     if(!playerIds.includes(target)||target===player.id)throw new GameError('INVALID_CARD');
     const a=s.assignments[player.id];s.assignments[player.id]=s.assignments[target];s.assignments[target]=a;
@@ -52,10 +66,20 @@ function action(s,player,payload) {
     if(!playerIds.includes(target)||!playerIds.includes(second)||target===second||target===player.id||second===player.id)throw new GameError('INVALID_CARD');
     [s.assignments[target],s.assignments[second]]=[s.assignments[second],s.assignments[target]];
     s.actions[player.id]={target,second};
+  }else if(role==='DRUNK'){
+    if(!Number.isInteger(target)||target<0||target>2)throw new GameError('INVALID_CARD');
+    const old=s.assignments[player.id];s.assignments[player.id]=s.center[target];s.center[target]=old;
+    s.actions[player.id]={target,seen:null};
+  }else if(role==='INSOMNIAC'){
+    s.actions[player.id]={seen:s.assignments[player.id]};
+  }else if(role==='MINION'){
+    s.actions[player.id]={seen:Object.keys(s.original).filter(id=>s.original[id]==='WOLF')};
+  }else if(role==='MASON'){
+    s.actions[player.id]={seen:Object.keys(s.original).filter(id=>id!==player.id&&s.original[id]==='MASON')};
   }else if(role==='SCORPION'){
     const partner=Object.values(s.original).includes('SCORPIONESS');
     if(!partner && (!Number.isInteger(target)||target<0||target>2))throw new GameError('INVALID_CARD');
-    s.actions[player.id]={seen:partner?'العقربة موجودة':s.center[target],target:partner?null:target};
+    s.actions[player.id]={seen:partner?(s.original[player.id]==='SCORPIONESS'?'العقرب موجود':'العقربة موجودة'):s.center[target],target:partner?null:target};
   }else if(role==='SCORPIONESS'){
     const partner=Object.values(s.original).includes('SCORPION');
     if(!partner && (!playerIds.includes(target)||target===player.id))throw new GameError('INVALID_CARD');
@@ -72,9 +96,12 @@ function advance(s){
     const highest=Math.max(...Object.values(tally));
     const eliminated=highest<=1?[]:Object.keys(tally).filter(id=>tally[id]===highest && id!==s.protectedId);
     const wolves=Object.entries(s.assignments).filter(([,r])=>r==='WOLF').map(([id])=>id);
+    if(eliminated.some(id=>s.assignments[id]==='HUNTER')){
+      for(const id of [...eliminated]) if(s.assignments[id]==='HUNTER'&&s.votes[id]&&!eliminated.includes(s.votes[id])) eliminated.push(s.votes[id]);
+    }
     const wolfKilled=eliminated.some(id=>wolves.includes(id));
     const noWolf=wolves.length===0;
-    s.winner=wolfKilled||noWolf&&eliminated.length===0?'VILLAGE':'WOLF';
+    s.winner=eliminated.some(id=>s.assignments[id]==='TANNER')?(wolfKilled?'TANNER_AND_VILLAGE':'TANNER'):(wolfKilled||noWolf&&eliminated.length===0?'VILLAGE':'WOLF');
     s.eliminated=eliminated;s.phase='RESULT';s.status=STATUS.FINISHED;
   }
 }
@@ -89,7 +116,7 @@ function serialize(s,viewer){
   return {werewolf:{phase:s.phase,step:s.step,currentRole:currentRole(s),role:own,
     roleName:roleById(own)?.name,round:s.round,viewerAction:s.actions[viewer.id]||null,
     wolves:own==='WOLF'?group:undefined,
-    isActor:own===currentRole(s),acted:Boolean(s.actions[viewer.id]),
+    isActor:own===currentRole(s)||(currentRole(s)==='SCORPION'&&own==='SCORPIONESS'&&Object.values(s.original).includes('SCORPION')),acted:Boolean(s.actions[viewer.id]),
     votesCount:Object.keys(s.votes).length,voted:Boolean(s.votes[viewer.id]),playerCount:Object.keys(s.assignments).length,
     eliminated:s.phase==='RESULT'?s.eliminated:undefined,
     assignments:s.phase==='RESULT'?s.assignments:undefined,

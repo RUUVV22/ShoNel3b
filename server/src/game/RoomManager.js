@@ -40,6 +40,7 @@ class RoomManager {
       selectedGameId: null,
       gameSession: null,
       roundCounts: {},
+      werewolfRoleDeck: null,
       stateVersion: 1,
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -222,6 +223,18 @@ class RoomManager {
     return room;
   }
 
+  configureWerewolf(socketId, deck) {
+    const {room,player}=this.requireSocketPlayer(socketId);
+    this.assertHost(room,player);
+    if(room.status!==STATUS.LOBBY)throw new GameError('LOBBY_ONLY');
+    const allowed=new Set(require('../games/werewolf').roles.map(role=>role.id));
+    if(!Array.isArray(deck)||deck.length!==room.players.filter(p=>p.connected).length+3
+      ||!deck.every(id=>allowed.has(id)))throw new GameError('INVALID_ASSIGNMENT');
+    room.werewolfRoleDeck=[...deck];
+    this.touch(room);
+    return room;
+  }
+
   startGame(socketId) {
     const { room, player } = this.requireSocketPlayer(socketId);
     this.assertHost(room, player);
@@ -302,6 +315,8 @@ class RoomManager {
       hostId: room.hostId,
       selectedGameId: room.selectedGameId,
       availableGames: listGames(),
+      gameCatalogVersion: 3,
+      werewolfRoleDeck: room.status===STATUS.LOBBY ? room.werewolfRoleDeck : undefined,
       players: room.players.map(player => ({
         id: player.id,
         name: player.name,

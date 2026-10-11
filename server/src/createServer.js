@@ -4,6 +4,7 @@ const cors = require('cors');
 const { Server } = require('socket.io');
 const { RoomManager } = require('./game/RoomManager');
 const { registerSocketHandlers } = require('./realtime/socketHandlers');
+const { listGames } = require('./games/registry');
 
 function createGameServer(options = {}) {
   const app = express();
@@ -27,6 +28,8 @@ function createGameServer(options = {}) {
       ok: true,
       service: 'arabic-codenames-server',
       rooms: roomManager.rooms.size,
+      games: listGames().map(({ id }) => id),
+      gameCatalogVersion: 3,
       uptime: process.uptime(),
     });
   });

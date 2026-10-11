@@ -10,6 +10,7 @@ import { PrimaryButton } from '../components/PrimaryButton';
 import { ArabicText } from '../components/ArabicText';
 import { ConnectionPill } from '../components/ConnectionPill';
 import { CharacterAvatar } from '../components/CharacterAvatar';
+import { WerewolfRoleSetup } from '../components/WerewolfRoleSetup';
 import { useGame } from '../context/GameContext';
 import { useLanguage } from '../context/LanguageContext';
 import { ROLE, STATUS, TEAM } from '../constants/game';
@@ -47,6 +48,7 @@ export function LobbyScreen({ navigation }) {
   const isHost = Boolean(me?.isHost);
   const isCodenames = gameState.selectedGameId === 'CODENAMES';
   const selectedGame = (gameState.availableGames || []).find(game => game.id === gameState.selectedGameId);
+  const serverNeedsUpdate = !(gameState.availableGames || []).some(game => game.id === 'WEREWOLF') || !(gameState.availableGames || []).some(game => game.id === 'KHASERNY');
   const redPlayers = gameState.players.filter(p => p.team === TEAM.RED);
   const bluePlayers = gameState.players.filter(p => p.team === TEAM.BLUE);
   const connectedCount = gameState.players.filter(p => p.connected).length;
@@ -122,6 +124,7 @@ export function LobbyScreen({ navigation }) {
         <ArabicText weight="extraBold" style={styles.sectionTitle}>{t('شو بدنا نلعب؟', "WHAT'S ON THE TABLE?")}</ArabicText>
         <ArabicText style={styles.sectionHint}>{isHost ? t('إنت صاحب القرار', 'Host chooses') : t('المضيف بختار', 'Host picks')}</ArabicText>
       </View>
+      {serverNeedsUpdate ? <View style={styles.readiness}><Ionicons name="warning-outline" size={22} color={colors.plum}/><ArabicText style={styles.readinessText}>{t('السيرفر المتصل قديم! لازم تحدّث وتشغّل الـ Node.js backend الجديد (مش بس الويب). افحص عنوان السيرفر من الإعدادات بالصفحة الرئيسية.','This room is connected to an older backend. Deploy/restart the updated Node.js game server, not just the website. Check your server address in Home settings.')}</ArabicText></View> : null}
       {(gameState.availableGames || []).map(game => {
         const selected = game.id === gameState.selectedGameId;
         return (
@@ -150,6 +153,7 @@ export function LobbyScreen({ navigation }) {
         <ArabicText style={styles.futureText}>{t('ألعاب ثانية بالطريق.. نفس الغرفة، نفس الشِلّة!', 'More games coming. Same room, same friends!')}</ArabicText>
       </View>
 
+      {gameState.selectedGameId === 'WEREWOLF' ? <WerewolfRoleSetup players={connectedCount} initial={gameState.werewolfRoleDeck} editable={isHost} onSave={actions.configureWerewolf} /> : null}
       {isCodenames ? (
         <>
           <View style={styles.sectionHead}>

@@ -10,34 +10,35 @@ const categories=[
 {id:'RIDDLES',title:'ألغاز وسوالف',emoji:'💡',questions:[['إيش الشي اللي كل ما أخذت منه كبر؟','الحفرة'],['شي له أسنان وما بعض؟','المشط'],['شو الشي اللي بيكتب وما بيقرأ؟','القلم']]},
 ];
 const canStart=room=>room.players.filter(p=>p.connected).length>=2&&room.players.length<=20;
-function createSession(round,random,room){const ids=room.players.filter(p=>p.connected).map(p=>p.id);return {status:STATUS.ACTIVE,round,phase:'PICK',players:ids,turn:0,used:[],category:null,question:null,answer:null,judgments:[],scores:Object.fromEntries(ids.map(id=>[id,0])),winner:null};}
+function createSession(round,random,room){const ids=room.players.filter(p=>p.connected).map(p=>p.id);return {status:STATUS.ACTIVE,round,phase:'PICK',players:ids,turn:0,used:[],category:null,question:null,answer:null,judgments:[],scores:Object.fromEntries(ids.map(id=>[id,30])),challengedPlayerId:null,winner:null};}
 function act(s,player,payload){
   const current=s.players[s.turn%s.players.length];
   if(s.phase==='PICK'){
     if(player.id!==current)throw new GameError('NOT_YOUR_TURN');
+    if(!s.players.includes(payload.opponentId)||payload.opponentId===current)throw new GameError('INVALID_CARD');
     const category=categories.find(c=>c.id===payload.category);
     if(!category)throw new GameError('INVALID_GAME_ACTION');
     const remaining=category.questions.map((q,i)=>({q,i})).filter(x=>!s.used.includes(category.id+':'+x.i));
     const chosen=remaining[0]||{q:category.questions[0],i:0};
-    s.used.push(category.id+':'+chosen.i);s.category=category.id;s.question=chosen.q[0];s.answer=chosen.q[1];s.phase='QUESTION';
+    s.used.push(category.id+':'+chosen.i);s.challengedPlayerId=payload.opponentId;s.category=category.id;s.question=chosen.q[0];s.answer=chosen.q[1];s.phase='QUESTION';
   }else if(s.phase==='QUESTION'){
-    if(player.id!==current)throw new GameError('NOT_YOUR_TURN');
+    if(player.id!==s.challengedPlayerId)throw new GameError('NOT_YOUR_TURN');
     if(payload.action!=='reveal')throw new GameError('INVALID_GAME_ACTION');
     s.phase='JUDGE';
   }else if(s.phase==='JUDGE'){
-    if(!['correct','incorrect'].includes(payload.action)||!s.players.includes(player.id)||player.id===current||s.judgments.some(j=>j.player===player.id))throw new GameError('INVALID_GAME_ACTION');
+    if(!['correct','incorrect'].includes(payload.action)||!s.players.includes(player.id)||player.id===s.challengedPlayerId||s.judgments.some(j=>j.player===player.id))throw new GameError('INVALID_GAME_ACTION');
     s.judgments.push({player:player.id,correct:payload.action==='correct'});
     if(s.judgments.length>=s.players.length-1){
       const yes=s.judgments.filter(j=>j.correct).length;
-      if(yes>s.judgments.length/2)s.scores[current]+=10;
-      s.turn++;s.judgments=[];s.category=null;s.question=null;s.answer=null;
+      if(yes<=s.judgments.length/2)s.scores[s.challengedPlayerId]=Math.max(0,s.scores[s.challengedPlayerId]-10);
+      s.turn++;s.judgments=[];s.category=null;s.question=null;s.answer=null;s.challengedPlayerId=null;
       s.phase=s.turn>=s.players.length*3?'RESULT':'PICK';
       if(s.phase==='RESULT'){s.status=STATUS.FINISHED;const high=Math.max(...Object.values(s.scores));s.winner=s.players.filter(id=>s.scores[id]===high);}
     }
   }else throw new GameError('INVALID_GAME_ACTION');
 }
 function serialize(s,viewer){return {khaserny:{phase:s.phase,round:s.round,categories:categories.map(({id,title,emoji})=>({id,title,emoji})),
-currentPlayerId:s.players[s.turn%s.players.length],turn:s.turn,question:s.question,category:s.category,
+currentPlayerId:s.players[s.turn%s.players.length],challengedPlayerId:s.challengedPlayerId,turn:s.turn,question:s.question,category:s.category,
 answer:s.phase==='JUDGE'||s.phase==='RESULT'?s.answer:null,judged:s.judgments.some(j=>j.player===viewer.id),
 judgmentsCount:s.judgments.length,scores:s.scores,winner:s.winner}};}
 module.exports={metadata,canStart,createSession,act,serialize,categories};

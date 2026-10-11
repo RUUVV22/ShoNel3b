@@ -17,9 +17,9 @@ test('Werewolf hides secrets and resolves votes',()=>{
 test('Six category quiz keeps answers secret and scores approved answers',()=>{
  const s=trivia.createSession(1,Math.random,{players});
  assert.equal(trivia.categories.length,6);
- trivia.act(s,players[0],{category:'MOVIES'});
+ trivia.act(s,players[0],{category:'MOVIES',opponentId:'p1'});
  assert.equal(trivia.serialize(s,players[1]).khaserny.answer,null);
- trivia.act(s,players[0],{action:'reveal'});
- for(let i=1;i<4;i++)trivia.act(s,players[i],{action:'correct'});
- assert.equal(s.scores.p0,10);
+ trivia.act(s,players[1],{action:'reveal'});
+ for(let i of [0,2,3])trivia.act(s,players[i],{action:'incorrect'});
+ assert.equal(s.scores.p1,20);
 });
