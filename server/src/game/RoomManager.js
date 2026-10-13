@@ -12,12 +12,14 @@ const { GameError } = require('./errors');
 const ROOM_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
 class RoomManager {
-  constructor({ random = Math.random, reconnectWindowMs = 120_000, onAsyncChange = () => {} } = {}) {
+  constructor({ random = Math.random, reconnectWindowMs = 120_000, mysteryTimeoutMs = 150_000, onAsyncChange = () => {} } = {}) {
     this.rooms = new Map();
     this.socketIndex = new Map();
     this.disconnectTimers = new Map();
+    this.mysteryTimers = new Map();
     this.random = random;
     this.reconnectWindowMs = reconnectWindowMs;
+    this.mysteryTimeoutMs = mysteryTimeoutMs;
     this.onAsyncChange = onAsyncChange;
   }
 
@@ -41,6 +43,7 @@ class RoomManager {
       gameSession: null,
       roundCounts: {},
       werewolfRoleDeck: null,
+      mysteryCharacter: null,
       stateVersion: 1,
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -227,6 +230,17 @@ class RoomManager {
     return room;
   }
 
+  selectMysteryCharacter(socketId, characterId) {
+    const {room,player}=this.requireSocketPlayer(socketId);
+    if(room.status!==STATUS.LOBBY)throw new GameError('LOBBY_ONLY');
+    const mystery=require('../games/mystery');
+    if(!mystery.suspects.some(s=>s.id===characterId))throw new GameError('INVALID_ASSIGNMENT');
+    if(room.players.some(p=>p.id!==player.id&&p.mysteryCharacter===characterId))throw new GameError('INVALID_ASSIGNMENT');
+    player.mysteryCharacter=characterId;
+    this.touch(room);
+    return room;
+  }
+
   configureWerewolf(socketId, deck) {
     const {room,player}=this.requireSocketPlayer(socketId);
     this.assertHost(room,player);
@@ -267,6 +281,29 @@ class RoomManager {
     room.gameSession = game.createSession(round, this.random, room);
     room.status = room.gameSession.status;
     this.touch(room);
+    this.armMysteryTimeout(room);
+  }
+
+  armMysteryTimeout(room) {
+    const old=this.mysteryTimers.get(room.roomId);
+    if(old)clearTimeout(old);
+    this.mysteryTimers.delete(room.roomId);
+    if(room.selectedGameId!=='MEN_WARAHA'||room.status!==STATUS.ACTIVE)return;
+    if(!room.players.some(p=>p.connected))return;
+    const timer=setTimeout(()=>{
+      this.mysteryTimers.delete(room.roomId);
+      const current=this.rooms.get(room.roomId);
+      if(!current||current.status!==STATUS.ACTIVE||current.selectedGameId!=='MEN_WARAHA')return;
+      try{
+        require('../games/mystery').recover(current.gameSession,current,true);
+        current.status=current.gameSession.status;
+        this.touch(current);
+        this.onAsyncChange(current.roomId);
+        this.armMysteryTimeout(current);
+      }catch(error){console.error('Mystery timeout recovery error:',error);}
+    },this.mysteryTimeoutMs);
+    timer.unref?.();
+    this.mysteryTimers.set(room.roomId,timer);
   }
 
   returnToLobby(socketId) {
@@ -275,6 +312,9 @@ class RoomManager {
     if (room.status === STATUS.ACTIVE) throw new GameError('GAME_NOT_FINISHED');
     room.status = STATUS.LOBBY;
     room.gameSession = null;
+    const timer=this.mysteryTimers.get(room.roomId);
+    if(timer)clearTimeout(timer);
+    this.mysteryTimers.delete(room.roomId);
     this.touch(room);
     return room;
   }
@@ -319,7 +359,7 @@ class RoomManager {
       hostId: room.hostId,
       selectedGameId: room.selectedGameId,
       availableGames: listGames(),
-      gameCatalogVersion: 4,
+      gameCatalogVersion: 5,
       werewolfRoleDeck: room.status===STATUS.LOBBY ? room.werewolfRoleDeck : undefined,
       players: room.players.map(player => ({
         id: player.id,
@@ -328,6 +368,7 @@ class RoomManager {
         role: player.role,
         isHost: player.isHost,
         connected: player.connected,
+        mysteryCharacter: player.mysteryCharacter || null,
       })),
       currentPlayerId: viewer.id,
       ...(game && room.gameSession ? game.serialize(room.gameSession, viewer, room) : {}),
@@ -358,6 +399,11 @@ class RoomManager {
         this.assertHost(room,player);
         game.recover(room.gameSession,room);
       }else game.act(room.gameSession,player,payload,this.random);
+    }else if(room.selectedGameId==='MEN_WARAHA'){
+      if(payload.action==='recover'){
+        this.assertHost(room,player);
+        game.recover(room.gameSession,room,false);
+      }else game.act(room.gameSession,player,payload,this.random);
     }else if(room.selectedGameId==='BOMB'){
       if(payload.action==='next'||payload.action==='recover') this.assertHost(room,player);
       if(payload.action==='recover') game.recover(room.gameSession,room);
@@ -365,6 +411,7 @@ class RoomManager {
     }else throw new GameError('INVALID_GAME_ACTION');
     room.status=room.gameSession.status;
     this.touch(room);
+    if(!(room.selectedGameId==='MEN_WARAHA'&&payload.action==='note'))this.armMysteryTimeout(room);
     return room;
   }
 
@@ -399,6 +446,8 @@ class RoomManager {
   clear() {
     this.disconnectTimers.forEach((timer) => clearTimeout(timer));
     this.disconnectTimers.clear();
+    this.mysteryTimers.forEach(timer=>clearTimeout(timer));
+    this.mysteryTimers.clear();
     this.socketIndex.clear();
     this.rooms.clear();
   }

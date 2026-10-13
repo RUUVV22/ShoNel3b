@@ -6,11 +6,12 @@ import { GameScreen as CodenamesScreen } from './GameScreen';
 import { WerewolfScreen } from './WerewolfScreen';
 import { KhasernyScreen } from './KhasernyScreen';
 import { BombScreen } from './BombScreen';
+import { MysteryScreen } from './MysteryScreen';
 import { colors } from '../theme/colors';
 import { STATUS } from '../constants/game';
 
 // Games own their UI; the shell owns room and navigation.
-const GAME_SCREENS = { CODENAMES: CodenamesScreen, WEREWOLF: WerewolfScreen, KHASERNY: KhasernyScreen, BOMB: BombScreen };
+const GAME_SCREENS = { CODENAMES: CodenamesScreen, WEREWOLF: WerewolfScreen, KHASERNY: KhasernyScreen, BOMB: BombScreen, MEN_WARAHA: MysteryScreen };
 export function GameSessionScreen(props) {
   const { gameState, session } = useGame();
   const { navigation } = props;

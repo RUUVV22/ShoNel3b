@@ -103,6 +103,11 @@ function registerSocketHandlers(io, roomManager) {
       return {};
     });
 
+    handle('lobby:mystery-character', ({characterId}) => {
+      const room=roomManager.selectMysteryCharacter(socket.id,characterId);
+      emitRoom(room.roomId);return {};
+    });
+
     handle('lobby:werewolf-roles', ({ deck }) => {
       const room = roomManager.configureWerewolf(socket.id, deck);
       emitRoom(room.roomId);

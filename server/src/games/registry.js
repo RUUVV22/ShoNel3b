@@ -2,9 +2,10 @@ const codenames = require('./codenames');
 const werewolf = require('./werewolf');
 const khaserny = require('./khaserny');
 const bomb = require('./bomb');
+const mystery = require('./mystery');
 // Each game owns its rules, serialisation and session state. The shared room
 // knows only the selected game identifier and the session object.
-const games = new Map([codenames,werewolf,khaserny,bomb].map(game=>[game.metadata.id,game]));
+const games = new Map([codenames,werewolf,khaserny,bomb,mystery].map(game=>[game.metadata.id,game]));
 const getGame = (id) => games.get(id) || null;
 const listGames = () => [...games.values()].map(game => ({ ...game.metadata }));
 module.exports = { getGame, listGames };

@@ -27,7 +27,7 @@ function isGameServerRunning() {
             const health = JSON.parse(body);
             const found = response.statusCode === 200 && health.service === 'arabic-codenames-server';
             const available = new Set(health.games || []);
-            resolve(found ? (['CODENAMES', 'WEREWOLF', 'KHASERNY', 'BOMB'].every(id => available.has(id)) ? 'current' : 'stale') : false);
+            resolve(found ? (['CODENAMES', 'WEREWOLF', 'KHASERNY', 'BOMB', 'MEN_WARAHA'].every(id => available.has(id)) ? 'current' : 'stale') : false);
           } catch {
             resolve(false);
           }

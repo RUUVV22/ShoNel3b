@@ -12,6 +12,7 @@ import { ConnectionPill } from '../components/ConnectionPill';
 import { CharacterAvatar } from '../components/CharacterAvatar';
 import { GameLogo } from '../components/GameLogo';
 import { WerewolfRoleSetup } from '../components/WerewolfRoleSetup';
+import { MysteryLobbyPicker } from '../components/MysteryLobbyPicker';
 import { useGame } from '../context/GameContext';
 import { useLanguage } from '../context/LanguageContext';
 import { ROLE, STATUS, TEAM } from '../constants/game';
@@ -49,7 +50,7 @@ export function LobbyScreen({ navigation }) {
   const isHost = Boolean(me?.isHost);
   const isCodenames = gameState.selectedGameId === 'CODENAMES';
   const selectedGame = (gameState.availableGames || []).find(game => game.id === gameState.selectedGameId);
-  const serverNeedsUpdate = !['CODENAMES','WEREWOLF','KHASERNY','BOMB'].every(id => (gameState.availableGames || []).some(game => game.id === id));
+  const serverNeedsUpdate = !['CODENAMES','WEREWOLF','KHASERNY','BOMB','MEN_WARAHA'].every(id => (gameState.availableGames || []).some(game => game.id === id));
   const redPlayers = gameState.players.filter(p => p.team === TEAM.RED);
   const bluePlayers = gameState.players.filter(p => p.team === TEAM.BLUE);
   const connectedCount = gameState.players.filter(p => p.connected).length;
@@ -137,7 +138,7 @@ export function LobbyScreen({ navigation }) {
             <GameLogo id={game.id} size={65} compact />
             <View style={styles.gameCopy}>
               <ArabicText weight="extraBold" style={styles.gameTitle}>{t(game.title, game.englishTitle || game.title)}</ArabicText>
-              <ArabicText style={styles.gameDesc}>{t(game.description, 'The secret-word party challenge')}</ArabicText>
+              <ArabicText style={styles.gameDesc}>{t(game.description, game.englishDescription || 'The secret-word party challenge')}</ArabicText>
               <ArabicText weight="medium" style={styles.gamePlayers}>{connectedCount} {t('بالغرفة', 'in room')} • {game.minPlayers}–{game.maxPlayers} {t('لاعبين', 'players')}</ArabicText>
             </View>
             <View style={[styles.selectMark, selected && styles.selectMarkActive]}>
@@ -151,6 +152,9 @@ export function LobbyScreen({ navigation }) {
         <ArabicText style={styles.futureText}>{t('ألعاب ثانية بالطريق.. نفس الغرفة، نفس الشِلّة!', 'More games coming. Same room, same friends!')}</ArabicText>
       </View>
 
+      {gameState.selectedGameId === 'MEN_WARAHA' ?
+        <MysteryLobbyPicker players={gameState.players} viewerId={me?.id}
+          busy={busyAction==='lobby:mystery-character'} onSelect={actions.selectMysteryCharacter} /> : null}
       {gameState.selectedGameId === 'WEREWOLF' ? <WerewolfRoleSetup players={connectedCount} initial={gameState.werewolfRoleDeck} editable={isHost} onSave={actions.configureWerewolf} /> : null}
       {isCodenames ? (
         <>

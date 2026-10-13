@@ -72,8 +72,8 @@ test('RoomManager protects bomber identity and only host can advance results',()
  const first=manager.serializeFor(host.roomCode,spectator.id);
  assert.equal(first.bomb.bombHolderId,undefined);
  assert.equal(first.bomb.isHolder,false);
- assert.equal(first.availableGames.length,4);
- assert.equal(first.gameCatalogVersion,4);
+ assert.equal(first.availableGames.length,5);
+ assert.equal(first.gameCatalogVersion,5);
  manager.gameAction('socket'+senderIndex,{action:'pass',targetId:receiver.id});
  assert.equal(manager.serializeFor(host.roomCode,receiver.id).bomb.bombHolderId,undefined);
  const recvIndex=room.players.findIndex(p=>p.id===receiver.id);

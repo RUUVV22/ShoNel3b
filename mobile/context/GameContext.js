@@ -204,6 +204,7 @@ export function GameProvider({ children }) {
     removePlayer: (playerId) => emitAction('lobby:remove-player', { playerId }),
     selectGame: (gameId) => emitAction('lobby:select-game', { gameId }),
     configureWerewolf: (deck) => emitAction('lobby:werewolf-roles', { deck }),
+    selectMysteryCharacter: (characterId) => emitAction('lobby:mystery-character', {characterId}),
     gameAction: (payload) => emitAction('game:action', payload),
     startGame: () => emitAction('game:start'),
     giveClue: (word, count) => emitAction('game:give-clue', { word, count }),

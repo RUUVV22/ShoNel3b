@@ -100,20 +100,21 @@ export function HomeScreen({ navigation }) {
       <View style={styles.gameShelf}>
         <View style={styles.gameShelfHeading}>
           <ArabicText weight="extraBold" style={styles.shelfTitle}>{t('على الطاولة', 'ON THE TABLE')}</ArabicText>
-          <View style={styles.shelfPill}><ArabicText weight="bold" style={styles.shelfPillText}>04 / 04</ArabicText></View>
+          <View style={styles.shelfPill}><ArabicText weight="bold" style={styles.shelfPillText}>05 / 05</ArabicText></View>
         </View>
         {[
           { id: 'CODENAMES', ar: 'تلميحة وحدة... ومليون احتمال!', en: 'One clue. A million possibilities.' },
           { id: 'WEREWOLF', ar: 'أسرار قرية العقارب، مين رح ينجو؟', en: 'Scorpion Night: hidden roles and mystery' },
           { id: 'KHASERNY', ar: 'ست فئات... ومين رح يخسّر مين؟', en: 'Six categories. Challenge your friends.' },
           { id: 'BOMB', ar: 'احزر مين بعثلك القنبلة!', en: 'Guess who secretly sent the bomb!' },
+          { id: 'MEN_WARAHA', ar: 'احزر مين أخفى صندوق الحارة ووين وبأي أداة؟', en: 'Mystery in an Arab neighborhood: who, where and what?' },
         ].map((game, index) => (
           <View key={game.id} style={[styles.gameShelfTile, index > 0 && {marginTop: 12}]}>
             <GameLogo id={game.id} size={76}/>
             <ArabicText style={styles.gameShelfDesc}>{t(game.ar, game.en)}</ArabicText>
           </View>
         ))}
-        <ArabicText style={styles.comingSoon}>{t('أربع ألعاب، غرفة وحدة، ونفس الشِلّة!', 'Four games, one room, all your friends!')}</ArabicText>
+        <ArabicText style={styles.comingSoon}>{t('خمس ألعاب، غرفة وحدة، ونفس الشِلّة!', 'Five games, one room, all your friends!')}</ArabicText>
       </View>
       <View style={styles.bottomActions}>
         <Pressable onPress={() => navigation.navigate('HowToPlay')} style={styles.helpButton}>

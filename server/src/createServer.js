@@ -29,7 +29,7 @@ function createGameServer(options = {}) {
       service: 'arabic-codenames-server',
       rooms: roomManager.rooms.size,
       games: listGames().map(({ id }) => id),
-      gameCatalogVersion: 4,
+      gameCatalogVersion: 5,
       uptime: process.uptime(),
     });
   });

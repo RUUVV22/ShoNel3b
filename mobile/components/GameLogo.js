@@ -8,6 +8,7 @@ const GAME_ART = {
   WEREWOLF: require('../../assets/game-logos/werewolf_logo.png'),
   KHASERNY: require('../../assets/game-logos/khaserny_logo.png'),
   BOMB: require('../../assets/game-logos/meen_fajjarni_logo.png'),
+  MEN_WARAHA: require('../../assets/mystery/logo.png'),
 };
 
 export function GameLogo({id='CODENAMES',size=80,compact=false,style}){
@@ -17,7 +18,7 @@ export function GameLogo({id='CODENAMES',size=80,compact=false,style}){
   return <View style={[styles.frame,compact&&styles.compact,style]}>
     <Image source={source} resizeMode="contain" accessibilityLabel={
       id==='WEREWOLF'?'ليلة العقارب - Scorpion Night':
-      id==='KHASERNY'?'خسرني':id==='BOMB'?'مين فجرني':'كود نيمز'
+      id==='KHASERNY'?'خسرني':id==='BOMB'?'مين فجرني':id==='MEN_WARAHA'?'مين وراها':'كود نيمز'
     } style={{width,height,borderRadius:compact?9:15}} />
   </View>;
 }
