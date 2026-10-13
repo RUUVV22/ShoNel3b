@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View,Pressable,StyleSheet} from 'react-native';
 import {ScreenContainer} from '../components/ScreenContainer';
 import {GameHeader} from '../components/GameHeader';
@@ -9,6 +9,7 @@ import {RolePortrait} from '../components/RolePortrait';
 import {useGame} from '../context/GameContext';
 import {colors} from '../theme/colors';
 const steps={NIGHT:'الليل غطّى القرية',DISCUSSION:'الصبح طلع.. مين عم يكذب؟',VOTING:'وقت التصويت',RESULT:'انتهت الحكاية'};
+const roleTitles={WOLF:'الذئب',MINION:'التابع',MASON:'الماسوني',SEER:'العرافة',ROBBER:'اللص',TROUBLEMAKER:'المشاغبة',DRUNK:'السكّير',INSOMNIAC:'السهران',SCORPION:'العقرب والعقربة',SCORPIONESS:'العقربة'};
 const narration={
  WOLF:'تحت نور القمر، تفتح الذئاب عيونها وتتعرّف على بعضها. الذئب الوحيد ينظر إلى بطاقة من الوسط.',
  SEER:'العرافة تصحى وتستكشف بطاقة أحد اللاعبين أو بطاقة من وسط القرية.',
@@ -20,9 +21,15 @@ const narration={
 export function WerewolfScreen(){
  const {gameState:s,actions}=useGame();
  const [firstCenter,setFirstCenter]=useState(null);
- const g=s?.werewolf;if(!g)return null;
+ const g=s?.werewolf;
+ useEffect(()=>{setFirstCenter(null);},[g?.step,g?.round]);
+ if(!g)return null;
  const me=s.players.find(p=>p.id===s.currentPlayerId);
  const actor=g.isActor&&!g.acted;
+ const hasScorpionPartner=Boolean(g.scorpionPartnerIds?.length);
+ const showPlayerTargets=['SEER','ROBBER','SCORPIONESS'].includes(g.role) && !(g.role==='SCORPIONESS'&&hasScorpionPartner);
+ const found=g.viewerAction?.seen;
+ const readableSeen=Array.isArray(found)?found.map(id=>s.players.find(p=>p.id===id)?.name||id).join('، '):found;
  const choice=(target,second)=>actions.gameAction({action:'role',target,second});
  return <ScreenContainer contentStyle={styles.wrap}>
   <GameHeader title="ليلة العقارب" subtitle={'الجولة '+g.round+' • '+s.roomId}/>
@@ -30,11 +37,11 @@ export function WerewolfScreen(){
   <View style={styles.banner}><ArabicText style={styles.ornament}>☾ ✶ ☽</ArabicText><ArabicText weight="extraBold" style={styles.heading}>{steps[g.phase]}</ArabicText><ArabicText style={styles.small}>قصص القرية وأسرار الليل</ArabicText></View>
   <View style={styles.role}><RolePortrait role={g.role} size={155}/><ArabicText style={styles.label}>بطاقتك السرية</ArabicText><ArabicText weight="extraBold" style={styles.roleName}>{g.roleName}</ArabicText>
   <ArabicText style={styles.small}>{g.role==='WOLF'&&g.wolves?.length>1?'الذئاب: '+s.players.filter(p=>g.wolves.includes(p.id)).map(p=>p.name).join('، '):''}</ArabicText>
-  <ArabicText style={styles.small}>{g.viewerAction?.seen ? 'اكتشفت: '+g.viewerAction.seen :''}</ArabicText></View>
-  {g.phase==='NIGHT'?<View style={styles.panel}><ArabicText weight="extraBold" style={styles.heading}>دور {g.currentRole}</ArabicText>
+  <ArabicText style={styles.small}>{readableSeen ? 'اكتشفت: '+readableSeen :''}{hasScorpionPartner?' • الشريك: '+s.players.filter(p=>g.scorpionPartnerIds.includes(p.id)).map(p=>p.name).join('، '):''}</ArabicText></View>
+  {g.phase==='NIGHT'?<View style={styles.panel}><ArabicText weight="extraBold" style={styles.heading}>دور {roleTitles[g.currentRole]||'القرية'}</ArabicText>
    <ArabicText style={styles.small}>{narration[g.currentRole]}</ArabicText><ArabicText style={styles.small}>{actor?(g.role==='SEER'?'العرافة تشوف لاعب أو بطاقتين مختلفتين من الوسط.':'اختار هدفك بسرية من البطاقات'):'استنى دورك.. لا تكشف بطاقتك!'}</ArabicText>
-   {actor?<View style={styles.targets}>{((g.role==='WOLF'&&g.wolves?.length>1)||(g.role==='SCORPION'&&g.viewerAction?.seen==='العقربة موجودة')||g.role==='SCORPIONESS'||g.role==='MINION'||g.role==='MASON'||g.role==='INSOMNIAC')?<Pressable style={styles.target} onPress={()=>choice(null)}><ArabicText style={styles.targetText}>تأكيد الدور / متابعة</ArabicText></Pressable>:null}{g.role!=='TROUBLEMAKER'&&g.role!=='WOLF'&&g.role!=='SCORPION'?s.players.filter(p=>p.id!==me.id).map(p=><Pressable key={p.id} style={styles.target} onPress={()=>choice(p.id)}><ArabicText style={styles.targetText}>{p.name}</ArabicText></Pressable>):null}
-     {(g.role==='SEER'||g.role==='WOLF'||g.role==='SCORPION'||g.role==='DRUNK')?[0,1,2].map(i=><Pressable key={i} style={styles.target} onPress={()=>g.role==='SEER' ? (firstCenter===null?setFirstCenter(i):firstCenter!==i?(choice(firstCenter,i),setFirstCenter(null)):null) : choice(i)}><ArabicText style={styles.targetText}>بطاقة الوسط {i+1}</ArabicText></Pressable>):null}
+   {actor?<View style={styles.targets}>{((g.role==='WOLF'&&g.wolves?.length>1)||(g.role==='SCORPION'&&hasScorpionPartner)||g.role==='SCORPIONESS'||g.role==='MINION'||g.role==='MASON'||g.role==='INSOMNIAC')?<Pressable style={styles.target} onPress={()=>choice(null)}><ArabicText style={styles.targetText}>تأكيد الدور / متابعة</ArabicText></Pressable>:null}{showPlayerTargets?s.players.filter(p=>p.id!==me.id).map(p=><Pressable key={p.id} style={styles.target} onPress={()=>choice(p.id)}><ArabicText style={styles.targetText}>{p.name}</ArabicText></Pressable>):null}
+     {(g.role==='SEER'||g.role==='WOLF'||(g.role==='SCORPION'&&!hasScorpionPartner)||g.role==='DRUNK')?[0,1,2].map(i=><Pressable key={i} style={styles.target} onPress={()=>g.role==='SEER' ? (firstCenter===null?setFirstCenter(i):firstCenter!==i?(choice(firstCenter,i),setFirstCenter(null)):null) : choice(i)}><ArabicText style={styles.targetText}>بطاقة الوسط {i+1}</ArabicText></Pressable>):null}
      {g.role==='TROUBLEMAKER'?s.players.filter(p=>p.id!==me.id).flatMap((p,i,arr)=>arr.slice(i+1).map(q=><Pressable key={p.id+q.id} style={styles.target} onPress={()=>choice(p.id,q.id)}><ArabicText style={styles.targetText}>{p.name} ↔ {q.name}</ArabicText></Pressable>)):null}
    </View>:null}
   </View>:null}
@@ -43,7 +50,8 @@ export function WerewolfScreen(){
   <View style={styles.targets}>{s.players.filter(p=>p.id!==me.id).map(p=><Pressable key={p.id} disabled={g.voted} style={styles.target} onPress={()=>actions.gameAction({action:'vote',target:p.id})}><ArabicText style={styles.targetText}>{p.name}</ArabicText></Pressable>)}</View></View>:null}
   {g.phase==='RESULT'?<View style={styles.panel}><ArabicText weight="extraBold" style={styles.heading}>{g.winner==='WOLF'?'الذئاب فازت!':g.winner==='TANNER'?'الدباغ فاز!':g.winner==='TANNER_AND_VILLAGE'?'الدباغ والقرية فازوا!':'أهل القرية فازوا!'}</ArabicText>
     {s.players.map(p=><ArabicText key={p.id} style={styles.small}>{p.name}: {g.assignments?.[p.id]}</ArabicText>)}</View>:null}
-  {me.isHost&&(g.phase==='NIGHT'||g.phase==='DISCUSSION'||g.phase==='VOTING')?<PrimaryButton title="المرحلة التالية" icon="arrow-forward" onPress={()=>actions.gameAction({action:'advance'})}/>:null}
+  {g.phase==='NIGHT'&&g.nightPendingActions>0?<View style={styles.panel}><ArabicText style={styles.small}>بنستنى {g.nightPendingActions} من اللاعبين يخلصوا دورهم الليلي.</ArabicText></View>:null}
+  {me.isHost&&(g.phase==='NIGHT'||g.phase==='DISCUSSION'||g.phase==='VOTING')?<PrimaryButton title="المرحلة التالية" icon="arrow-forward" disabled={g.phase==='NIGHT'&&g.nightPendingActions>0 || g.phase==='VOTING'&&g.votesPending>0} onPress={()=>actions.gameAction({action:'advance'})}/>:null}
   {g.phase==='RESULT'&&me.isHost?<View style={styles.panel}><PrimaryButton title="جولة جديدة" onPress={actions.restartGame}/><PrimaryButton title="العودة للّمة" variant="ghost" onPress={actions.returnToLobby}/></View>:null}
  </ScreenContainer>;
 }

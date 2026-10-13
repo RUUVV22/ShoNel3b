@@ -82,7 +82,27 @@ function act(session, player, payload, random = Math.random) {
   throw new GameError('GAME_NOT_ACTIVE');
 }
 
-function serialize(session, viewer) {
+function recover(session, room) {
+  const waitingId = session.phase === 'PASS' ? session.bombHolderId :
+    session.phase === 'GUESS' ? session.targetId : null;
+  if (!waitingId || room.players.some(p => p.id === waitingId && p.connected))
+    throw new GameError('RECOVERY_NOT_NEEDED');
+  // The host explicitly forfeits a disconnected player's place so everyone
+  // else can finish the round, without exposing the hidden bomber early.
+  const senderId = session.bombHolderId;
+  const recipientId = session.targetId;
+  session.aliveIds = session.aliveIds.filter(id => id !== waitingId);
+  session.eliminatedIds.push(waitingId);
+  session.lastResult = { senderId, recipientId, guessedId: null,
+    eliminatedId: waitingId, correct: false, disconnected: true };
+  session.turnsPlayed++;
+  session.phase = session.aliveIds.length === 1 ? 'FINISHED' : 'REVEAL';
+  if (session.phase === 'FINISHED') {
+    session.winnerId = session.aliveIds[0];
+    session.status = STATUS.FINISHED;
+  }
+}
+function serialize(session, viewer, room) {
   const id = viewer.id;
   const alive = session.aliveIds.includes(id);
   const isHolder = alive && session.bombHolderId === id && session.phase === 'PASS';
@@ -102,7 +122,9 @@ function serialize(session, viewer) {
     winnerId: session.winnerId,
     turnsPlayed: session.turnsPlayed,
     canAct: isHolder || isRecipient,
+    waitingForDisconnected: Boolean(room && (session.phase === 'PASS' || session.phase === 'GUESS') &&
+      !room.players.some(p => p.id === (session.phase === 'PASS' ? session.bombHolderId : session.targetId) && p.connected)),
   } };
 }
 
-module.exports = { metadata, canStart, createSession, act, serialize };
+module.exports = { metadata, canStart, createSession, act, recover, serialize };

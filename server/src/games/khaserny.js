@@ -11,15 +11,34 @@ const categories=[
 ];
 const canStart=room=>room.players.filter(p=>p.connected).length>=2&&room.players.length<=20;
 function createSession(round,random,room){const ids=room.players.filter(p=>p.connected).map(p=>p.id);return {status:STATUS.ACTIVE,round,phase:'PICK',players:ids,turn:0,used:[],category:null,question:null,answer:null,judgments:[],scores:Object.fromEntries(ids.map(id=>[id,30])),challengedPlayerId:null,winner:null};}
-function act(s,player,payload){
+function finishTurn(s) {
+  s.turn++;
+  s.judgments=[];s.category=null;s.question=null;s.answer=null;s.challengedPlayerId=null;
+  s.phase=s.turn>=s.players.length*3?'RESULT':'PICK';
+  if(s.phase==='RESULT'){
+    s.status=STATUS.FINISHED;
+    const high=Math.max(...Object.values(s.scores));
+    s.winner=s.players.filter(id=>s.scores[id]===high);
+  }
+}
+function finishJudging(s) {
+  const yes=s.judgments.filter(j=>j.correct).length;
+  if(yes<=s.judgments.length/2) s.scores[s.challengedPlayerId]=Math.max(0,s.scores[s.challengedPlayerId]-10);
+  finishTurn(s);
+}
+function act(s,player,payload,random=Math.random){
   const current=s.players[s.turn%s.players.length];
   if(s.phase==='PICK'){
     if(player.id!==current)throw new GameError('NOT_YOUR_TURN');
     if(!s.players.includes(payload.opponentId)||payload.opponentId===current)throw new GameError('INVALID_CARD');
     const category=categories.find(c=>c.id===payload.category);
     if(!category)throw new GameError('INVALID_GAME_ACTION');
-    const remaining=category.questions.map((q,i)=>({q,i})).filter(x=>!s.used.includes(category.id+':'+x.i));
-    const chosen=remaining[0]||{q:category.questions[0],i:0};
+    let remaining=category.questions.map((q,i)=>({q,i})).filter(x=>!s.used.includes(category.id+':'+x.i));
+    if(!remaining.length){
+      s.used=s.used.filter(key=>!key.startsWith(category.id+':'));
+      remaining=category.questions.map((q,i)=>({q,i}));
+    }
+    const chosen=remaining[Math.min(remaining.length-1,Math.floor(random()*remaining.length))];
     s.used.push(category.id+':'+chosen.i);s.challengedPlayerId=payload.opponentId;s.category=category.id;s.question=chosen.q[0];s.answer=chosen.q[1];s.phase='QUESTION';
   }else if(s.phase==='QUESTION'){
     if(player.id!==s.challengedPlayerId)throw new GameError('NOT_YOUR_TURN');
@@ -28,17 +47,27 @@ function act(s,player,payload){
   }else if(s.phase==='JUDGE'){
     if(!['correct','incorrect'].includes(payload.action)||!s.players.includes(player.id)||player.id===s.challengedPlayerId||s.judgments.some(j=>j.player===player.id))throw new GameError('INVALID_GAME_ACTION');
     s.judgments.push({player:player.id,correct:payload.action==='correct'});
-    if(s.judgments.length>=s.players.length-1){
-      const yes=s.judgments.filter(j=>j.correct).length;
-      if(yes<=s.judgments.length/2)s.scores[s.challengedPlayerId]=Math.max(0,s.scores[s.challengedPlayerId]-10);
-      s.turn++;s.judgments=[];s.category=null;s.question=null;s.answer=null;s.challengedPlayerId=null;
-      s.phase=s.turn>=s.players.length*3?'RESULT':'PICK';
-      if(s.phase==='RESULT'){s.status=STATUS.FINISHED;const high=Math.max(...Object.values(s.scores));s.winner=s.players.filter(id=>s.scores[id]===high);}
-    }
+    if(s.judgments.length>=s.players.length-1) finishJudging(s);
   }else throw new GameError('INVALID_GAME_ACTION');
+}
+function recover(s,room) {
+  const connected=new Set(room.players.filter(p=>p.connected).map(p=>p.id));
+  const current=s.players[s.turn%s.players.length];
+  if(s.phase==='PICK'&&!connected.has(current)){finishTurn(s);return;}
+  if(s.phase==='QUESTION'&&!connected.has(s.challengedPlayerId)){finishTurn(s);return;}
+  if(s.phase==='JUDGE'){
+    const waiting=s.players.filter(id=>id!==s.challengedPlayerId&&!s.judgments.some(j=>j.player===id));
+    if(waiting.length&&!waiting.some(id=>connected.has(id))){
+      // Missing votes count as "correct" to avoid penalizing the player
+      // for a network interruption rather than an incorrect answer.
+      for(const id of waiting)s.judgments.push({player:id,correct:true});
+      finishJudging(s);return;
+    }
+  }
+  throw new GameError('RECOVERY_NOT_NEEDED');
 }
 function serialize(s,viewer){return {khaserny:{phase:s.phase,round:s.round,categories:categories.map(({id,title,emoji})=>({id,title,emoji})),
 currentPlayerId:s.players[s.turn%s.players.length],challengedPlayerId:s.challengedPlayerId,turn:s.turn,question:s.question,category:s.category,
 answer:s.phase==='JUDGE'||s.phase==='RESULT'?s.answer:null,judged:s.judgments.some(j=>j.player===viewer.id),
-judgmentsCount:s.judgments.length,scores:s.scores,winner:s.winner}};}
-module.exports={metadata,canStart,createSession,act,serialize,categories};
+judgmentsCount:s.judgments.length,waitingJudgeIds:s.phase==='JUDGE'?s.players.filter(id=>id!==s.challengedPlayerId&&!s.judgments.some(j=>j.player===id)):[],scores:s.scores,winner:s.winner}};}
+module.exports={metadata,canStart,createSession,act,recover,serialize,categories};

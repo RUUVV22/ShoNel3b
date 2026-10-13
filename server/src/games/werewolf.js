@@ -87,11 +87,28 @@ function action(s,player,payload) {
     s.actions[player.id]={target:partner?null:target,seen:partner?'العقرب موجود':'تمت حماية لاعب من التصويت'};
   }else throw new GameError('INVALID_GAME_ACTION');
 }
-function advance(s){
-  if(s.phase==='NIGHT'){s.step+=1;if(s.step>=s.activeOrder.length)s.phase='DISCUSSION';}
+function pendingNightPlayers(s, connectedIds) {
+  if (s.phase !== 'NIGHT') return [];
+  const role = currentRole(s);
+  const ids = Object.keys(s.original);
+  return ids.filter(id =>
+    (s.original[id] === role ||
+      (role === 'SCORPION' && s.original[id] === 'SCORPIONESS' &&
+        Object.values(s.original).includes('SCORPION'))) &&
+    !s.actions[id] && (!connectedIds || connectedIds.includes(id)));
+}
+function advance(s, connectedIds){
+  if(s.phase==='NIGHT'){
+    // Never silently skip a connected player's secret action. A disconnected
+    // player may be skipped by the host to keep a game from deadlocking.
+    if (connectedIds && pendingNightPlayers(s, connectedIds).length)
+      throw new GameError('WAITING_FOR_ACTIONS');
+    s.step+=1;if(s.step>=s.activeOrder.length)s.phase='DISCUSSION';
+  }
   else if(s.phase==='DISCUSSION')s.phase='VOTING';
   else if(s.phase==='VOTING'){
-    const votes=Object.values(s.votes);if(votes.length!==Object.keys(s.assignments).length)throw new GameError('NOT_READY');
+    const votes=Object.values(s.votes);
+    if((connectedIds||Object.keys(s.assignments)).some(id=>!s.votes[id]))throw new GameError('NOT_READY');
     const tally={};for(const id of votes)tally[id]=(tally[id]||0)+1;
     const highest=Math.max(...Object.values(tally));
     const eliminated=highest<=1?[]:Object.keys(tally).filter(id=>tally[id]===highest && id!==s.protectedId);
@@ -107,10 +124,10 @@ function advance(s){
 }
 function vote(s,player,target){
   if(s.phase!=='VOTING'||s.votes[player.id])throw new GameError('INVALID_GAME_ACTION');
-  if(!Object.hasOwn(s.assignments,target))throw new GameError('INVALID_CARD');
+  if(!Object.hasOwn(s.assignments,target)||target===player.id)throw new GameError('INVALID_CARD');
   s.votes[player.id]=target;
 }
-function serialize(s,viewer){
+function serialize(s,viewer,room){
   const own=s.original[viewer.id];
   const group=Object.entries(s.original).filter(([,role])=>role==='WOLF').map(([id])=>id);
   return {werewolf:{phase:s.phase,step:s.step,currentRole:currentRole(s),role:own,
@@ -118,6 +135,9 @@ function serialize(s,viewer){
     wolves:own==='WOLF'?group:undefined,
     isActor:own===currentRole(s)||(currentRole(s)==='SCORPION'&&own==='SCORPIONESS'&&Object.values(s.original).includes('SCORPION')),acted:Boolean(s.actions[viewer.id]),
     votesCount:Object.keys(s.votes).length,voted:Boolean(s.votes[viewer.id]),playerCount:Object.keys(s.assignments).length,
+    nightPendingActions:pendingNightPlayers(s,room?.players.filter(p=>p.connected).map(p=>p.id)).length,
+    votesPending: s.phase==='VOTING'?(room?room.players.filter(p=>p.connected && Object.hasOwn(s.assignments,p.id) && !s.votes[p.id]).length:Object.keys(s.assignments).filter(id=>!s.votes[id]).length):0,
+    scorpionPartnerIds:['SCORPION','SCORPIONESS'].includes(own)?Object.keys(s.original).filter(id=>id!==viewer.id && ['SCORPION','SCORPIONESS'].includes(s.original[id]) && s.original[id]!==own):undefined,
     eliminated:s.phase==='RESULT'?s.eliminated:undefined,
     assignments:s.phase==='RESULT'?s.assignments:undefined,
     winner:s.winner,protectedId:s.phase==='RESULT'?s.protectedId:undefined}};

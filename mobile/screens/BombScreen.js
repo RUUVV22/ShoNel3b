@@ -56,10 +56,11 @@ export function BombScreen(){
        </Pressable>)}
     </View>:null}
     {!isAlive&&phase!=='FINISHED'?<View style={styles.spectator}><Ionicons name="eye-outline" size={20} color={colors.mustard}/><ArabicText style={styles.hint}>إنت انقصيت، بس بتقدر تتابع باقي الجولة وتشجع الشِلّة.</ArabicText></View>:null}
+    {isHost&&game.waitingForDisconnected?<View style={styles.result}><ArabicText style={styles.waiting}>اللاعب صاحب الدور فقد الاتصال. تقدر تنهي دوره حتى تكمل الشلة.</ArabicText><PrimaryButton title="إقصاء اللاعب المنقطع والمتابعة" variant="ghost" disabled={busy} onPress={()=>actions.gameAction({action:'recover'})}/></View>:null}
     {phase==='REVEAL'&&game.lastResult?<View style={styles.result}>
-      <ArabicText style={styles.resultHead} weight="extraBold">{game.lastResult.correct?'✅ تخمين صح!':'❌ تخمين غلط!'}</ArabicText>
-      <ArabicText style={styles.resultText}>القنبلة انبعتت من {playerName(game.lastResult.senderId)} إلى {playerName(game.lastResult.recipientId)}</ArabicText>
-      <ArabicText style={styles.resultText}>التخمين: {playerName(game.lastResult.guessedId)}</ArabicText>
+      <ArabicText style={styles.resultHead} weight="extraBold">{game.lastResult.disconnected?'⚠️ لاعب فقد الاتصال':game.lastResult.correct?'✅ تخمين صح!':'❌ تخمين غلط!'}</ArabicText>
+      <ArabicText style={styles.resultText}>{game.lastResult.recipientId?'القنبلة انبعتت من '+playerName(game.lastResult.senderId)+' إلى '+playerName(game.lastResult.recipientId):'حامل القنبلة فقد الاتصال قبل ما يبعتها'}</ArabicText>
+      {game.lastResult.guessedId?<ArabicText style={styles.resultText}>التخمين: {playerName(game.lastResult.guessedId)}</ArabicText>:null}
       <ArabicText style={styles.eliminated} weight="extraBold">انقصى {playerName(game.lastResult.eliminatedId)}!</ArabicText>
       {isHost?<PrimaryButton title="الجولة التالية" icon="arrow-forward" disabled={busy} onPress={()=>actions.gameAction({action:'next'})}/>:<ArabicText style={styles.waiting}>بنستنى المضيف يبلش الجولة الجاي...</ArabicText>}
     </View>:null}

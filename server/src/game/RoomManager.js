@@ -330,7 +330,7 @@ class RoomManager {
         connected: player.connected,
       })),
       currentPlayerId: viewer.id,
-      ...(game && room.gameSession ? game.serialize(room.gameSession, viewer) : {}),
+      ...(game && room.gameSession ? game.serialize(room.gameSession, viewer, room) : {}),
       canStart: Boolean(game?.canStart(room)),
       minPlayers: game?.metadata.minPlayers || 4,
       maxPlayers: room.status === STATUS.LOBBY ? 20 : (game?.metadata.maxPlayers || 20),
@@ -350,13 +350,18 @@ class RoomManager {
     if(room.selectedGameId==='WEREWOLF'){
       if(payload.action==='advance'){
         this.assertHost(room,player);
-        game.advance(room.gameSession);
+        game.advance(room.gameSession,room.players.filter(p=>p.connected).map(p=>p.id));
       }else if(payload.action==='vote')game.vote(room.gameSession,player,payload.target);
       else game.action(room.gameSession,player,payload);
-    }else if(room.selectedGameId==='KHASERNY')game.act(room.gameSession,player,payload);
-    else if(room.selectedGameId==='BOMB'){
-      if(payload.action==='next') this.assertHost(room,player);
-      game.act(room.gameSession,player,payload,this.random);
+    }else if(room.selectedGameId==='KHASERNY'){
+      if(payload.action==='recover'){
+        this.assertHost(room,player);
+        game.recover(room.gameSession,room);
+      }else game.act(room.gameSession,player,payload,this.random);
+    }else if(room.selectedGameId==='BOMB'){
+      if(payload.action==='next'||payload.action==='recover') this.assertHost(room,player);
+      if(payload.action==='recover') game.recover(room.gameSession,room);
+      else game.act(room.gameSession,player,payload,this.random);
     }else throw new GameError('INVALID_GAME_ACTION');
     room.status=room.gameSession.status;
     this.touch(room);
