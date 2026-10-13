@@ -190,23 +190,17 @@ for n in range(1,7):
     for x,y in points[n]:d.ellipse((x-8,y-8,x+8,y+8),fill=CORAL)
     c.save(OUT/('die_'+str(n)+'.png'),optimize=True)
 
-# original, readable bilingual logo with transparent external canvas
-logo=Image.new('RGBA',(900,480),(0,0,0,0));d=ImageDraw.Draw(logo)
-d.rounded_rectangle((120,74,810,394),65,fill=PLUM,outline=GOLD,width=15)
-d.ellipse((625,15,840,226),fill=GOLD,outline=PLUM,width=12)
-d.ellipse((670,52,775,157),fill=CREAM)
-d.polygon([(752,57),(767,101),(815,112),(767,128),(748,175),(731,125),(687,107),(730,94)],fill=CORAL,outline=PLUM)
-# lantern
-d.line((183,8,183,116),fill=GOLD,width=15)
-d.polygon([(139,102),(230,102),(215,232),(158,232)],fill=CORAL,outline=GOLD)
-d.ellipse((159,130,213,193),fill=GOLD)
-# footsteps
-for x,y in [(670,301),(726,271),(758,330)]:
-    d.ellipse((x-16,y-10,x+16,y+10),fill=CREAM)
-txt(d,(455,258),'مين وراها',108,GOLD,stroke=9,outline=PLUM)
-txt(d,(468,352),'WHO DID IT?',41,CREAM)
-logo.save(OUT/'logo.png',optimize=True)
-logo.resize((500,267),Image.Resampling.LANCZOS).save(OUT/'logo_small.png',optimize=True)
+# Always use the approved, illustrated game-box art. Do not replace it with
+# the old flat badge when regenerating other mystery assets.
+approved_logo = OUT / 'logo_source.png'
+if not approved_logo.exists():
+    raise FileNotFoundError(f'Approved illustrated logo not found: {approved_logo}')
+with Image.open(approved_logo) as original_logo:
+    original_logo = original_logo.convert('RGB')
+    original_logo.resize((768,512),Image.Resampling.LANCZOS).save(
+        OUT/'logo.png', optimize=True)
+    original_logo.resize((500,333),Image.Resampling.LANCZOS).save(
+        OUT/'logo_small.png', optimize=True)
 # illustrative loading / result splash, notebook cover, card back
 for kind,title in [('thumbnail','مين وراها؟'),('loading','سر صندوق الحارة'),('win','انكشفت الحقيقة!'),('notebook','دفتر المحقق')]:
     c=Image.new('RGBA',(840,450),CREAM);d=ImageDraw.Draw(c)
