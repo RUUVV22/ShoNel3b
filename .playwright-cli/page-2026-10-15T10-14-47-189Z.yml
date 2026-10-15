@@ -1,0 +1,170 @@
+- generic [ref=f1e338]:
+  - generic [ref=f1e341]:
+    - generic [ref=f1e342]: مين وراها
+    - generic [ref=f1e343]: سر صندوق الحارة • G58VL
+  - generic [ref=f1e345]:
+    - generic [ref=f1e346]: متصل
+    - generic [ref=f1e349]: الجولة 1 · الدور 1
+  - generic "مين وراها" [ref=f1e354]:
+    - img "مين وراها" [ref=f1e356]
+  - generic [ref=f1e357]:
+    - generic [ref=f1e358]: محقّقين الحارة (4/4)
+    - generic [ref=f1e359]:
+      - generic [ref=f1e363]:
+        - generic [ref=f1e364]: Islam ◀
+        - generic [ref=f1e365]: سالم · متصل · يحقق
+      - generic [ref=f1e369]:
+        - generic [ref=f1e370]: Sami
+        - generic [ref=f1e371]: زينب · متصل · يحقق
+      - generic [ref=f1e375]:
+        - generic [ref=f1e376]: Lina
+        - generic [ref=f1e377]: نبيل · متصل · يحقق
+      - generic [ref=f1e381]:
+        - generic [ref=f1e382]: Omar
+        - generic [ref=f1e383]: هند · متصل · يحقق
+  - generic [ref=f1e384]:
+    - generic [ref=f1e385]:
+      - generic [ref=f1e386]:
+        - generic [ref=f1e387]:
+          - generic [ref=f1e388]: خريطة التحقيق
+          - generic [ref=f1e389]:
+            - button "تصغير الخريطة" [ref=f1e390] [cursor=pointer]:
+              - generic [ref=f1e391]: 
+            - button "تكبير الخريطة" [ref=f1e392] [cursor=pointer]:
+              - generic [ref=f1e393]: 
+        - generic [ref=f1e394]:
+          - generic [ref=f1e395]:
+            - generic [ref=f1e396]: 🕌 خريطة الحارة
+            - generic [ref=f1e397]: اضغط مربّع أو مدخل للمعاينة
+          - img [ref=f1e402]:
+            - generic [ref=f1e573]: "1"
+            - generic [ref=f1e575]: "2"
+            - generic [ref=f1e577]: "3"
+            - generic [ref=f1e579]: "4"
+            - generic [ref=f1e581]: "5"
+            - generic [ref=f1e583]: "6"
+            - generic [ref=f1e585]: "7"
+            - generic [ref=f1e587]: "8"
+            - generic [ref=f1e589]: "9"
+          - generic [ref=f1e599]:
+            - generic [ref=f1e600]: 🟩 ضمن الرمية
+            - generic [ref=f1e601]: 🟥 المسار
+            - generic [ref=f1e602]: 🟨 مدخل المكان
+          - generic [ref=f1e603]: 🏘️ مداخل الحارة (١–٩)
+          - generic [ref=f1e604]:
+            - button "معاينة حمّام الحارة" [disabled]:
+              - generic [ref=f1e607]: حمّام الحارة
+            - button "معاينة دكّان الحارة" [disabled]:
+              - generic [ref=f1e610]: دكّان الحارة
+            - button "معاينة مقهى الحارة" [disabled]:
+              - generic [ref=f1e613]: مقهى الحارة
+            - button "معاينة ساحة الحارة" [disabled]:
+              - generic [ref=f1e616]: ساحة الحارة
+            - button "معاينة بيت المختار" [disabled]:
+              - generic [ref=f1e619]: بيت المختار
+            - button "معاينة الفرن" [disabled]:
+              - generic [ref=f1e622]: الفرن
+            - button "معاينة محل الحلاق" [disabled]:
+              - generic [ref=f1e625]: محل الحلاق
+            - button "معاينة ورشة النجّار" [disabled]:
+              - generic [ref=f1e628]: ورشة النجّار
+            - button "معاينة سطح أحد البيوت" [disabled]:
+              - generic [ref=f1e631]: سطح أحد البيوت
+      - generic [ref=f1e632]:
+        - generic [ref=f1e633]: 📜 آخر أحداث الحارة
+        - generic [ref=f1e634]: • اختفى صندوق أمانة الحارة ليلة مهرجان الفوانيس! مين أخذه، من وين، وبأي غرض؟
+    - generic [ref=f1e635]:
+      - generic [ref=f1e636]:
+        - generic [ref=f1e637]: ارمِ النردين
+        - generic [ref=f1e638]: الدور إلك!
+        - button "🎲 ارمِ النردين" [ref=f1e639] [cursor=pointer]
+        - button "🔎 اتهام نهائي" [ref=f1e642] [cursor=pointer]
+        - generic [ref=f1e645]: الأدوار الخاملة بتنتقل بعد ١٥٠ ثانية. النرد والأدلة والحركة محفوظة وقت إعادة الاتصال.
+        - generic [ref=f1e646]:
+          - button " دفتري" [ref=f1e647] [cursor=pointer]:
+            - generic [ref=f1e648]: 
+            - generic [ref=f1e649]: دفتري
+          - button " كيف نلعب؟" [ref=f1e650] [cursor=pointer]:
+            - generic [ref=f1e651]: 
+            - generic [ref=f1e652]: كيف نلعب؟
+      - generic [ref=f1e653]:
+        - generic [ref=f1e654]: 📖 دفتر المحقق السري
+        - generic [ref=f1e656]: علاماتك محفوظة عند السيرفر ومش ظاهرة لأي لاعب غيرك. انقر لتغيير العلامة.
+        - generic [ref=f1e657]:
+          - generic [ref=f1e658]: الأشخاص
+          - button "سالم —" [ref=f1e659] [cursor=pointer]:
+            - generic [ref=f1e660]: سالم
+            - generic [ref=f1e661]: —
+          - button "زينب 🗂 معي" [disabled]:
+            - generic [ref=f1e662]: زينب
+            - generic [ref=f1e663]: 🗂 معي
+          - button "نبيل —" [ref=f1e664] [cursor=pointer]:
+            - generic [ref=f1e665]: نبيل
+            - generic [ref=f1e666]: —
+          - button "هند —" [ref=f1e667] [cursor=pointer]:
+            - generic [ref=f1e668]: هند
+            - generic [ref=f1e669]: —
+          - button "أم يزن —" [ref=f1e670] [cursor=pointer]:
+            - generic [ref=f1e671]: أم يزن
+            - generic [ref=f1e672]: —
+          - button "فارس —" [ref=f1e673] [cursor=pointer]:
+            - generic [ref=f1e674]: فارس
+            - generic [ref=f1e675]: —
+        - generic [ref=f1e676]:
+          - generic [ref=f1e677]: الأماكن
+          - button "حمّام الحارة 🗂 معي" [disabled]:
+            - generic [ref=f1e678]: حمّام الحارة
+            - generic [ref=f1e679]: 🗂 معي
+          - button "دكّان الحارة —" [ref=f1e680] [cursor=pointer]:
+            - generic [ref=f1e681]: دكّان الحارة
+            - generic [ref=f1e682]: —
+          - button "مقهى الحارة —" [ref=f1e683] [cursor=pointer]:
+            - generic [ref=f1e684]: مقهى الحارة
+            - generic [ref=f1e685]: —
+          - button "ساحة الحارة —" [ref=f1e686] [cursor=pointer]:
+            - generic [ref=f1e687]: ساحة الحارة
+            - generic [ref=f1e688]: —
+          - button "بيت المختار —" [ref=f1e689] [cursor=pointer]:
+            - generic [ref=f1e690]: بيت المختار
+            - generic [ref=f1e691]: —
+          - button "الفرن —" [ref=f1e692] [cursor=pointer]:
+            - generic [ref=f1e693]: الفرن
+            - generic [ref=f1e694]: —
+          - button "محل الحلاق —" [ref=f1e695] [cursor=pointer]:
+            - generic [ref=f1e696]: محل الحلاق
+            - generic [ref=f1e697]: —
+          - button "ورشة النجّار —" [ref=f1e698] [cursor=pointer]:
+            - generic [ref=f1e699]: ورشة النجّار
+            - generic [ref=f1e700]: —
+          - button "سطح أحد البيوت 🗂 معي" [disabled]:
+            - generic [ref=f1e701]: سطح أحد البيوت
+            - generic [ref=f1e702]: 🗂 معي
+        - generic [ref=f1e703]:
+          - generic [ref=f1e704]: الأغراض
+          - button "فانوس قديم —" [ref=f1e705] [cursor=pointer]:
+            - generic [ref=f1e706]: فانوس قديم
+            - generic [ref=f1e707]: —
+          - button "مفتاح نحاسي —" [ref=f1e708] [cursor=pointer]:
+            - generic [ref=f1e709]: مفتاح نحاسي
+            - generic [ref=f1e710]: —
+          - button "مطرقة نجّار —" [ref=f1e711] [cursor=pointer]:
+            - generic [ref=f1e712]: مطرقة نجّار
+            - generic [ref=f1e713]: —
+          - button "حبل غسيل 🗂 معي" [disabled]:
+            - generic [ref=f1e714]: حبل غسيل
+            - generic [ref=f1e715]: 🗂 معي
+          - button "إبريق نحاسي 🗂 معي" [disabled]:
+            - generic [ref=f1e716]: إبريق نحاسي
+            - generic [ref=f1e717]: 🗂 معي
+          - button "مقص حلاق —" [ref=f1e718] [cursor=pointer]:
+            - generic [ref=f1e719]: مقص حلاق
+            - generic [ref=f1e720]: —
+  - generic [ref=f1e721]:
+    - generic [ref=f1e722]: 🗂 أوراقك السرية (5)
+    - generic [ref=f1e723]: أنت فقط بتشوف أوراقك. الأدلة اللي وصلت إلك بتكون بالدفتر.
+    - generic [ref=f1e725]:
+      - generic [ref=f1e726]: حبل غسيل
+      - generic [ref=f1e730]: إبريق نحاسي
+      - generic [ref=f1e734]: حمّام الحارة
+      - generic [ref=f1e738]: سطح أحد البيوت
+      - generic [ref=f1e742]: زينب

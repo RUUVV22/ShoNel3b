@@ -1,0 +1,175 @@
+- generic [ref=e142]:
+  - generic [ref=e143]:
+    - button "العودة" [ref=e144] [cursor=pointer]:
+      - generic [ref=e145]: 
+    - generic [ref=e146]:
+      - generic [ref=e147]: غرفة الشِلّة
+      - generic [ref=e148]: الكل هون.. شو نلعب؟
+  - generic [ref=e150]:
+    - generic [ref=e151]: متصل
+    - generic [ref=e154]:
+      - generic [ref=e155]: 
+      - generic [ref=e156]: "المضيف: Islam"
+  - generic [ref=e157]:
+    - generic [ref=e158]:
+      - generic [ref=e159]: ✨ بطاقة اللمّة
+      - generic [ref=e160]: ابعث الرمز لأصحابك وخلي اللمّة تكبر!
+    - button "رمز الغرفة YG6MJ" [ref=e161] [cursor=pointer]:
+      - generic [ref=e162]:
+        - generic [ref=e163]: ✦ رمز اللمّة ✦
+        - generic [ref=e164]: YG6MJ
+      - generic [ref=e165]: 
+    - generic [ref=e167]:
+      - button "مشاركة" [ref=e175] [cursor=pointer]:
+        - generic [ref=e176]:
+          - generic [ref=e177]: 
+          - generic [ref=e178]: مشاركة
+      - generic [ref=e179]:
+        - generic [ref=e180]: جاهزين للّمة؟
+        - generic [ref=e181]: شارك الرابط أو خلّي صاحبك يمسح الرمز.
+        - generic [ref=e182]: http://localhost:8081/?room=YG6MJ
+  - generic [ref=e183]:
+    - generic [ref=e184]: اللي قاعدين معنا
+    - generic [ref=e185]: 4/20
+  - generic [ref=e187]:
+    - generic [ref=e188]:
+      - img "Character for Islam" [ref=e189]
+      - generic [ref=e197]: Islam
+      - generic [ref=e198]: 
+    - generic [ref=e266]:
+      - img "Character for Blue Captain" [ref=e267]
+      - generic [ref=e275]: Blue Captain
+    - generic [ref=e276]:
+      - img "Character for Red Agent" [ref=e277]
+      - generic [ref=e285]: Red Agent
+    - generic [ref=e286]:
+      - img "Character for Blue Agent" [ref=e287]
+      - generic [ref=e295]: Blue Agent
+  - generic [ref=e199]:
+    - generic [ref=e200]: شو بدنا نلعب؟
+    - generic [ref=e201]: إنت صاحب القرار
+  - button "Codenames" [ref=e202] [cursor=pointer]:
+    - generic "كود نيمز" [ref=e204]:
+      - img "كود نيمز" [ref=e206]
+    - generic [ref=e207]:
+      - generic [ref=e208]: كود نيمز
+      - generic [ref=e209]: فريقان، ٢٥ كلمة، وتلميحة واحدة تغيّر كل شيء
+      - generic [ref=e210]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=e211]: 
+  - button "Scorpion Night" [ref=e213] [cursor=pointer]:
+    - generic "ليلة العقارب - Scorpion Night" [ref=e215]:
+      - img "ليلة العقارب - Scorpion Night" [ref=e217]
+    - generic [ref=e218]:
+      - generic [ref=e219]: ليلة العقارب
+      - generic [ref=e220]: أدوار خفية ونقاش وتصويت ليلي
+      - generic [ref=e221]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=e222]: 
+  - button "Stump Me!" [ref=e224] [cursor=pointer]:
+    - generic "خسرني" [ref=e226]:
+      - img "خسرني" [ref=e228]
+    - generic [ref=e229]:
+      - generic [ref=e230]: خسّرني!
+      - generic [ref=e231]: اختار الفئة، جاوب قبل ما يخلص الوقت، وتحدى الشلة
+      - generic [ref=e232]: 4 بالغرفة • 2–20 لاعبين
+    - generic [ref=e233]: 
+  - button "WHO BOMBED ME?" [ref=e235] [cursor=pointer]:
+    - generic "مين فجرني" [ref=e237]:
+      - img "مين فجرني" [ref=e239]
+    - generic [ref=e240]:
+      - generic [ref=e241]: مين فجّرني؟
+      - generic [ref=e242]: واحد معه القنبلة، يبعثها بالسر. هل الضحية بتعرف مين ورّطها؟
+      - generic [ref=e243]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=e244]: 
+  - button "WHO DID IT?" [ref=e246] [cursor=pointer]:
+    - generic "مين وراها" [ref=e248]:
+      - img "مين وراها" [ref=e250]
+    - generic [ref=e251]:
+      - generic [ref=e252]: مين وراها
+      - generic [ref=e253]: "حققوا بسر صندوق أمانة الحارة: مين أخذه، من وين، وبأي غرض؟ تحرّك بنردين واكشف الأدلة."
+      - generic [ref=e254]: 4 بالغرفة • 3–6 لاعبين
+    - generic [ref=e255]: 
+  - generic [ref=e257]:
+    - generic [ref=e258]: 
+    - generic [ref=e259]: ألعاب ثانية بالطريق.. نفس الغرفة، نفس الشِلّة!
+  - generic [ref=e296]: وزّعوا الفرق!
+  - generic [ref=e298]: اختار فريقك. المضيف بقدر يغيّر الأدوار وينقل اللاعبين.
+  - generic [ref=e299]:
+    - generic [ref=e300]:
+      - generic [ref=e301]:
+        - generic [ref=e303]: الفريق المرجاني
+        - generic [ref=e304]: 2 ✦
+        - button " فريقك" [disabled]:
+          - generic [ref=e306]: 
+          - generic [ref=e307]: فريقك
+      - generic [ref=e309]:
+        - generic [ref=e310]:
+          - generic [ref=e311]:
+            - img "Character for Islam" [ref=e312]
+            - generic [ref=e320]:
+              - generic [ref=e321]:
+                - generic [ref=e322]: 
+                - generic [ref=e323]: Islam • أنت
+              - generic [ref=e324]: ● على الطاولة
+          - button "دور Islam" [ref=e326] [cursor=pointer]:
+            - generic [ref=e327]: قائد الفريق
+            - generic [ref=e328]: 
+        - generic [ref=e329]:
+          - generic [ref=e330]:
+            - img "Character for Red Agent" [ref=e331]
+            - generic [ref=e339]:
+              - generic [ref=e340]: Red Agent
+              - generic [ref=e342]: ● على الطاولة
+          - generic [ref=e343]:
+            - button "دور Red Agent" [ref=e344] [cursor=pointer]:
+              - generic [ref=e345]: لاعب
+              - generic [ref=e346]: 
+            - generic [ref=e347]:
+              - button "نقل Red Agent" [ref=e348] [cursor=pointer]:
+                - generic [ref=e349]: 
+              - button "إزالة Red Agent" [ref=e350] [cursor=pointer]:
+                - generic [ref=e351]: 
+    - generic [ref=e352]:
+      - generic [ref=e353]:
+        - generic [ref=e355]: الفريق الذهبي
+        - generic [ref=e356]: 2 ✦
+        - button " انضم" [ref=e358] [cursor=pointer]:
+          - generic [ref=e359]: 
+          - generic [ref=e360]: انضم
+      - generic [ref=e362]:
+        - generic [ref=e363]:
+          - generic [ref=e364]:
+            - img "Character for Blue Captain" [ref=e365]
+            - generic [ref=e373]:
+              - generic [ref=e374]: Blue Captain
+              - generic [ref=e376]: ● على الطاولة
+          - generic [ref=e377]:
+            - button "دور Blue Captain" [ref=e378] [cursor=pointer]:
+              - generic [ref=e379]: قائد الفريق
+              - generic [ref=e380]: 
+            - generic [ref=e381]:
+              - button "نقل Blue Captain" [ref=e382] [cursor=pointer]:
+                - generic [ref=e383]: 
+              - button "إزالة Blue Captain" [ref=e384] [cursor=pointer]:
+                - generic [ref=e385]: 
+        - generic [ref=e386]:
+          - generic [ref=e387]:
+            - img "Character for Blue Agent" [ref=e388]
+            - generic [ref=e396]:
+              - generic [ref=e397]: Blue Agent
+              - generic [ref=e399]: ● على الطاولة
+          - generic [ref=e400]:
+            - button "دور Blue Agent" [ref=e401] [cursor=pointer]:
+              - generic [ref=e402]: لاعب
+              - generic [ref=e403]: 
+            - generic [ref=e404]:
+              - button "نقل Blue Agent" [ref=e405] [cursor=pointer]:
+                - generic [ref=e406]: 
+              - button "إزالة Blue Agent" [ref=e407] [cursor=pointer]:
+                - generic [ref=e408]: 
+  - generic [ref=e260]:
+    - generic [ref=e261]: 
+    - generic [ref=e262]: جاهزين! يلا نبلّش الجولة
+  - button "يلا نلعب!" [ref=e409] [cursor=pointer]:
+    - generic [ref=e263]:
+      - generic [ref=e264]: 
+      - generic [ref=e265]: يلا نلعب!

@@ -1,0 +1,82 @@
+- generic [ref=e416]:
+  - generic [ref=e417]:
+    - button "العودة" [ref=e418] [cursor=pointer]:
+      - generic [ref=e419]: 
+    - generic [ref=e420]:
+      - generic [ref=e421]: كود نيمز | الجولة 1
+      - generic [ref=e422]: YG6MJ • قائد الفريق — ترى هويات البطاقات
+    - button "خيارات" [ref=e423] [cursor=pointer]:
+      - generic [ref=e424]: 
+  - generic "كود نيمز" [ref=e426]:
+    - img "كود نيمز" [ref=e428]
+  - generic:
+    - generic:
+      - generic: استعدوا
+      - generic: دور الفريق الذهبي
+  - generic [ref=e429]:
+    - generic [ref=e430]:
+      - generic [ref=e432]: الفريق المرجاني
+      - generic [ref=e433]: "8"
+    - generic [ref=e434]:
+      - generic [ref=e436]: الفريق الذهبي
+      - generic [ref=e437]: "9"
+  - generic [ref=e440]:
+    - generic [ref=e441]: دور الفريق الذهبي
+    - generic [ref=e442]: انتظر دور فريقك
+  - generic [ref=e444]:
+    - generic [ref=e445]:
+      - button "مفتاح" [disabled]
+    - generic [ref=e447]:
+      - button "محطة" [disabled]
+    - generic [ref=e449]:
+      - button "رحلة" [disabled]
+    - generic [ref=e451]:
+      - button "طبلة" [disabled]
+    - generic [ref=e453]:
+      - button "أخطبوط" [disabled]
+    - generic [ref=e455]:
+      - button "نهاية" [disabled]
+    - generic [ref=e457]:
+      - button "بحار" [disabled]
+    - generic [ref=e459]:
+      - button "بذرة" [disabled]
+    - generic [ref=e461]:
+      - button "خوخ" [disabled]
+    - generic [ref=e463]:
+      - button "طائرة" [disabled]
+    - generic [ref=e465]:
+      - button "راية" [disabled]
+    - generic [ref=e467]:
+      - button "نملة" [disabled]
+    - generic [ref=e469]:
+      - button "غرفة" [disabled]
+    - generic [ref=e471]:
+      - button "كاتب" [disabled]
+    - generic [ref=e473]:
+      - button "نسر" [disabled]
+    - generic [ref=e475]:
+      - button "جسر" [disabled]
+    - generic [ref=e477]:
+      - button "شارع" [disabled]
+    - generic [ref=e479]:
+      - button "جزر" [disabled]
+    - generic [ref=e481]:
+      - button "كنز" [disabled]
+    - generic [ref=e483]:
+      - button "صباح" [disabled]
+    - generic [ref=e485]:
+      - button "شاعر" [disabled]
+    - generic [ref=e487]:
+      - button "غابة" [disabled]
+    - generic [ref=e489]:
+      - button "رواية" [disabled]
+    - generic [ref=e491]:
+      - button "عشب" [disabled]
+    - generic [ref=e493]:
+      - button "قمر" [disabled]:
+        - generic:
+          - generic: ✦
+          - generic: قمر
+  - generic [ref=e496]:
+    - generic [ref=e497]: 
+    - generic [ref=e498]: قائد الفريق الآخر يفكر في التلميح…
