@@ -119,7 +119,7 @@ export function HomeScreen({ navigation }) {
       <View style={styles.bottomActions}>
         <Pressable onPress={() => navigation.navigate('HowToPlay')} style={styles.helpButton}>
           <Ionicons name="help-circle-outline" color={colors.plum} size={17} />
-          <ArabicText weight="bold" style={styles.helpText}>{t('كيف نلعب كود نيمز؟', 'How to play Codenames')}</ArabicText>
+          <ArabicText weight="bold" style={styles.helpText}>{t('كيف نلعب فك الشيفرة؟', 'How to play Decode the Clue')}</ArabicText>
         </Pressable>
         <InstallAppButton />
       </View>

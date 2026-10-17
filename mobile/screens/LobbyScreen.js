@@ -179,7 +179,7 @@ export function LobbyScreen({ navigation }) {
         <ArabicText weight="bold" style={styles.readinessText}>
           {!selectedGame ? t('المضيف يختار اللعبة أولاً', 'Waiting for the host to choose a game')
             : gameState.canStart ? t('جاهزين! يلا نبلّش الجولة', "Everyone's ready to play!")
-              : isCodenames ? t('كود نيمز تحتاج ٤: قائد ولاعب في كل فريق', 'Codenames needs 4 players: a spymaster and agent on each team') : t('بانتظار العدد المطلوب من اللاعبين','Waiting for enough players')}
+              : isCodenames ? t('فك الشيفرة تحتاج ٤: قائد ولاعب في كل فريق', 'Decode the Clue needs 4 players: a spymaster and agent on each team') : t('بانتظار العدد المطلوب من اللاعبين','Waiting for enough players')}
         </ArabicText>
       </View>
       {isHost ? (

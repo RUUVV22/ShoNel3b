@@ -4,8 +4,8 @@ const { GameError } = require('../game/errors');
 
 const metadata = Object.freeze({
   id: 'CODENAMES',
-  title: 'كود نيمز',
-  englishTitle: 'Codenames',
+  title: 'فك الشيفرة',
+  englishTitle: 'Decode the Clue',
   subtitle: 'لعبة الكلمات والجواسيس',
   description: 'فريقان، ٢٥ كلمة، وتلميحة واحدة تغيّر كل شيء',
   minPlayers: MIN_PLAYERS,

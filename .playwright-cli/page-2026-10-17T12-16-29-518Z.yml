@@ -1,0 +1,166 @@
+- generic [ref=e109]:
+  - generic [ref=e110]:
+    - button "العودة" [ref=e111] [cursor=pointer]:
+      - generic [ref=e112]: 
+    - generic [ref=e113]:
+      - generic [ref=e114]: غرفة الشِلّة
+      - generic [ref=e115]: الكل هون.. شو نلعب؟
+  - generic [ref=e117]:
+    - generic [ref=e118]: متصل
+    - generic [ref=e121]:
+      - generic [ref=e122]: 
+      - generic [ref=e123]: "المضيف: Islam"
+  - generic [ref=e124]:
+    - generic [ref=e125]:
+      - generic [ref=e126]: ✨ بطاقة اللمّة
+      - generic [ref=e127]: ابعث الرمز لأصحابك وخلي اللمّة تكبر!
+    - button "رمز الغرفة 8F3WW" [ref=e128] [cursor=pointer]:
+      - generic [ref=e129]:
+        - generic [ref=e130]: ✦ رمز اللمّة ✦
+        - generic [ref=e131]: 8F3WW
+      - generic [ref=e132]: 
+    - generic [ref=e134]:
+      - button "مشاركة" [ref=e142] [cursor=pointer]:
+        - generic [ref=e143]:
+          - generic [ref=e144]: 
+          - generic [ref=e145]: مشاركة
+      - generic [ref=e146]:
+        - generic [ref=e147]: جاهزين للّمة؟
+        - generic [ref=e148]: شارك الرابط أو خلّي صاحبك يمسح الرمز.
+        - generic [ref=e149]: http://localhost:8081/?room=8F3WW
+  - generic [ref=e150]:
+    - generic [ref=e151]: اللي قاعدين معنا
+    - generic [ref=e152]: 4/20
+  - generic [ref=e154]:
+    - generic [ref=e155]:
+      - img "Character for Islam" [ref=e156]
+      - generic [ref=e164]: Islam
+      - generic [ref=e258]: 
+    - generic [ref=e165]:
+      - img "Character for Sami" [ref=e166]
+      - generic [ref=e174]: Sami
+    - generic [ref=e176]:
+      - img "Character for Lina" [ref=e177]
+      - generic [ref=e185]: Lina
+    - generic [ref=e186]:
+      - img "Character for Omar" [ref=e187]
+      - generic [ref=e195]: Omar
+    - generic [ref=e267]:
+      - img "Character for Rami" [ref=e268]
+      - generic [ref=e276]: Rami
+    - generic [ref=e277]:
+      - img "Character for Nour" [ref=e278]
+      - generic [ref=e286]: Nour
+    - generic [ref=e287]:
+      - img "Character for Hadi" [ref=e288]
+      - generic [ref=e296]: Hadi
+  - generic [ref=e196]:
+    - generic [ref=e197]: شو بدنا نلعب؟
+    - generic [ref=e198]: إنت صاحب القرار
+  - button "Codenames" [ref=e259] [cursor=pointer]:
+    - generic "كود نيمز" [ref=e200]:
+      - img "كود نيمز" [ref=e202]
+    - generic [ref=e203]:
+      - generic [ref=e204]: كود نيمز
+      - generic [ref=e205]: فريقان، ٢٥ كلمة، وتلميحة واحدة تغيّر كل شيء
+      - generic [ref=e206]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=e207]: 
+  - button "Scorpion Night" [ref=e260] [cursor=pointer]:
+    - generic "ليلة العقارب - Scorpion Night" [ref=e210]:
+      - img "ليلة العقارب - Scorpion Night" [ref=e212]
+    - generic [ref=e213]:
+      - generic [ref=e214]: ليلة العقارب
+      - generic [ref=e215]: أدوار خفية ونقاش وتصويت ليلي
+      - generic [ref=e216]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=e217]: 
+  - button "Stump Me!" [ref=e261] [cursor=pointer]:
+    - generic "خسرني" [ref=e220]:
+      - img "خسرني" [ref=e222]
+    - generic [ref=e223]:
+      - generic [ref=e224]: خسّرني!
+      - generic [ref=e225]: اختار الفئة، جاوب قبل ما يخلص الوقت، وتحدى الشلة
+      - generic [ref=e226]: 4 بالغرفة • 2–20 لاعبين
+    - generic [ref=e227]: 
+  - button "WHO BOMBED ME?" [ref=e262] [cursor=pointer]:
+    - generic "مين فجرني" [ref=e230]:
+      - img "مين فجرني" [ref=e232]
+    - generic [ref=e233]:
+      - generic [ref=e234]: مين فجّرني؟
+      - generic [ref=e235]: واحد معه القنبلة، يبعثها بالسر. هل الضحية بتعرف مين ورّطها؟
+      - generic [ref=e236]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=e237]: 
+  - button "WHO DID IT?" [ref=e263] [cursor=pointer]:
+    - generic "مين وراها" [ref=e240]:
+      - img "مين وراها" [ref=e242]
+    - generic [ref=e243]:
+      - generic [ref=e244]: مين وراها
+      - generic [ref=e245]: "حققوا بسر صندوق أمانة الحارة: مين أخذه، من وين، وبأي غرض؟ تحرّك بنردين واكشف الأدلة."
+      - generic [ref=e246]: 4 بالغرفة • 3–6 لاعبين
+    - generic [ref=e247]: 
+  - generic [ref=e249]:
+    - generic [ref=e250]: 
+    - generic [ref=e251]: ألعاب ثانية بالطريق.. نفس الغرفة، نفس الشِلّة!
+  - generic [ref=e297]:
+    - generic [ref=e298]: اختار التشكيلة • 7/7
+    - generic [ref=e299]: بطاقة لكل لاعب وثلاث بطاقات وسط. المضيف يختار الأدوار.
+    - generic [ref=e300]:
+      - generic [ref=e301]:
+        - generic [ref=e302]: ذئب (2)
+        - generic [ref=e303] [cursor=pointer]: −
+        - generic [ref=e305] [cursor=pointer]: ＋
+      - generic [ref=e307]:
+        - generic [ref=e308]: عرافة (1)
+        - generic [ref=e309] [cursor=pointer]: −
+        - generic [ref=e311] [cursor=pointer]: ＋
+      - generic [ref=e313]:
+        - generic [ref=e314]: لص (1)
+        - generic [ref=e315] [cursor=pointer]: −
+        - generic [ref=e317] [cursor=pointer]: ＋
+      - generic [ref=e319]:
+        - generic [ref=e320]: مشاغبة (1)
+        - generic [ref=e321] [cursor=pointer]: −
+        - generic [ref=e323] [cursor=pointer]: ＋
+      - generic [ref=e325]:
+        - generic [ref=e326]: سكير (1)
+        - generic [ref=e327] [cursor=pointer]: −
+        - generic [ref=e329] [cursor=pointer]: ＋
+      - generic [ref=e331]:
+        - generic [ref=e332]: سهران (1)
+        - generic [ref=e333] [cursor=pointer]: −
+        - generic [ref=e335] [cursor=pointer]: ＋
+      - generic [ref=e337]:
+        - generic [ref=e338]: تابع (0)
+        - generic [ref=e339] [cursor=pointer]: −
+        - generic [ref=e341] [cursor=pointer]: ＋
+      - generic [ref=e343]:
+        - generic [ref=e344]: ماسوني (0)
+        - generic [ref=e345] [cursor=pointer]: −
+        - generic [ref=e347] [cursor=pointer]: ＋
+      - generic [ref=e349]:
+        - generic [ref=e350]: دباغ (0)
+        - generic [ref=e351] [cursor=pointer]: −
+        - generic [ref=e353] [cursor=pointer]: ＋
+      - generic [ref=e355]:
+        - generic [ref=e356]: صياد (0)
+        - generic [ref=e357] [cursor=pointer]: −
+        - generic [ref=e359] [cursor=pointer]: ＋
+      - generic [ref=e361]:
+        - generic [ref=e362]: عقرب (0)
+        - generic [ref=e363] [cursor=pointer]: −
+        - generic [ref=e365] [cursor=pointer]: ＋
+      - generic [ref=e367]:
+        - generic [ref=e368]: عقربة (0)
+        - generic [ref=e369] [cursor=pointer]: −
+        - generic [ref=e371] [cursor=pointer]: ＋
+      - generic [ref=e373]:
+        - generic [ref=e374]: مواطن (0)
+        - generic [ref=e375] [cursor=pointer]: −
+        - generic [ref=e377] [cursor=pointer]: ＋
+    - button "اعتماد التشكيلة" [ref=e379] [cursor=pointer]
+  - generic [ref=e252]:
+    - generic [ref=e253]: 
+    - generic [ref=e254]: جاهزين! يلا نبلّش الجولة
+  - button "يلا نلعب!" [ref=e382] [cursor=pointer]:
+    - generic [ref=e264]:
+      - generic [ref=e265]: 
+      - generic [ref=e266]: يلا نلعب!

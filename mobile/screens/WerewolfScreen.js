@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View,Pressable,StyleSheet} from 'react-native';
 import {ScreenContainer} from '../components/ScreenContainer';
 import {GameHeader} from '../components/GameHeader';
@@ -8,6 +8,8 @@ import {PrimaryButton} from '../components/PrimaryButton';
 import {RolePortrait} from '../components/RolePortrait';
 import {useGame} from '../context/GameContext';
 import {colors} from '../theme/colors';
+import {useRoundInputs} from '../hooks/useRoundInputs';
+const ROLE_DEFAULTS=Object.freeze({firstCenter:null});
 const steps={NIGHT:'الليل غطّى القرية',DISCUSSION:'الصبح طلع.. مين عم يكذب؟',VOTING:'وقت التصويت',RESULT:'انتهت الحكاية'};
 const roleTitles={WOLF:'الذئب',MINION:'التابع',MASON:'الماسوني',SEER:'العرافة',ROBBER:'اللص',TROUBLEMAKER:'المشاغبة',DRUNK:'السكّير',INSOMNIAC:'السهران',SCORPION:'العقرب والعقربة',SCORPIONESS:'العقربة'};
 const narration={
@@ -20,9 +22,9 @@ const narration={
 };
 export function WerewolfScreen(){
  const {gameState:s,actions}=useGame();
- const [firstCenter,setFirstCenter]=useState(null);
  const g=s?.werewolf;
- useEffect(()=>{setFirstCenter(null);},[g?.step,g?.round]);
+ const {values,setField,submitAndReset}=useRoundInputs(ROLE_DEFAULTS,`${s?.roomId}:${g?.round}:${g?.step}:${g?.currentRole}`);
+ const {firstCenter}=values;
  if(!g)return null;
  const me=s.players.find(p=>p.id===s.currentPlayerId);
  const actor=g.isActor&&!g.acted;
@@ -30,7 +32,7 @@ export function WerewolfScreen(){
  const showPlayerTargets=['SEER','ROBBER','SCORPIONESS'].includes(g.role) && !(g.role==='SCORPIONESS'&&hasScorpionPartner);
  const found=g.viewerAction?.seen;
  const readableSeen=Array.isArray(found)?found.map(id=>s.players.find(p=>p.id===id)?.name||id).join('، '):found;
- const choice=(target,second)=>actions.gameAction({action:'role',target,second});
+ const choice=(target,second)=>submitAndReset(()=>actions.gameAction({action:'role',target,second}));
  return <ScreenContainer contentStyle={styles.wrap}>
   <GameHeader title="ليلة العقارب" subtitle={'الجولة '+g.round+' • '+s.roomId}/>
   <GameLogo id="WEREWOLF" size={76}/>
@@ -41,7 +43,7 @@ export function WerewolfScreen(){
   {g.phase==='NIGHT'?<View style={styles.panel}><ArabicText weight="extraBold" style={styles.heading}>دور {roleTitles[g.currentRole]||'القرية'}</ArabicText>
    <ArabicText style={styles.small}>{narration[g.currentRole]}</ArabicText><ArabicText style={styles.small}>{actor?(g.role==='SEER'?'العرافة تشوف لاعب أو بطاقتين مختلفتين من الوسط.':'اختار هدفك بسرية من البطاقات'):'استنى دورك.. لا تكشف بطاقتك!'}</ArabicText>
    {actor?<View style={styles.targets}>{((g.role==='WOLF'&&g.wolves?.length>1)||(g.role==='SCORPION'&&hasScorpionPartner)||g.role==='SCORPIONESS'||g.role==='MINION'||g.role==='MASON'||g.role==='INSOMNIAC')?<Pressable style={styles.target} onPress={()=>choice(null)}><ArabicText style={styles.targetText}>تأكيد الدور / متابعة</ArabicText></Pressable>:null}{showPlayerTargets?s.players.filter(p=>p.id!==me.id).map(p=><Pressable key={p.id} style={styles.target} onPress={()=>choice(p.id)}><ArabicText style={styles.targetText}>{p.name}</ArabicText></Pressable>):null}
-     {(g.role==='SEER'||g.role==='WOLF'||(g.role==='SCORPION'&&!hasScorpionPartner)||g.role==='DRUNK')?[0,1,2].map(i=><Pressable key={i} style={styles.target} onPress={()=>g.role==='SEER' ? (firstCenter===null?setFirstCenter(i):firstCenter!==i?(choice(firstCenter,i),setFirstCenter(null)):null) : choice(i)}><ArabicText style={styles.targetText}>بطاقة الوسط {i+1}</ArabicText></Pressable>):null}
+     {(g.role==='SEER'||g.role==='WOLF'||(g.role==='SCORPION'&&!hasScorpionPartner)||g.role==='DRUNK')?[0,1,2].map(i=><Pressable key={i} style={styles.target} onPress={()=>g.role==='SEER' ? (firstCenter===null?setField('firstCenter',i):firstCenter!==i?choice(firstCenter,i):null) : choice(i)}><ArabicText style={styles.targetText}>بطاقة الوسط {i+1}{firstCenter===i?' ✓':''}</ArabicText></Pressable>):null}
      {g.role==='TROUBLEMAKER'?s.players.filter(p=>p.id!==me.id).flatMap((p,i,arr)=>arr.slice(i+1).map(q=><Pressable key={p.id+q.id} style={styles.target} onPress={()=>choice(p.id,q.id)}><ArabicText style={styles.targetText}>{p.name} ↔ {q.name}</ArabicText></Pressable>)):null}
    </View>:null}
   </View>:null}

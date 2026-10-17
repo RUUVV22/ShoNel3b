@@ -1,0 +1,88 @@
+- generic [ref=f1e416]:
+  - generic [ref=f1e417]:
+    - button "العودة" [ref=f1e418] [cursor=pointer]:
+      - generic [ref=f1e419]: 
+    - generic [ref=f1e420]:
+      - generic [ref=f1e421]: كود نيمز | الجولة 1
+      - generic [ref=f1e422]: QAWXT • قائد الفريق — ترى هويات البطاقات
+    - button "خيارات" [ref=f1e423] [cursor=pointer]:
+      - generic [ref=f1e424]: 
+  - generic "كود نيمز" [ref=f1e426]:
+    - img "كود نيمز" [ref=f1e428]
+  - generic:
+    - generic:
+      - generic: استعدوا
+      - generic: دور الفريق المرجاني
+  - generic [ref=f1e429]:
+    - generic [ref=f1e430]:
+      - generic [ref=f1e432]: الفريق المرجاني
+      - generic [ref=f1e433]: "9"
+    - generic [ref=f1e434]:
+      - generic [ref=f1e436]: الفريق الذهبي
+      - generic [ref=f1e437]: "8"
+  - generic [ref=f1e441]:
+    - generic [ref=f1e442]: دور الفريق المرجاني
+    - generic [ref=f1e443]: دورك الآن
+  - generic [ref=f1e445]:
+    - generic [ref=f1e446]:
+      - button "حديقة" [disabled]
+    - generic [ref=f1e448]:
+      - button "ورقة" [disabled]
+    - generic [ref=f1e450]:
+      - button "جبن" [disabled]
+    - generic [ref=f1e452]:
+      - button "بطاطس" [disabled]
+    - generic [ref=f1e454]:
+      - button "جواب" [disabled]
+    - generic [ref=f1e456]:
+      - button "مرآة" [disabled]
+    - generic [ref=f1e458]:
+      - button "حذاء" [disabled]
+    - generic [ref=f1e460]:
+      - button "سفر" [disabled]
+    - generic [ref=f1e462]:
+      - button "محرك" [disabled]
+    - generic [ref=f1e464]:
+      - button "غابة" [disabled]
+    - generic [ref=f1e466]:
+      - button "صمت" [disabled]
+    - generic [ref=f1e468]:
+      - button "بيت" [disabled]
+    - generic [ref=f1e470]:
+      - button "كأس" [disabled]
+    - generic [ref=f1e472]:
+      - button "تلفاز" [disabled]:
+        - generic:
+          - generic: ✦
+          - generic: تلفاز
+    - generic [ref=f1e474]:
+      - button "أسد" [disabled]
+    - generic [ref=f1e476]:
+      - button "ميدان" [disabled]
+    - generic [ref=f1e478]:
+      - button "ضفدع" [disabled]
+    - generic [ref=f1e480]:
+      - button "حساء" [disabled]
+    - generic [ref=f1e482]:
+      - button "ثلج" [disabled]
+    - generic [ref=f1e484]:
+      - button "سائق" [disabled]
+    - generic [ref=f1e486]:
+      - button "حقيبة" [disabled]
+    - generic [ref=f1e488]:
+      - button "رعد" [disabled]
+    - generic [ref=f1e490]:
+      - button "دلفين" [disabled]
+    - generic [ref=f1e492]:
+      - button "لحم" [disabled]
+    - generic [ref=f1e494]:
+      - button "رواية" [disabled]
+  - generic [ref=f1e496]:
+    - generic [ref=f1e497]: أعطِ فريقك تلميحاً
+    - generic [ref=f1e498]:
+      - textbox "الكلمة الدالة" [ref=f1e499]
+      - textbox [ref=f1e500]: "1"
+    - button "إعطاء التلميح" [disabled]:
+      - generic [ref=f1e501]:
+        - generic [ref=f1e502]: 
+        - generic [ref=f1e503]: إعطاء التلميح

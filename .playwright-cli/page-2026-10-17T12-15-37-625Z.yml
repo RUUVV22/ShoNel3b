@@ -1,0 +1,99 @@
+- generic [ref=e109]:
+  - generic [ref=e110]:
+    - button "العودة" [ref=e111] [cursor=pointer]:
+      - generic [ref=e112]: 
+    - generic [ref=e113]:
+      - generic [ref=e114]: غرفة الشِلّة
+      - generic [ref=e115]: الكل هون.. شو نلعب؟
+  - generic [ref=e117]:
+    - generic [ref=e118]: متصل
+    - generic [ref=e121]:
+      - generic [ref=e122]: 
+      - generic [ref=e123]: "المضيف: Sami"
+  - generic [ref=e124]:
+    - generic [ref=e125]:
+      - generic [ref=e126]: ✨ بطاقة اللمّة
+      - generic [ref=e127]: ابعث الرمز لأصحابك وخلي اللمّة تكبر!
+    - button "رمز الغرفة 8F3WW" [ref=e128] [cursor=pointer]:
+      - generic [ref=e129]:
+        - generic [ref=e130]: ✦ رمز اللمّة ✦
+        - generic [ref=e131]: 8F3WW
+      - generic [ref=e132]: 
+    - generic [ref=e134]:
+      - button "مشاركة" [ref=e142] [cursor=pointer]:
+        - generic [ref=e143]:
+          - generic [ref=e144]: 
+          - generic [ref=e145]: مشاركة
+      - generic [ref=e146]:
+        - generic [ref=e147]: جاهزين للّمة؟
+        - generic [ref=e148]: شارك الرابط أو خلّي صاحبك يمسح الرمز.
+        - generic [ref=e149]: http://localhost:8081/?room=8F3WW
+  - generic [ref=e150]:
+    - generic [ref=e151]: اللي قاعدين معنا
+    - generic [ref=e152]: 4/20
+  - generic [ref=e154]:
+    - generic [ref=e155]:
+      - img "Character for Islam" [ref=e156]
+      - generic [ref=e164]: Islam
+    - generic [ref=e165]:
+      - img "Character for Sami" [ref=e166]
+      - generic [ref=e174]: Sami
+      - generic [ref=e175]: 
+    - generic [ref=e176]:
+      - img "Character for Lina" [ref=e177]
+      - generic [ref=e185]: Lina
+    - generic [ref=e186]:
+      - img "Character for Omar" [ref=e187]
+      - generic [ref=e195]: Omar
+  - generic [ref=e196]:
+    - generic [ref=e197]: شو بدنا نلعب؟
+    - generic [ref=e198]: المضيف بختار
+  - button "Codenames" [disabled]:
+    - generic "كود نيمز" [ref=e200]:
+      - img "كود نيمز" [ref=e202]
+    - generic [ref=e203]:
+      - generic [ref=e204]: كود نيمز
+      - generic [ref=e205]: فريقان، ٢٥ كلمة، وتلميحة واحدة تغيّر كل شيء
+      - generic [ref=e206]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=e207]: 
+  - button "Scorpion Night" [disabled]:
+    - generic "ليلة العقارب - Scorpion Night" [ref=e210]:
+      - img "ليلة العقارب - Scorpion Night" [ref=e212]
+    - generic [ref=e213]:
+      - generic [ref=e214]: ليلة العقارب
+      - generic [ref=e215]: أدوار خفية ونقاش وتصويت ليلي
+      - generic [ref=e216]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=e217]: 
+  - button "Stump Me!" [disabled]:
+    - generic "خسرني" [ref=e220]:
+      - img "خسرني" [ref=e222]
+    - generic [ref=e223]:
+      - generic [ref=e224]: خسّرني!
+      - generic [ref=e225]: اختار الفئة، جاوب قبل ما يخلص الوقت، وتحدى الشلة
+      - generic [ref=e226]: 4 بالغرفة • 2–20 لاعبين
+    - generic [ref=e227]: 
+  - button "WHO BOMBED ME?" [disabled]:
+    - generic "مين فجرني" [ref=e230]:
+      - img "مين فجرني" [ref=e232]
+    - generic [ref=e233]:
+      - generic [ref=e234]: مين فجّرني؟
+      - generic [ref=e235]: واحد معه القنبلة، يبعثها بالسر. هل الضحية بتعرف مين ورّطها؟
+      - generic [ref=e236]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=e237]: 
+  - button "WHO DID IT?" [disabled]:
+    - generic "مين وراها" [ref=e240]:
+      - img "مين وراها" [ref=e242]
+    - generic [ref=e243]:
+      - generic [ref=e244]: مين وراها
+      - generic [ref=e245]: "حققوا بسر صندوق أمانة الحارة: مين أخذه، من وين، وبأي غرض؟ تحرّك بنردين واكشف الأدلة."
+      - generic [ref=e246]: 4 بالغرفة • 3–6 لاعبين
+    - generic [ref=e247]: 
+  - generic [ref=e249]:
+    - generic [ref=e250]: 
+    - generic [ref=e251]: ألعاب ثانية بالطريق.. نفس الغرفة، نفس الشِلّة!
+  - generic [ref=e252]:
+    - generic [ref=e253]: 
+    - generic [ref=e254]: المضيف يختار اللعبة أولاً
+  - generic [ref=e255]:
+    - generic [ref=e256]: 
+    - generic [ref=e257]: بنستنى المضيف يبلّش اللعبة...

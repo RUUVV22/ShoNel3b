@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react';
+import React,{useState} from 'react';
 import {Image,ImageBackground,Modal,Pressable,ScrollView,StyleSheet,View,useWindowDimensions} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {ScreenContainer} from '../components/ScreenContainer';
@@ -9,6 +9,7 @@ import {ArabicText} from '../components/ArabicText';
 import {ConnectionPill} from '../components/ConnectionPill';
 import {MysteryBoard,MysteryNotebook,DICE_IMAGES,PLACE_ART} from '../components/MysteryBoard';
 import {PORTRAITS} from '../components/MysteryLobbyPicker';
+import {useRoundInputs} from '../hooks/useRoundInputs';
 import {useGame} from '../context/GameContext';
 import {soundService} from '../services/sounds';
 import {colors} from '../theme/colors';
@@ -45,6 +46,7 @@ const LESSONS_EN=[
 ];
 const labels={ROLL:'ارمِ النردين',MOVE:'وين بدك تروح؟',SUGGEST:'مين وراها؟',DISPROVE:'كشف الدليل',POST_SUGGEST:'راجع المعلومات',TURN_END:'خلّص دورك',RESULT:'انكشفت الحقيقة'};
 const labelsEn={ROLL:'Roll two dice',MOVE:'Choose a destination',SUGGEST:'Make a suggestion',DISPROVE:'Disprove the suggestion',POST_SUGGEST:'Review the evidence',TURN_END:'Finish your turn',RESULT:'Mystery solved'};
+const MYSTERY_INPUT_DEFAULTS=Object.freeze({suspect:null,item:null,accSuspect:null,accLocation:null,accItem:null});
 const artFor=(game,id)=>{
  if(id?.startsWith('I:'))return ITEM_ART[id];
  if(id?.startsWith('S:'))return PORTRAITS[id.slice(2)];
@@ -88,14 +90,12 @@ export function MysteryScreen(){
  const [helpOpen,setHelpOpen]=useState(false);
  const [lesson,setLesson]=useState(0);
  const [accOpen,setAccOpen]=useState(false);
- const [suspect,setSuspect]=useState(null);
- const [item,setItem]=useState(null);
- const [accSuspect,setAccSuspect]=useState(null);
- const [accLocation,setAccLocation]=useState(null);
- const [accItem,setAccItem]=useState(null);
  const game=gameState?.mystery;
+ const {values,setField,reset,submitAndReset}=useRoundInputs(
+   MYSTERY_INPUT_DEFAULTS,`${gameState?.roomId}:${game?.round}:${game?.turn}:${game?.phase}`
+ );
+ const {suspect,item,accSuspect,accLocation,accItem}=values;
  const lessonText=language==='en'?LESSONS_EN:LESSONS;
- useEffect(()=>{setSuspect(null);setItem(null);},[game?.turn,game?.phase==='SUGGEST']);
  if(!game)return null;
  const me=gameState.players.find(p=>p.id===gameState.currentPlayerId);
  const active=game.activePlayerId===me?.id;
@@ -147,9 +147,9 @@ export function MysteryScreen(){
    <ArabicText weight="extraBold" style={st.diceText}>{game.allowance} {t('خطوة','steps')}</ArabicText></View>:null}
   {game.phase==='SUGGEST'&&active?<View style={st.form}>
     <ArabicText weight="extraBold" style={st.locationTag}>{t('📍 المكان الحالي: ','📍 Current location: ')}{t(currentLocation?.name,currentLocation?.englishName)}</ArabicText>
-    <Options title={t('مين المشتبه فيه؟','Who is the suspect?')} values={suspectOptions} value={suspect} onChange={setSuspect}/>
-    <Options title={t('بأي غرض؟','Which item?')} values={itemOptions} value={item} onChange={setItem}/>
-    <PrimaryButton title={t('قدّم الاقتراح','Make suggestion')} disabled={!suspect||!item||busy} onPress={()=>send({action:'suggest',suspect,item})}/>
+    <Options title={t('مين المشتبه فيه؟','Who is the suspect?')} values={suspectOptions} value={suspect} onChange={value=>setField('suspect',value)}/>
+    <Options title={t('بأي غرض؟','Which item?')} values={itemOptions} value={item} onChange={value=>setField('item',value)}/>
+    <PrimaryButton title={t('قدّم الاقتراح','Make suggestion')} disabled={!suspect||!item||busy} onPress={()=>submitAndReset(()=>send({action:'suggest',suspect,item}))}/>
     <PrimaryButton compact variant="ghost" disabled={busy} title={t('تجاوز الاقتراح وإنهاء دوري','Skip suggestion and end turn')} onPress={()=>send({action:'end'})}/>
   </View>:null}
   {game.phase==='DISPROVE'?<View style={st.form}>
@@ -200,14 +200,14 @@ export function MysteryScreen(){
      </View>
    </>}
    <PanelModal visible={notesOpen} close={()=>setNotesOpen(false)}><MysteryNotebook game={game} busy={busy} send={send} onClose={()=>setNotesOpen(false)}/></PanelModal>
-   <PanelModal visible={accOpen} close={()=>setAccOpen(false)}>
+   <PanelModal visible={accOpen} close={()=>{setAccOpen(false);reset();}}>
     <ArabicText weight="extraBold" style={st.turnTitle}>{t('🔎 اتهام نهائي','🔎 Final accusation')}</ArabicText>
     <ArabicText style={st.warning}>{t('إذا أخطأت، بتفقد حق الاتهام؛ فكّر منيح قبل التأكيد!','Wrong accusations permanently remove your right to accuse. Choose carefully!')}</ArabicText>
-    <Options title={t('مين؟','Who?')} values={suspectOptions} value={accSuspect} onChange={setAccSuspect}/>
-    <Options title={t('وين؟','Where?')} values={placeOptions} value={accLocation} onChange={setAccLocation}/>
-    <Options title={t('بأي غرض؟','Which item?')} values={itemOptions} value={accItem} onChange={setAccItem}/>
+    <Options title={t('مين؟','Who?')} values={suspectOptions} value={accSuspect} onChange={value=>setField('accSuspect',value)}/>
+    <Options title={t('وين؟','Where?')} values={placeOptions} value={accLocation} onChange={value=>setField('accLocation',value)}/>
+    <Options title={t('بأي غرض؟','Which item?')} values={itemOptions} value={accItem} onChange={value=>setField('accItem',value)}/>
     <PrimaryButton title={t('أكيد، قدّم اتهامي','Confirm final accusation')} disabled={!accSuspect||!accLocation||!accItem||busy}
-      onPress={async()=>{const r=await send({action:'accuse',suspect:accSuspect,location:accLocation,item:accItem});if(r?.ok)setAccOpen(false);}}/>
+      onPress={async()=>{const r=await submitAndReset(()=>send({action:'accuse',suspect:accSuspect,location:accLocation,item:accItem}));if(r?.ok)setAccOpen(false);}}/>
    </PanelModal>
    <PanelModal visible={helpOpen} close={()=>setHelpOpen(false)}>
     <Image source={require('../../assets/mystery/loading.jpg')} style={st.tutorialArt}/>

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ArabicText } from './ArabicText';
 import { PrimaryButton } from './PrimaryButton';
 import { colors, teamColor } from '../theme/colors';
 import { radius, spacing } from '../theme/layout';
+import { useRoundInputs } from '../hooks/useRoundInputs';
+
+const CLUE_INPUT_DEFAULTS = Object.freeze({ word: '', count: '1' });
 
 function ClueHistory({ clues, hasCurrent = false }) {
   if (!clues.length) return null;
@@ -24,9 +27,9 @@ function ClueHistory({ clues, hasCurrent = false }) {
   );
 }
 
-export function CluePanel({ clue, clueHistory = [], showHistory, canGiveClue, waitingForClue, team, loading, onGiveClue }) {
-  const [word, setWord] = useState('');
-  const [count, setCount] = useState('1');
+export function CluePanel({ clue, clueHistory = [], showHistory, canGiveClue, waitingForClue, team, loading, onGiveClue, scopeKey }) {
+  const { values, setField, submitAndReset } = useRoundInputs(CLUE_INPUT_DEFAULTS, scopeKey);
+  const { word, count } = values;
 
   if (clue) {
     return (
@@ -50,7 +53,7 @@ export function CluePanel({ clue, clueHistory = [], showHistory, canGiveClue, wa
         <View style={styles.fields}>
           <TextInput
             value={word}
-            onChangeText={setWord}
+            onChangeText={value => setField('word', value)}
             placeholder="الكلمة الدالة"
             placeholderTextColor={colors.muted}
             maxLength={24}
@@ -59,7 +62,7 @@ export function CluePanel({ clue, clueHistory = [], showHistory, canGiveClue, wa
           />
           <TextInput
             value={count}
-            onChangeText={(value) => setCount(value.replace(/\D/g, '').slice(0, 1))}
+            onChangeText={(value) => setField('count', value.replace(/\D/g, '').slice(0, 1))}
             keyboardType="number-pad"
             maxLength={1}
             style={[styles.input, styles.countInput]}
@@ -71,11 +74,8 @@ export function CluePanel({ clue, clueHistory = [], showHistory, canGiveClue, wa
           icon="bulb-outline"
           variant={team === 'RED' ? 'red' : 'blue'}
           loading={loading}
-          disabled={!word.trim() || !count}
-          onPress={async () => {
-            const response = await onGiveClue(word, Number(count));
-            if (response?.ok) setWord('');
-          }}
+          disabled={loading || !word.trim() || !count}
+          onPress={() => submitAndReset(() => onGiveClue(word, Number(count)))}
         />
       </View>
     );

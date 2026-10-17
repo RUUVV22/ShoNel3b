@@ -4,7 +4,7 @@ import {Image, View, StyleSheet} from 'react-native';
 // The original illustrated PNGs are bundled as static native/web assets.
 // Game IDs stay stable for existing rooms and backend protocol compatibility.
 const GAME_ART = {
-  CODENAMES: require('../../assets/game-logos/codenames_logo.png'),
+  CODENAMES: require('../../assets/game-logos/fak_alshifra_logo.png'),
   WEREWOLF: require('../../assets/game-logos/werewolf_logo.png'),
   KHASERNY: require('../../assets/game-logos/khaserny_logo.png'),
   BOMB: require('../../assets/game-logos/meen_fajjarni_logo.png'),
@@ -18,7 +18,7 @@ export function GameLogo({id='CODENAMES',size=80,compact=false,style}){
   return <View style={[styles.frame,compact&&styles.compact,style]}>
     <Image source={source} resizeMode="contain" accessibilityLabel={
       id==='WEREWOLF'?'ليلة العقارب - Scorpion Night':
-      id==='KHASERNY'?'خسرني':id==='BOMB'?'مين فجرني':id==='MEN_WARAHA'?'مين وراها':'كود نيمز'
+      id==='KHASERNY'?'خسرني':id==='BOMB'?'مين فجرني':id==='MEN_WARAHA'?'مين وراها':'فك الشيفرة'
     } style={{width,height,borderRadius:compact?9:15}} />
   </View>;
 }

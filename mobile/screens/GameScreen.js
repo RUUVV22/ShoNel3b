@@ -25,7 +25,7 @@ export function GameScreen({ navigation }) {
     session,
     toggleMute,
   } = useGame();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const [selectingCardId, setSelectingCardId] = useState(null);
   const revealedIds = useRef(null);
   const previousClue = useRef(null);
@@ -40,8 +40,16 @@ export function GameScreen({ navigation }) {
   const isMyTurn = me?.team === gameState?.currentTeam;
   const isSpymaster = me?.role === ROLE.SPYMASTER;
   const canSelect = gameState?.status === STATUS.ACTIVE && isMyTurn && !isSpymaster && Boolean(gameState.clue);
-  const boardWidth = Math.min(width - 58, 492);
-  const cardGap = 8;
+  // React Native / web share this layout; size by available viewport, not user agent.
+  const desktopLayout = width >= 1050;
+  const horizontalGutters = width < 440 ? 20 : width < 820 ? 32 : 48;
+  const innerGutters = spacing.md * 2 + 16; // screen and tabletop padding
+  const mobileBoardSpace = Math.max(250, width - horizontalGutters - innerGutters);
+  const landscapeLimit = height < width && height < 560 ? Math.max(260, (height - 80) * 1.25) : 720;
+  const boardWidth = Math.floor(desktopLayout
+    ? Math.min(width - 430, Math.max(520, (height - 120) * 1.28), 1080)
+    : Math.min(mobileBoardSpace, landscapeLimit));
+  const cardGap = width < 370 ? 4 : width < 650 ? 5 : width < 1024 ? 7 : 9;
   const cardWidth = (boardWidth - cardGap * 4) / 5;
   const playerRole = isSpymaster ? 'قائد الفريق — ترى هويات البطاقات' : 'لاعب — اختر كلمات فريقك';
 
@@ -106,34 +114,20 @@ export function GameScreen({ navigation }) {
     ],
   );
 
-  return (
-    <ScreenContainer contentStyle={styles.screen}>
-      <GameHeader
-        title={`كود نيمز | الجولة ${gameState.round}`}
-        subtitle={`${gameState.roomId} • ${playerRole}`}
-        onBack={leave}
-        rightIcon={muted ? 'volume-mute-outline' : 'volume-high-outline'}
-        onRightPress={toggleMute}
-      />
-
-      <GameLogo id="CODENAMES" size={70} style={styles.logo} />
-      <TurnTransitionOverlay team={gameState.currentTeam} />
-
-      <View style={styles.scoreRow}>
-        {teams.map((team) => (
-          <View key={team} style={[styles.score, { borderColor: teamColor(team) }]}>
-            <View style={[styles.scoreDot, { backgroundColor: teamColor(team) }]} />
-            <ArabicText weight="bold" style={styles.scoreName}>{TEAM_LABEL[team]}</ArabicText>
-            <ArabicText weight="extraBold" style={[styles.scoreNumber, { color: teamColor(team) }]}>{gameState.remainingCards[team]}</ArabicText>
-          </View>
-        ))}
-      </View>
-
-      <View style={styles.turnSection}>
-        <TurnIndicator team={gameState.currentTeam} isMyTurn={isMyTurn} />
-      </View>
-
-      <View style={[styles.tabletop, { width: boardWidth + 16 }]}>
+  const scores = (
+    <View style={styles.scoreRow}>
+      {teams.map((team) => (
+        <View key={team} style={[styles.score, { borderColor: teamColor(team) }]}>
+          <View style={[styles.scoreDot, { backgroundColor: teamColor(team) }]} />
+          <ArabicText weight="bold" style={styles.scoreName}>{TEAM_LABEL[team]}</ArabicText>
+          <ArabicText weight="extraBold" style={[styles.scoreNumber, { color: teamColor(team) }]}>{gameState.remainingCards[team]}</ArabicText>
+        </View>
+      ))}
+    </View>
+  );
+  const turn = <View style={styles.turnSection}><TurnIndicator team={gameState.currentTeam} isMyTurn={isMyTurn} /></View>;
+  const board = (
+    <View style={[styles.tabletop, { width: boardWidth + 16 }]}>
       <View style={[styles.board, { width: boardWidth, gap: cardGap }]}>
         {gameState.board.map((card) => (
           <GameCard
@@ -146,8 +140,10 @@ export function GameScreen({ navigation }) {
           />
         ))}
       </View>
-      </View>
-
+    </View>
+  );
+  const clueControls = (
+    <>
       <CluePanel
         clue={gameState.clue}
         clueHistory={gameState.clueHistory}
@@ -157,14 +153,47 @@ export function GameScreen({ navigation }) {
         waitingForClue={isMyTurn}
         loading={busyAction === 'game:give-clue'}
         onGiveClue={actions.giveClue}
+        scopeKey={`${gameState.roomId}:${gameState.round}:${gameState.currentTeam}:${gameState.clueHistory?.length || 0}`}
       />
-
       {canSelect ? (
         <View style={styles.agentActions}>
           <ArabicText style={styles.guesses}>المحاولات المتاحة: {gameState.guessesRemaining}</ArabicText>
           <PrimaryButton compact title="إنهاء الدور" icon="stop-circle-outline" variant="ghost" loading={busyAction === 'game:end-turn'} disabled={Boolean(selectingCardId)} onPress={actions.endTurn} />
         </View>
       ) : null}
+    </>
+  );
+
+  return (
+    <ScreenContainer contentStyle={[styles.screen, desktopLayout && styles.wideScreen]}>
+      <GameHeader
+        title={`فك الشيفرة | الجولة ${gameState.round}`}
+        subtitle={`${gameState.roomId} • ${playerRole}`}
+        onBack={leave}
+        rightIcon={muted ? 'volume-mute-outline' : 'volume-high-outline'}
+        onRightPress={toggleMute}
+      />
+
+      <TurnTransitionOverlay team={gameState.currentTeam} />
+      {desktopLayout ? (
+        <View style={styles.desktopColumns}>
+          {board}
+          <View style={styles.sidebar}>
+            <GameLogo id="CODENAMES" size={62} style={styles.logo} />
+            {scores}
+            {turn}
+            {clueControls}
+          </View>
+        </View>
+      ) : (
+        <>
+          <GameLogo id="CODENAMES" size={width < 440 ? 45 : 62} style={styles.logo} />
+          {scores}
+          {turn}
+          {board}
+          {clueControls}
+        </>
+      )}
 
       <GameResultModal
         visible={gameState.status === STATUS.FINISHED}
@@ -181,7 +210,10 @@ export function GameScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  screen: { paddingHorizontal: spacing.md, paddingBottom: spacing.xxl },
+  screen: { width: '100%', minWidth: 0, paddingHorizontal: spacing.md, paddingBottom: spacing.xxl },
+  wideScreen: { maxWidth: 1500, alignSelf: 'center' },
+  desktopColumns: { flexDirection: 'row-reverse', alignItems: 'flex-start', justifyContent: 'center', gap: spacing.xl },
+  sidebar: { width: 315, flexShrink: 0, gap: spacing.sm },
   logo: { marginVertical: spacing.lg },
   turnSection: { marginBottom: spacing.lg },
   center: { alignItems: 'center', justifyContent: 'center' },

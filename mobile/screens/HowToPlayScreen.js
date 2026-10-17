@@ -18,7 +18,7 @@ const steps = [
 export function HowToPlayScreen({ navigation }) {
   return (
     <ScreenContainer>
-      <GameHeader title="كيف نلعب كود نيمز؟" subtitle="قواعد اللعب على طاولتنا" onBack={() => navigation.goBack()} />
+      <GameHeader title="كيف نلعب فك الشيفرة؟" subtitle="قواعد اللعب على طاولتنا" onBack={() => navigation.goBack()} />
       <View style={styles.hero}>
         <ArabicText weight="extraBold" style={styles.heroTitle}>25 كلمة. تلميح واحد.</ArabicText>
         <ArabicText style={styles.heroText}>المطلوب أن يفهم فريقك ما تقصده قبل أن تقوده الكلمة إلى بطاقة الخصم.</ArabicText>

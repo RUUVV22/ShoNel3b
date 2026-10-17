@@ -82,10 +82,9 @@ export const GameCard = memo(function GameCard({ card, width, disabled, selectin
   }, [card.revealed, flip, scale]);
 
   const fontSize = useMemo(() => {
-    if (card.word.length >= 8) return 10;
-    if (card.word.length >= 6) return 11;
-    return 12.5;
-  }, [card.word]);
+    const responsiveSize = Math.min(23, Math.max(10, width * 0.15));
+    return responsiveSize * (card.word.length >= 8 ? 0.82 : card.word.length >= 6 ? 0.9 : 1);
+  }, [card.word, width]);
 
   const rotate = rotation.interpolate({ inputRange: [-3, 3], outputRange: ['-3deg', '3deg'] });
   const flipY = flip.interpolate({ inputRange: [0, 0.5, 1], outputRange: ['0deg', '92deg', '360deg'] });
@@ -100,7 +99,7 @@ export const GameCard = memo(function GameCard({ card, width, disabled, selectin
         onPress={() => onPress(card.id)}
         style={({ pressed }) => [
           styles.card,
-          { width, height: Math.max(50, width * 0.78) },
+          { width, height: Math.max(46, width * 0.78) },
           (disabled || card.revealed) && !card.revealed && !card.type && styles.disabled,
           card.revealed && styles.revealedCard,
           pressed && styles.pressed,
@@ -110,7 +109,7 @@ export const GameCard = memo(function GameCard({ card, width, disabled, selectin
           weight="bold"
           numberOfLines={2}
           adjustsFontSizeToFit
-          style={[styles.word, { fontSize }]}
+          style={[styles.word, { fontSize, lineHeight: fontSize * 1.35 }]}
         >
           {card.word}
         </ArabicText>
@@ -127,7 +126,7 @@ export const GameCard = memo(function GameCard({ card, width, disabled, selectin
             weight="bold"
             numberOfLines={2}
             adjustsFontSizeToFit
-            style={[styles.identityWord, { color: identityTextColor, fontSize }]}
+            style={[styles.identityWord, { color: identityTextColor, fontSize, lineHeight: fontSize * 1.35 }]}
           >
             {card.word}
           </ArabicText>
