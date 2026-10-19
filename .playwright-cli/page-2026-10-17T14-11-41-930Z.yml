@@ -1,0 +1,258 @@
+- generic [ref=f1e4]:
+  - generic [ref=f1e142]:
+    - generic [ref=f1e143]:
+      - button "العودة" [ref=f1e144] [cursor=pointer]:
+        - generic [ref=f1e145]: 
+      - generic [ref=f1e146]:
+        - generic [ref=f1e147]: غرفة الشِلّة
+        - generic [ref=f1e148]: الكل هون.. شو نلعب؟
+    - generic [ref=f1e150]:
+      - generic [ref=f1e151]: متصل
+      - generic [ref=f1e154]:
+        - generic [ref=f1e155]: 
+        - generic [ref=f1e156]: "المضيف: Islam"
+    - generic [ref=f1e157]:
+      - generic [ref=f1e158]:
+        - generic [ref=f1e159]: ✨ بطاقة اللمّة
+        - generic [ref=f1e160]: ابعث الرمز لأصحابك وخلي اللمّة تكبر!
+      - button "رمز الغرفة KEKLW" [ref=f1e161] [cursor=pointer]:
+        - generic [ref=f1e162]:
+          - generic [ref=f1e163]: ✦ رمز اللمّة ✦
+          - generic [ref=f1e164]: KEKLW
+        - generic [ref=f1e165]: 
+      - generic [ref=f1e167]:
+        - button "مشاركة" [ref=f1e175] [cursor=pointer]:
+          - generic [ref=f1e176]:
+            - generic [ref=f1e177]: 
+            - generic [ref=f1e178]: مشاركة
+        - generic [ref=f1e179]:
+          - generic [ref=f1e180]: جاهزين للّمة؟
+          - generic [ref=f1e181]: شارك الرابط أو خلّي صاحبك يمسح الرمز.
+          - generic [ref=f1e182]: http://localhost:8081/?room=KEKLW
+    - generic [ref=f1e183]:
+      - generic [ref=f1e184]: اللي قاعدين معنا
+      - generic [ref=f1e185]: 4/20
+    - generic [ref=f1e187]:
+      - generic [ref=f1e188]:
+        - img "Character for Islam" [ref=f1e189]
+        - generic [ref=f1e197]: Islam
+        - generic [ref=f1e198]: 
+      - generic [ref=f1e266]:
+        - img "Character for Sami" [ref=f1e267]
+        - generic [ref=f1e275]: Sami
+      - generic [ref=f1e276]:
+        - img "Character for Lina" [ref=f1e277]
+        - generic [ref=f1e285]: Lina
+      - generic [ref=f1e286]:
+        - img "Character for Omar" [ref=f1e287]
+        - generic [ref=f1e295]: Omar
+    - generic [ref=f1e199]:
+      - generic [ref=f1e200]: شو بدنا نلعب؟
+      - generic [ref=f1e201]: إنت صاحب القرار
+    - button "Codenames" [ref=f1e202] [cursor=pointer]:
+      - generic "فك الشيفرة" [ref=f1e204]:
+        - img "فك الشيفرة" [ref=f1e206]
+      - generic [ref=f1e207]:
+        - generic [ref=f1e208]: كود نيمز
+        - generic [ref=f1e209]: فريقان، ٢٥ كلمة، وتلميحة واحدة تغيّر كل شيء
+        - generic [ref=f1e210]: 4 بالغرفة • 4–20 لاعبين
+      - generic [ref=f1e211]: 
+    - button "Scorpion Night" [ref=f1e213] [cursor=pointer]:
+      - generic "ليلة العقارب - Scorpion Night" [ref=f1e215]:
+        - img "ليلة العقارب - Scorpion Night" [ref=f1e217]
+      - generic [ref=f1e218]:
+        - generic [ref=f1e219]: ليلة العقارب
+        - generic [ref=f1e220]: أدوار خفية ونقاش وتصويت ليلي
+        - generic [ref=f1e221]: 4 بالغرفة • 4–20 لاعبين
+      - generic [ref=f1e222]: 
+    - button "Stump Me!" [ref=f1e224] [cursor=pointer]:
+      - generic "خسرني" [ref=f1e226]:
+        - img "خسرني" [ref=f1e228]
+      - generic [ref=f1e229]:
+        - generic [ref=f1e230]: خسّرني!
+        - generic [ref=f1e231]: اختار الفئة، جاوب قبل ما يخلص الوقت، وتحدى الشلة
+        - generic [ref=f1e232]: 4 بالغرفة • 2–20 لاعبين
+      - generic [ref=f1e233]: 
+    - button "WHO BOMBED ME?" [ref=f1e235] [cursor=pointer]:
+      - generic "مين فجرني" [ref=f1e237]:
+        - img "مين فجرني" [ref=f1e239]
+      - generic [ref=f1e240]:
+        - generic [ref=f1e241]: مين فجّرني؟
+        - generic [ref=f1e242]: واحد معه القنبلة، يبعثها بالسر. هل الضحية بتعرف مين ورّطها؟
+        - generic [ref=f1e243]: 4 بالغرفة • 4–20 لاعبين
+      - generic [ref=f1e244]: 
+    - button "WHO DID IT?" [ref=f1e246] [cursor=pointer]:
+      - generic "مين وراها" [ref=f1e248]:
+        - img "مين وراها" [ref=f1e250]
+      - generic [ref=f1e251]:
+        - generic [ref=f1e252]: مين وراها
+        - generic [ref=f1e253]: "حققوا بسر صندوق أمانة الحارة: مين أخذه، من وين، وبأي غرض؟ تحرّك بنردين واكشف الأدلة."
+        - generic [ref=f1e254]: 4 بالغرفة • 3–6 لاعبين
+      - generic [ref=f1e255]: 
+    - generic [ref=f1e257]:
+      - generic [ref=f1e258]: 
+      - generic [ref=f1e259]: ألعاب ثانية بالطريق.. نفس الغرفة، نفس الشِلّة!
+    - generic [ref=f1e296]:
+      - generic [ref=f1e297]: تشكيلة ليلة العقارب
+      - generic [ref=f1e298]:
+        - generic [ref=f1e299]: "اللاعبون: 4"
+        - generic [ref=f1e300]: "المطلوب: 7"
+        - generic [ref=f1e301]: "المختار: 7"
+      - generic [ref=f1e302]: "أنت المضيف: اختر البطاقات ثم اضغط اعتماد التشكيلة."
+      - generic [ref=f1e303]:
+        - generic [ref=f1e306]:
+          - generic [ref=f1e307]: المقلّد
+          - generic [ref=f1e308]: ينسخ بطاقة لاعب ويستخدم قدرته حسب توقيتها.
+          - generic [ref=f1e309]: "الحد الأعلى: 1"
+        - generic [ref=f1e310]:
+          - button "تقليل المقلّد" [ref=f1e467] [cursor=pointer]:
+            - generic [ref=f1e311]: −
+          - generic [ref=f1e312]: "1"
+          - button "زيادة المقلّد" [disabled]:
+            - generic [ref=f1e314]: ＋
+      - generic [ref=f1e315]:
+        - generic [ref=f1e318]:
+          - generic [ref=f1e319]: العقرب
+          - generic [ref=f1e320]: يتعرّف على شركائه، وإن كان وحده يرى بطاقة من الوسط.
+          - generic [ref=f1e321]: "الحد الأعلى: 1"
+        - generic [ref=f1e322]:
+          - button "تقليل العقرب" [ref=f1e468] [cursor=pointer]:
+            - generic [ref=f1e323]: −
+          - generic [ref=f1e324]: "1"
+          - button "زيادة العقرب" [disabled]:
+            - generic [ref=f1e326]: ＋
+      - generic [ref=f1e327]:
+        - generic [ref=f1e330]:
+          - generic [ref=f1e331]: العقربة
+          - generic [ref=f1e332]: إذا كانت وحدها تقارن فريق بطاقتين من الوسط دون معرفة هويتهما.
+          - generic [ref=f1e333]: "الحد الأعلى: 1"
+        - generic [ref=f1e334]:
+          - button "تقليل العقربة" [ref=f1e469] [cursor=pointer]:
+            - generic [ref=f1e335]: −
+          - generic [ref=f1e336]: "1"
+          - button "زيادة العقربة" [disabled]:
+            - generic [ref=f1e338]: ＋
+      - generic [ref=f1e339]:
+        - generic [ref=f1e342]:
+          - generic [ref=f1e343]: المساعد
+          - generic [ref=f1e344]: يعرف العقارب ولا يعرفون هويته.
+          - generic [ref=f1e345]: "الحد الأعلى: 1"
+        - generic [ref=f1e346]:
+          - button "تقليل المساعد" [ref=f1e470] [cursor=pointer]:
+            - generic [ref=f1e347]: −
+          - generic [ref=f1e348]: "1"
+          - button "زيادة المساعد" [disabled]:
+            - generic [ref=f1e350]: ＋
+      - generic [ref=f1e351]:
+        - generic [ref=f1e354]:
+          - generic [ref=f1e355]: الصحاب
+          - generic [ref=f1e356]: الصحاب يتعرّفون على بعضهم ليلة اللعب.
+          - generic [ref=f1e357]: "الحد الأعلى: 2"
+        - generic [ref=f1e358]:
+          - button "تقليل الصحاب" [ref=f1e471] [cursor=pointer]:
+            - generic [ref=f1e359]: −
+          - generic [ref=f1e360]: "2"
+          - button "زيادة الصحاب" [disabled]:
+            - generic [ref=f1e362]: ＋
+      - generic [ref=f1e363]:
+        - generic [ref=f1e366]:
+          - generic [ref=f1e367]: العرّافة
+          - generic [ref=f1e368]: تشوف بطاقة لاعب أو بطاقتين من الوسط.
+          - generic [ref=f1e369]: "الحد الأعلى: 1"
+        - generic [ref=f1e370]:
+          - button "تقليل العرّافة" [ref=f1e472] [cursor=pointer]:
+            - generic [ref=f1e371]: −
+          - generic [ref=f1e372]: "1"
+          - button "زيادة العرّافة" [disabled]:
+            - generic [ref=f1e374]: ＋
+      - generic [ref=f1e375]:
+        - generic [ref=f1e378]:
+          - generic [ref=f1e379]: الحرامي
+          - generic [ref=f1e380]: يبدّل بطاقته مع لاعب ويرى ما أخذ؛ ممكن يتجاوز.
+          - generic [ref=f1e381]: "الحد الأعلى: 1"
+        - generic [ref=f1e382]:
+          - button "تقليل الحرامي" [disabled]:
+            - generic [ref=f1e383]: −
+          - generic [ref=f1e384]: "0"
+          - button "زيادة الحرامي" [ref=f1e385] [cursor=pointer]:
+            - generic [ref=f1e386]: ＋
+      - generic [ref=f1e387]:
+        - generic [ref=f1e390]:
+          - generic [ref=f1e391]: القلّاب
+          - generic [ref=f1e392]: يبدّل بطاقتين للاعبين آخرين دون رؤيتهما.
+          - generic [ref=f1e393]: "الحد الأعلى: 1"
+        - generic [ref=f1e394]:
+          - button "تقليل القلّاب" [disabled]:
+            - generic [ref=f1e395]: −
+          - generic [ref=f1e396]: "0"
+          - button "زيادة القلّاب" [ref=f1e397] [cursor=pointer]:
+            - generic [ref=f1e398]: ＋
+      - generic [ref=f1e399]:
+        - generic [ref=f1e402]:
+          - generic [ref=f1e403]: السكران
+          - generic [ref=f1e404]: يبدّل بطاقته مع بطاقة من الوسط دون رؤيتها.
+          - generic [ref=f1e405]: "الحد الأعلى: 1"
+        - generic [ref=f1e406]:
+          - button "تقليل السكران" [disabled]:
+            - generic [ref=f1e407]: −
+          - generic [ref=f1e408]: "0"
+          - button "زيادة السكران" [ref=f1e409] [cursor=pointer]:
+            - generic [ref=f1e410]: ＋
+      - generic [ref=f1e411]:
+        - generic [ref=f1e414]:
+          - generic [ref=f1e415]: بنت الليل
+          - generic [ref=f1e416]: تفحص بطاقتها في آخر الليل وتشوف إذا تغيّرت.
+          - generic [ref=f1e417]: "الحد الأعلى: 1"
+        - generic [ref=f1e418]:
+          - button "تقليل بنت الليل" [disabled]:
+            - generic [ref=f1e419]: −
+          - generic [ref=f1e420]: "0"
+          - button "زيادة بنت الليل" [ref=f1e421] [cursor=pointer]:
+            - generic [ref=f1e422]: ＋
+      - generic [ref=f1e423]:
+        - generic [ref=f1e426]:
+          - generic [ref=f1e427]: المواطن
+          - generic [ref=f1e428]: من أهل الحارة، ليس له حركة ليلية.
+          - generic [ref=f1e429]: "الحد الأعلى: حسب عدد اللاعبين"
+        - generic [ref=f1e430]:
+          - button "تقليل المواطن" [disabled]:
+            - generic [ref=f1e431]: −
+          - generic [ref=f1e432]: "0"
+          - button "زيادة المواطن" [ref=f1e433] [cursor=pointer]:
+            - generic [ref=f1e434]: ＋
+      - generic [ref=f1e435]:
+        - generic [ref=f1e438]:
+          - generic [ref=f1e439]: الفزّاع
+          - generic [ref=f1e440]: إذا طلع من اللعبة، اللاعب اللي صوّت له يطلع معه.
+          - generic [ref=f1e441]: "الحد الأعلى: 1"
+        - generic [ref=f1e442]:
+          - button "تقليل الفزّاع" [disabled]:
+            - generic [ref=f1e443]: −
+          - generic [ref=f1e444]: "0"
+          - button "زيادة الفزّاع" [ref=f1e445] [cursor=pointer]:
+            - generic [ref=f1e446]: ＋
+      - generic [ref=f1e447]:
+        - generic [ref=f1e450]:
+          - generic [ref=f1e451]: كبش الفدا
+          - generic [ref=f1e452]: يفوز إذا تم إقصاؤه في التصويت النهائي.
+          - generic [ref=f1e453]: "الحد الأعلى: 1"
+        - generic [ref=f1e454]:
+          - button "تقليل كبش الفدا" [disabled]:
+            - generic [ref=f1e455]: −
+          - generic [ref=f1e456]: "0"
+          - button "زيادة كبش الفدا" [ref=f1e457] [cursor=pointer]:
+            - generic [ref=f1e458]: ＋
+      - generic [ref=f1e459]:
+        - button "اقتراح تشكيلة جاهزة" [ref=f1e460] [cursor=pointer]
+        - generic [ref=f1e463]: ✓ التشكيلة صالحة
+        - button "اعتماد التشكيلة" [ref=f1e473] [cursor=pointer]
+    - generic [ref=f1e260]:
+      - generic [ref=f1e261]: 
+      - generic [ref=f1e262]: جاهزين! يلا نبلّش الجولة
+    - button "يلا نلعب!" [ref=f1e466] [cursor=pointer]:
+      - generic [ref=f1e263]:
+        - generic [ref=f1e264]: 
+        - generic [ref=f1e265]: يلا نلعب!
+  - generic [ref=f1e475] [cursor=pointer]:
+    - generic [ref=f1e476]: 
+    - generic [ref=f1e477]: تعيين الفريق أو الدور غير صالح

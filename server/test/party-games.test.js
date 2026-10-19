@@ -4,14 +4,14 @@ const wolf=require('../src/games/werewolf');
 const trivia=require('../src/games/khaserny');
 const players=Array.from({length:4},(_,i)=>({id:'p'+i,connected:true}));
 test('Werewolf hides secrets and resolves votes',()=>{
- const s=wolf.createSession(1,()=>0.4,{players});
+ const s=wolf.createSession(1,()=>0.999,{players,
+  werewolfRoleDeck:['SCORPION','SCORPIONESS','VILLAGER','VILLAGER','SEER','TANNER','VILLAGER']});
  const view=wolf.serialize(s,players[0]).werewolf;
  assert.equal(view.assignments,undefined);
- assert.equal(view.phase,'NIGHT');
- for(let i=0;i<6;i++)wolf.advance(s);
- wolf.advance(s);
- for(let i=0;i<4;i++)wolf.vote(s,players[i],players[(i+1)%4].id);
- wolf.advance(s);
+ assert.equal(view.phase,'REVEAL');
+ for(let i=0;i<20&&s.phase!=='VOTING';i++)wolf.tick(s,s.deadline+1,()=>0.3);
+ assert.equal(s.phase,'VOTING');
+ for(let i=0;i<4;i++)wolf.vote(s,players[i],players[(i+1)%4].id,undefined,s.voteOpensAt+1);
  assert.equal(s.status,'FINISHED');
 });
 test('Six category quiz keeps answers secret and scores approved answers',()=>{

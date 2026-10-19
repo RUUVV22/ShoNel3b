@@ -1,0 +1,175 @@
+- generic [ref=f1e140]:
+  - generic [ref=f1e141]:
+    - button "العودة" [ref=f1e142] [cursor=pointer]:
+      - generic [ref=f1e143]: 
+    - generic [ref=f1e144]:
+      - generic [ref=f1e145]: غرفة الشِلّة
+      - generic [ref=f1e146]: الكل هون.. شو نلعب؟
+  - generic [ref=f1e148]:
+    - generic [ref=f1e149]: متصل
+    - generic [ref=f1e152]:
+      - generic [ref=f1e153]: 
+      - generic [ref=f1e154]: "المضيف: Islam"
+  - generic [ref=f1e155]:
+    - generic [ref=f1e156]:
+      - generic [ref=f1e157]: ✨ بطاقة اللمّة
+      - generic [ref=f1e158]: ابعث الرمز لأصحابك وخلي اللمّة تكبر!
+    - button "رمز الغرفة ZKRD3" [ref=f1e159] [cursor=pointer]:
+      - generic [ref=f1e160]:
+        - generic [ref=f1e161]: ✦ رمز اللمّة ✦
+        - generic [ref=f1e162]: ZKRD3
+      - generic [ref=f1e163]: 
+    - generic [ref=f1e165]:
+      - button "مشاركة" [ref=f1e173] [cursor=pointer]:
+        - generic [ref=f1e174]:
+          - generic [ref=f1e175]: 
+          - generic [ref=f1e176]: مشاركة
+      - generic [ref=f1e177]:
+        - generic [ref=f1e178]: جاهزين للّمة؟
+        - generic [ref=f1e179]: شارك الرابط أو خلّي صاحبك يمسح الرمز.
+        - generic [ref=f1e180]: http://localhost:8081/?room=ZKRD3
+  - generic [ref=f1e181]:
+    - generic [ref=f1e182]: اللي قاعدين معنا
+    - generic [ref=f1e183]: 4/20
+  - generic [ref=f1e185]:
+    - generic [ref=f1e186]:
+      - img "Character for Islam" [ref=f1e187]
+      - generic [ref=f1e195]: Islam
+      - generic [ref=f1e196]: 
+    - generic [ref=f1e264]:
+      - img "Character for Sami" [ref=f1e265]
+      - generic [ref=f1e273]: Sami
+    - generic [ref=f1e274]:
+      - img "Character for Lina" [ref=f1e275]
+      - generic [ref=f1e283]: Lina
+    - generic [ref=f1e284]:
+      - img "Character for Omar" [ref=f1e285]
+      - generic [ref=f1e293]: Omar
+  - generic [ref=f1e197]:
+    - generic [ref=f1e198]: شو بدنا نلعب؟
+    - generic [ref=f1e199]: إنت صاحب القرار
+  - button "Codenames" [ref=f1e200] [cursor=pointer]:
+    - generic "فك الشيفرة" [ref=f1e202]:
+      - img "فك الشيفرة" [ref=f1e204]
+    - generic [ref=f1e205]:
+      - generic [ref=f1e206]: كود نيمز
+      - generic [ref=f1e207]: فريقان، ٢٥ كلمة، وتلميحة واحدة تغيّر كل شيء
+      - generic [ref=f1e208]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=f1e209]: 
+  - button "Scorpion Night" [ref=f1e211] [cursor=pointer]:
+    - generic "ليلة العقارب - Scorpion Night" [ref=f1e213]:
+      - img "ليلة العقارب - Scorpion Night" [ref=f1e215]
+    - generic [ref=f1e216]:
+      - generic [ref=f1e217]: ليلة العقارب
+      - generic [ref=f1e218]: أدوار خفية ونقاش وتصويت ليلي
+      - generic [ref=f1e219]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=f1e220]: 
+  - button "Stump Me!" [ref=f1e222] [cursor=pointer]:
+    - generic "خسرني" [ref=f1e224]:
+      - img "خسرني" [ref=f1e226]
+    - generic [ref=f1e227]:
+      - generic [ref=f1e228]: خسّرني!
+      - generic [ref=f1e229]: اختار الفئة، جاوب قبل ما يخلص الوقت، وتحدى الشلة
+      - generic [ref=f1e230]: 4 بالغرفة • 2–20 لاعبين
+    - generic [ref=f1e231]: 
+  - button "WHO BOMBED ME?" [ref=f1e233] [cursor=pointer]:
+    - generic "مين فجرني" [ref=f1e235]:
+      - img "مين فجرني" [ref=f1e237]
+    - generic [ref=f1e238]:
+      - generic [ref=f1e239]: مين فجّرني؟
+      - generic [ref=f1e240]: واحد معه القنبلة، يبعثها بالسر. هل الضحية بتعرف مين ورّطها؟
+      - generic [ref=f1e241]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=f1e242]: 
+  - button "WHO DID IT?" [ref=f1e244] [cursor=pointer]:
+    - generic "مين وراها" [ref=f1e246]:
+      - img "مين وراها" [ref=f1e248]
+    - generic [ref=f1e249]:
+      - generic [ref=f1e250]: مين وراها
+      - generic [ref=f1e251]: "حققوا بسر صندوق أمانة الحارة: مين أخذه، من وين، وبأي غرض؟ تحرّك بنردين واكشف الأدلة."
+      - generic [ref=f1e252]: 4 بالغرفة • 3–6 لاعبين
+    - generic [ref=f1e253]: 
+  - generic [ref=f1e255]:
+    - generic [ref=f1e256]: 
+    - generic [ref=f1e257]: ألعاب ثانية بالطريق.. نفس الغرفة، نفس الشِلّة!
+  - generic [ref=f1e294]: وزّعوا الفرق!
+  - generic [ref=f1e296]: اختار فريقك. المضيف بقدر يغيّر الأدوار وينقل اللاعبين.
+  - generic [ref=f1e297]:
+    - generic [ref=f1e298]:
+      - generic [ref=f1e299]:
+        - generic [ref=f1e301]: الفريق المرجاني
+        - generic [ref=f1e302]: 2 ✦
+        - button " فريقك" [disabled]:
+          - generic [ref=f1e304]: 
+          - generic [ref=f1e305]: فريقك
+      - generic [ref=f1e307]:
+        - generic [ref=f1e308]:
+          - generic [ref=f1e309]:
+            - img "Character for Islam" [ref=f1e310]
+            - generic [ref=f1e318]:
+              - generic [ref=f1e319]:
+                - generic [ref=f1e320]: 
+                - generic [ref=f1e321]: Islam • أنت
+              - generic [ref=f1e322]: ● على الطاولة
+          - button "دور Islam" [ref=f1e324] [cursor=pointer]:
+            - generic [ref=f1e325]: قائد الفريق
+            - generic [ref=f1e326]: 
+        - generic [ref=f1e327]:
+          - generic [ref=f1e328]:
+            - img "Character for Lina" [ref=f1e329]
+            - generic [ref=f1e337]:
+              - generic [ref=f1e338]: Lina
+              - generic [ref=f1e340]: ● على الطاولة
+          - generic [ref=f1e341]:
+            - button "دور Lina" [ref=f1e342] [cursor=pointer]:
+              - generic [ref=f1e343]: لاعب
+              - generic [ref=f1e344]: 
+            - generic [ref=f1e345]:
+              - button "نقل Lina" [ref=f1e346] [cursor=pointer]:
+                - generic [ref=f1e347]: 
+              - button "إزالة Lina" [ref=f1e348] [cursor=pointer]:
+                - generic [ref=f1e349]: 
+    - generic [ref=f1e350]:
+      - generic [ref=f1e351]:
+        - generic [ref=f1e353]: الفريق الذهبي
+        - generic [ref=f1e354]: 2 ✦
+        - button " انضم" [ref=f1e356] [cursor=pointer]:
+          - generic [ref=f1e357]: 
+          - generic [ref=f1e358]: انضم
+      - generic [ref=f1e360]:
+        - generic [ref=f1e361]:
+          - generic [ref=f1e362]:
+            - img "Character for Sami" [ref=f1e363]
+            - generic [ref=f1e371]:
+              - generic [ref=f1e372]: Sami
+              - generic [ref=f1e374]: ● على الطاولة
+          - generic [ref=f1e375]:
+            - button "دور Sami" [ref=f1e376] [cursor=pointer]:
+              - generic [ref=f1e377]: قائد الفريق
+              - generic [ref=f1e378]: 
+            - generic [ref=f1e379]:
+              - button "نقل Sami" [ref=f1e380] [cursor=pointer]:
+                - generic [ref=f1e381]: 
+              - button "إزالة Sami" [ref=f1e382] [cursor=pointer]:
+                - generic [ref=f1e383]: 
+        - generic [ref=f1e384]:
+          - generic [ref=f1e385]:
+            - img "Character for Omar" [ref=f1e386]
+            - generic [ref=f1e394]:
+              - generic [ref=f1e395]: Omar
+              - generic [ref=f1e397]: ● على الطاولة
+          - generic [ref=f1e398]:
+            - button "دور Omar" [ref=f1e399] [cursor=pointer]:
+              - generic [ref=f1e400]: لاعب
+              - generic [ref=f1e401]: 
+            - generic [ref=f1e402]:
+              - button "نقل Omar" [ref=f1e403] [cursor=pointer]:
+                - generic [ref=f1e404]: 
+              - button "إزالة Omar" [ref=f1e405] [cursor=pointer]:
+                - generic [ref=f1e406]: 
+  - generic [ref=f1e258]:
+    - generic [ref=f1e259]: 
+    - generic [ref=f1e260]: جاهزين! يلا نبلّش الجولة
+  - button "يلا نلعب!" [ref=f1e407] [cursor=pointer]:
+    - generic [ref=f1e261]:
+      - generic [ref=f1e262]: 
+      - generic [ref=f1e263]: يلا نلعب!

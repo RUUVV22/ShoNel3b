@@ -1,0 +1,26 @@
+- generic [ref=f1e106]:
+  - generic [ref=f1e107]:
+    - button "العودة" [ref=f1e108] [cursor=pointer]:
+      - generic [ref=f1e109]: 
+    - generic [ref=f1e110]:
+      - generic [ref=f1e111]: سوّي لَمّة!
+      - generic [ref=f1e112]: غرفتك، أصحابك، لعبتك
+  - generic [ref=f1e114]:
+    - generic "Sho Nel3b game logo" [ref=f1e116]:
+      - img "Sho Nel3b game logo" [ref=f1e118]
+    - generic [ref=f1e119]:
+      - generic [ref=f1e120]: صاحب اللمّة؟
+      - generic [ref=f1e121]: افتح غرفة، ابعث الرمز، واختار لعبة الكل يلعبها معك.
+  - generic [ref=f1e122]:
+    - generic [ref=f1e123]: ✳
+    - generic [ref=f1e125]: حضّر بطاقة دخولك
+    - generic [ref=f1e126]:
+      - generic [ref=f1e127]: اسمك باللعبة
+      - generic [ref=f1e128]:
+        - generic [ref=f1e129]: 
+        - 'textbox "مثال: أحمد" [ref=f1e130]'
+    - button "أنشئ الغرفة!" [disabled]:
+      - generic [ref=f1e131]:
+        - generic [ref=f1e132]: 
+        - generic [ref=f1e133]: أنشئ الغرفة!
+  - generic [ref=f1e134]: ما بدها تسجيل! بس اسم ورمز للغرفة.

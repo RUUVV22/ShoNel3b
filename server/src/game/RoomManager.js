@@ -17,6 +17,7 @@ class RoomManager {
     this.socketIndex = new Map();
     this.disconnectTimers = new Map();
     this.mysteryTimers = new Map();
+    this.werewolfTimers = new Map();
     this.random = random;
     this.reconnectWindowMs = reconnectWindowMs;
     this.mysteryTimeoutMs = mysteryTimeoutMs;
@@ -42,7 +43,6 @@ class RoomManager {
       selectedGameId: null,
       gameSession: null,
       roundCounts: {},
-      werewolfRoleDeck: null,
       mysteryCharacter: null,
       stateVersion: 1,
       createdAt: Date.now(),
@@ -74,7 +74,6 @@ class RoomManager {
     });
 
     room.players.push(player);
-    room.werewolfRoleDeck = null;
     this.touch(room);
     this.indexSocket(socketId, room.roomId, player.id);
     return this.sessionResult(room, player);
@@ -127,9 +126,10 @@ class RoomManager {
       const currentRoom = this.rooms.get(room.roomId);
       const currentPlayer = currentRoom?.players.find((candidate) => candidate.id === player.id);
       if (!currentRoom || !currentPlayer || currentPlayer.connected) return;
+      // Live seats remain part of the frozen Scorpion Night round until its end.
+      if(currentRoom.status===STATUS.ACTIVE&&currentRoom.selectedGameId==='WEREWOLF')return;
 
       currentRoom.players = currentRoom.players.filter((candidate) => candidate.id !== player.id);
-      currentRoom.werewolfRoleDeck = null;
       if (currentRoom.players.length === 0) {
         this.rooms.delete(currentRoom.roomId);
       } else {
@@ -196,7 +196,6 @@ class RoomManager {
     if (target.socketId) this.socketIndex.delete(target.socketId);
     this.clearDisconnectTimer(room.roomId, target.id);
     room.players = room.players.filter((candidate) => candidate.id !== target.id);
-    room.werewolfRoleDeck = null;
     this.touch(room);
     return { room, removedPlayer: target };
   }
@@ -205,8 +204,14 @@ class RoomManager {
     const { room, player } = this.requireSocketPlayer(socketId);
     this.socketIndex.delete(socketId);
     this.clearDisconnectTimer(room.roomId, player.id);
+    if(room.status===STATUS.ACTIVE&&room.selectedGameId==='WEREWOLF'){
+      player.socketId=null;
+      player.connected=false;
+      if(player.isHost)this.transferHost(room);
+      this.touch(room);
+      return {roomCode:room.roomId,playerId:player.id};
+    }
     room.players = room.players.filter((candidate) => candidate.id !== player.id);
-    room.werewolfRoleDeck = null;
 
     if (room.players.length === 0) {
       this.rooms.delete(room.roomId);
@@ -241,18 +246,6 @@ class RoomManager {
     return room;
   }
 
-  configureWerewolf(socketId, deck) {
-    const {room,player}=this.requireSocketPlayer(socketId);
-    this.assertHost(room,player);
-    if(room.status!==STATUS.LOBBY)throw new GameError('LOBBY_ONLY');
-    const allowed=new Set(require('../games/werewolf').roles.map(role=>role.id));
-    if(!Array.isArray(deck)||deck.length!==room.players.filter(p=>p.connected).length+3
-      ||!deck.every(id=>allowed.has(id)))throw new GameError('INVALID_ASSIGNMENT');
-    room.werewolfRoleDeck=[...deck];
-    this.touch(room);
-    return room;
-  }
-
   startGame(socketId) {
     const { room, player } = this.requireSocketPlayer(socketId);
     this.assertHost(room, player);
@@ -278,10 +271,47 @@ class RoomManager {
   createGameSession(room, game) {
     const round = (room.roundCounts[room.selectedGameId] || 0) + 1;
     room.roundCounts[room.selectedGameId] = round;
-    room.gameSession = game.createSession(round, this.random, room);
+    room.gameSession = room.selectedGameId==='WEREWOLF'
+      ? game.createSetupSession(round,room)
+      : game.createSession(round, this.random, room);
     room.status = room.gameSession.status;
     this.touch(room);
     this.armMysteryTimeout(room);
+    this.armWerewolfTimeout(room);
+  }
+
+  armWerewolfTimeout(room) {
+    const old=this.werewolfTimers.get(room.roomId);
+    if(old)clearTimeout(old);
+    this.werewolfTimers.delete(room.roomId);
+    if(room.selectedGameId!=='WEREWOLF'||room.status!==STATUS.ACTIVE||
+       room.gameSession?.phase==='SETUP')return;
+    const s=room.gameSession;
+    const now=Date.now();
+    let next=s.deadline;
+    if(s.phase==='REVEAL'&&!s.revealAtPassed&&s.revealAt>now)next=Math.min(next,s.revealAt);
+    if(s.phase==='NIGHT'){
+      if(s.step===0&&s.cue?.id==='night_start')next=Math.min(next,s.phaseStartedAt+3800);
+      if(!s.closingIssued)next=Math.min(next,s.deadline-1600);
+    }
+    if(s.phase==='DISCUSSION')for(const [limit,id] of [[60000,'one_minute_left'],[30000,'thirty_seconds_left']]) {
+      if(!s.warnings[id]&&s.deadline-limit>now)next=Math.min(next,s.deadline-limit);
+    }
+    const timer=setTimeout(()=>{
+      this.werewolfTimers.delete(room.roomId);
+      const current=this.rooms.get(room.roomId);
+      if(!current||current.status!==STATUS.ACTIVE||current.selectedGameId!=='WEREWOLF')return;
+      const wolf=require('../games/werewolf');
+      const connected=current.players.filter(p=>p.connected).map(p=>p.id);
+      const now=Date.now();
+      const changed=wolf.tick(current.gameSession,now,this.random,connected);
+      current.status=current.gameSession.status;
+      if(current.gameSession.phase==='REVEAL'&&now>=current.gameSession.revealAt)current.gameSession.revealAtPassed=true;
+      if(changed){this.touch(current);this.onAsyncChange(current.roomId);}
+      this.armWerewolfTimeout(current);
+    },Math.max(20,next-now));
+    timer.unref?.();
+    this.werewolfTimers.set(room.roomId,timer);
   }
 
   armMysteryTimeout(room) {
@@ -309,12 +339,17 @@ class RoomManager {
   returnToLobby(socketId) {
     const { room, player } = this.requireSocketPlayer(socketId);
     this.assertHost(room, player);
-    if (room.status === STATUS.ACTIVE) throw new GameError('GAME_NOT_FINISHED');
+    if (room.status === STATUS.ACTIVE && room.gameSession?.phase!=='SETUP')
+      throw new GameError('GAME_NOT_FINISHED');
     room.status = STATUS.LOBBY;
     room.gameSession = null;
+    if(room.selectedGameId==='WEREWOLF')room.players=room.players.filter(p=>p.connected);
     const timer=this.mysteryTimers.get(room.roomId);
     if(timer)clearTimeout(timer);
     this.mysteryTimers.delete(room.roomId);
+    const wolfTimer=this.werewolfTimers.get(room.roomId);
+    if(wolfTimer)clearTimeout(wolfTimer);
+    this.werewolfTimers.delete(room.roomId);
     this.touch(room);
     return room;
   }
@@ -360,7 +395,6 @@ class RoomManager {
       selectedGameId: room.selectedGameId,
       availableGames: listGames(),
       gameCatalogVersion: 5,
-      werewolfRoleDeck: room.status===STATUS.LOBBY ? room.werewolfRoleDeck : undefined,
       players: room.players.map(player => ({
         id: player.id,
         name: player.name,
@@ -389,11 +423,20 @@ class RoomManager {
     const game=getGame(room.selectedGameId);
     if(!game||room.status!==STATUS.ACTIVE)throw new GameError('GAME_NOT_ACTIVE');
     if(room.selectedGameId==='WEREWOLF'){
-      if(payload.action==='advance'){
+      if(room.gameSession.phase==='SETUP'){
         this.assertHost(room,player);
-        game.advance(room.gameSession,room.players.filter(p=>p.connected).map(p=>p.id));
-      }else if(payload.action==='vote')game.vote(room.gameSession,player,payload.target);
-      else game.action(room.gameSession,player,payload);
+        if(payload.action==='toggle-card')game.toggleSetupCard(room.gameSession,player,payload.cardKey);
+        else if(payload.action==='confirm-cards')
+          room.gameSession=game.confirmSetup(room.gameSession,room,this.random);
+        else throw new GameError('INVALID_GAME_ACTION');
+      }else {
+        const connected=room.players.filter(p=>p.connected).map(p=>p.id);
+        game.tick(room.gameSession,Date.now(),this.random,connected);
+        if(payload.action==='advance'){
+          this.assertHost(room,player);
+          game.advance(room.gameSession,connected,Date.now(),this.random);
+        }else game.action(room.gameSession,player,payload,this.random,connected);
+      }
     }else if(room.selectedGameId==='KHASERNY'){
       if(payload.action==='recover'){
         this.assertHost(room,player);
@@ -412,6 +455,7 @@ class RoomManager {
     room.status=room.gameSession.status;
     this.touch(room);
     if(!(room.selectedGameId==='MEN_WARAHA'&&payload.action==='note'))this.armMysteryTimeout(room);
+    this.armWerewolfTimeout(room);
     return room;
   }
 
@@ -448,6 +492,8 @@ class RoomManager {
     this.disconnectTimers.clear();
     this.mysteryTimers.forEach(timer=>clearTimeout(timer));
     this.mysteryTimers.clear();
+    this.werewolfTimers.forEach(timer=>clearTimeout(timer));
+    this.werewolfTimers.clear();
     this.socketIndex.clear();
     this.rooms.clear();
   }

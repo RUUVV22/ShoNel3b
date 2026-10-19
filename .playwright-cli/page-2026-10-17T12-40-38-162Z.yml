@@ -1,0 +1,90 @@
+- generic [ref=f1e414]:
+  - generic [ref=f1e415]:
+    - button "العودة" [ref=f1e416] [cursor=pointer]:
+      - generic [ref=f1e417]: 
+    - generic [ref=f1e418]:
+      - generic [ref=f1e419]: فك الشيفرة | الجولة 1
+      - generic [ref=f1e420]: ZKRD3 • قائد الفريق — ترى هويات البطاقات
+    - button "خيارات" [ref=f1e421] [cursor=pointer]:
+      - generic [ref=f1e422]: 
+  - generic:
+    - generic:
+      - generic: استعدوا
+      - generic: دور الفريق المرجاني
+  - generic [ref=f1e423]:
+    - generic [ref=f1e425]:
+      - generic [ref=f1e426]:
+        - button "ذاكرة" [disabled]
+      - generic [ref=f1e428]:
+        - button "مدينة" [disabled]
+      - generic [ref=f1e430]:
+        - button "رعد" [disabled]
+      - generic [ref=f1e432]:
+        - button "بطاطس" [disabled]
+      - generic [ref=f1e434]:
+        - button "لغز" [disabled]
+      - generic [ref=f1e436]:
+        - button "قصة" [disabled]
+      - generic [ref=f1e438]:
+        - button "نخلة" [disabled]
+      - generic [ref=f1e440]:
+        - button "هاتف" [disabled]
+      - generic [ref=f1e442]:
+        - button "سجادة" [disabled]
+      - generic [ref=f1e444]:
+        - button "سفينة" [disabled]
+      - generic [ref=f1e446]:
+        - button "يسار" [disabled]
+      - generic [ref=f1e448]:
+        - button "خيمة" [disabled]
+      - generic [ref=f1e450]:
+        - button "ديك" [disabled]
+      - generic [ref=f1e452]:
+        - button "شمس" [disabled]:
+          - generic:
+            - generic: ✦
+            - generic: شمس
+      - generic [ref=f1e454]:
+        - button "رواية" [disabled]
+      - generic [ref=f1e456]:
+        - button "ثلج" [disabled]
+      - generic [ref=f1e458]:
+        - button "وردة" [disabled]
+      - generic [ref=f1e460]:
+        - button "خلف" [disabled]
+      - generic [ref=f1e462]:
+        - button "نملة" [disabled]
+      - generic [ref=f1e464]:
+        - button "صمت" [disabled]
+      - generic [ref=f1e466]:
+        - button "سباق" [disabled]
+      - generic [ref=f1e468]:
+        - button "نمر" [disabled]
+      - generic [ref=f1e470]:
+        - button "سحاب" [disabled]
+      - generic [ref=f1e472]:
+        - button "بعيد" [disabled]
+      - generic [ref=f1e474]:
+        - button "قميص" [disabled]
+    - generic [ref=f1e476]:
+      - generic "فك الشيفرة" [ref=f1e478]:
+        - img "فك الشيفرة" [ref=f1e480]
+      - generic [ref=f1e481]:
+        - generic [ref=f1e482]:
+          - generic [ref=f1e484]: الفريق المرجاني
+          - generic [ref=f1e485]: "9"
+        - generic [ref=f1e486]:
+          - generic [ref=f1e488]: الفريق الذهبي
+          - generic [ref=f1e489]: "8"
+      - generic [ref=f1e493]:
+        - generic [ref=f1e494]: دور الفريق المرجاني
+        - generic [ref=f1e495]: دورك الآن
+      - generic [ref=f1e496]:
+        - generic [ref=f1e497]: أعطِ فريقك تلميحاً
+        - generic [ref=f1e498]:
+          - textbox "الكلمة الدالة" [ref=f1e499]
+          - textbox [ref=f1e500]: "1"
+        - button "إعطاء التلميح" [disabled]:
+          - generic [ref=f1e501]:
+            - generic [ref=f1e502]: 
+            - generic [ref=f1e503]: إعطاء التلميح

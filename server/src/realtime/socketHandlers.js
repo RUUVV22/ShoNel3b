@@ -108,11 +108,6 @@ function registerSocketHandlers(io, roomManager) {
       emitRoom(room.roomId);return {};
     });
 
-    handle('lobby:werewolf-roles', ({ deck }) => {
-      const room = roomManager.configureWerewolf(socket.id, deck);
-      emitRoom(room.roomId);
-      return {};
-    });
     handle('game:start', () => {
       const room = roomManager.startGame(socket.id);
       emitRoom(room.roomId);

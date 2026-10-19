@@ -1,0 +1,34 @@
+- generic [ref=f2e480]:
+  - generic [ref=f2e481]:
+    - generic [ref=f2e482]:
+      - text: ليلة العقارب
+      - generic [ref=f2e483]: • اختاروا بطاقاتكم
+    - generic [ref=f2e484]:
+      - generic [ref=f2e485]: 00:19
+      - generic [ref=f2e486]: الغرفة Y9WBK • الجولة 1
+      - generic [ref=f2e487] [cursor=pointer]: تفعيل الصوت
+  - generic [ref=f2e489]:
+    - generic [ref=f2e491]:
+      - button "Islam" [disabled]:
+        - img "Character for Islam" [ref=f2e495]
+        - generic [ref=f2e503]: ✦
+      - button "Sami" [disabled]:
+        - img "Character for Sami" [ref=f2e507]
+        - generic [ref=f2e515]: ✦
+      - button "Lina" [disabled]:
+        - img "Character for Lina" [ref=f2e519]
+        - generic [ref=f2e527]: ✦
+      - button "Omar" [disabled]:
+        - img "Character for Omar" [ref=f2e531]
+        - generic [ref=f2e539]: ✦
+      - generic [ref=f2e542]:
+        - button "بطاقة الوسط 1" [disabled]:
+          - generic [ref=f2e543]: ✦
+        - button "بطاقة الوسط 2" [disabled]:
+          - generic [ref=f2e544]: ✦
+        - button "بطاقة الوسط 3" [disabled]:
+          - generic [ref=f2e545]: ✦
+      - generic [ref=f2e546]: ✦ الأوراق بتنخلط… ✦
+    - generic [ref=f2e550]:
+      - button "افتح بطاقتي بسرية" [ref=f2e551] [cursor=pointer]
+      - generic [ref=f2e554]: بعد ما تشوف بطاقتك، تذكّر دورك وحافظ على سرّك.

@@ -1,0 +1,44 @@
+- generic [ref=f1e107]:
+  - generic [ref=f1e108]:
+    - generic [ref=f1e109]: ليلة العقارب • تحضير البطاقات
+    - generic [ref=f1e110]: الغرفة 3HAY9 • الجولة 1
+    - button "الرجوع للغرفة" [ref=f1e111] [cursor=pointer]
+  - generic [ref=f1e113]:
+    - generic [ref=f1e114]:
+      - generic [ref=f1e115]:
+        - generic [ref=f1e116]: اختاروا بطاقات ليلة العقارب
+        - generic [ref=f1e117]: اضغط على أي بطاقة لتختارها، واضغط عليها مرة ثانية لتشيلها.
+      - generic [ref=f1e118]:
+        - generic [ref=f1e119]: 0 / 7
+        - generic [ref=f1e120]: اللاعبون 4 + ٣ بطاقات للوسط
+    - generic [ref=f1e122]:
+      - button "المقلّد" [ref=f1e123] [cursor=pointer]
+      - button "العقرب" [ref=f1e131] [cursor=pointer]
+      - button "العقربة" [ref=f1e139] [cursor=pointer]
+      - button "المساعد" [ref=f1e147] [cursor=pointer]:
+        - generic "المساعد" [ref=f1e148]:
+          - generic [ref=f1e153]:
+            - generic [ref=f1e154]: المساعد
+            - generic [ref=f1e155]: الرسم مفقود
+      - button "الصحاب" [ref=f1e156] [cursor=pointer]
+      - button "الصحاب" [ref=f1e164] [cursor=pointer]
+      - button "العرّافة" [ref=f1e172] [cursor=pointer]
+      - button "الحرامي" [ref=f1e180] [cursor=pointer]
+      - button "القلّاب" [ref=f1e188] [cursor=pointer]
+      - button "السكران" [ref=f1e196] [cursor=pointer]
+      - button "بنت الليل" [ref=f1e204] [cursor=pointer]
+      - button "المواطن" [ref=f1e212] [cursor=pointer]
+      - button "المواطن" [ref=f1e220] [cursor=pointer]
+      - button "المواطن" [ref=f1e228] [cursor=pointer]
+      - button "المواطن" [ref=f1e236] [cursor=pointer]
+      - button "المواطن" [ref=f1e244] [cursor=pointer]
+      - button "المواطن" [ref=f1e252] [cursor=pointer]
+      - button "المواطن" [ref=f1e260] [cursor=pointer]
+      - button "الفزّاع" [ref=f1e268] [cursor=pointer]
+      - button "كبش الفدا" [ref=f1e276] [cursor=pointer]
+    - generic [ref=f1e284]:
+      - generic [ref=f1e285]: اختار 7 بطاقات إضافية
+      - button "اعتمد البطاقات ووزّعها" [disabled]:
+        - generic [ref=f1e286]:
+          - generic [ref=f1e287]: 
+          - generic [ref=f1e288]: اعتمد البطاقات ووزّعها

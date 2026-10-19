@@ -11,7 +11,6 @@ import { ArabicText } from '../components/ArabicText';
 import { ConnectionPill } from '../components/ConnectionPill';
 import { CharacterAvatar } from '../components/CharacterAvatar';
 import { GameLogo } from '../components/GameLogo';
-import { WerewolfRoleSetup } from '../components/WerewolfRoleSetup';
 import { MysteryLobbyPicker } from '../components/MysteryLobbyPicker';
 import { useGame } from '../context/GameContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -49,6 +48,7 @@ export function LobbyScreen({ navigation }) {
   const host = gameState.players.find(player => player.id === gameState.hostId);
   const isHost = Boolean(me?.isHost);
   const isCodenames = gameState.selectedGameId === 'CODENAMES';
+  const isWerewolf = gameState.selectedGameId === 'WEREWOLF';
   const selectedGame = (gameState.availableGames || []).find(game => game.id === gameState.selectedGameId);
   const serverNeedsUpdate = !['CODENAMES','WEREWOLF','KHASERNY','BOMB','MEN_WARAHA'].every(id => (gameState.availableGames || []).some(game => game.id === id));
   const redPlayers = gameState.players.filter(p => p.team === TEAM.RED);
@@ -155,7 +155,6 @@ export function LobbyScreen({ navigation }) {
       {gameState.selectedGameId === 'MEN_WARAHA' ?
         <MysteryLobbyPicker players={gameState.players} viewerId={me?.id}
           busy={busyAction==='lobby:mystery-character'} onSelect={actions.selectMysteryCharacter} /> : null}
-      {gameState.selectedGameId === 'WEREWOLF' ? <WerewolfRoleSetup players={connectedCount} initial={gameState.werewolfRoleDeck} editable={isHost} onSave={actions.configureWerewolf} /> : null}
       {isCodenames ? (
         <>
           <View style={styles.sectionHead}>
@@ -178,7 +177,9 @@ export function LobbyScreen({ navigation }) {
           size={20} color={colors.plum} />
         <ArabicText weight="bold" style={styles.readinessText}>
           {!selectedGame ? t('المضيف يختار اللعبة أولاً', 'Waiting for the host to choose a game')
-            : gameState.canStart ? t('جاهزين! يلا نبلّش الجولة', "Everyone's ready to play!")
+            : gameState.canStart ? (isWerewolf
+              ? t('يلا نبلّش! بعدها المضيف بختار بطاقات الجولة داخل اللعبة', 'Start to select the Scorpion Night cards inside the game')
+              : t('جاهزين! يلا نبلّش الجولة', "Everyone's ready to play!"))
               : isCodenames ? t('فك الشيفرة تحتاج ٤: قائد ولاعب في كل فريق', 'Decode the Clue needs 4 players: a spymaster and agent on each team') : t('بانتظار العدد المطلوب من اللاعبين','Waiting for enough players')}
         </ArabicText>
       </View>

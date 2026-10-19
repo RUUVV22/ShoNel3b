@@ -1,0 +1,31 @@
+- generic [ref=f1e108]:
+  - generic [ref=f1e109]:
+    - generic [ref=f1e110]:
+      - text: ليلة العقارب
+      - generic [ref=f1e111]: • الليل في الحارة
+    - generic [ref=f1e112]:
+      - generic [ref=f1e113]: 00:20
+      - generic [ref=f1e114]: الغرفة WMUMJ • الجولة 1
+      - generic [ref=f1e115] [cursor=pointer]: تفعيل الصوت
+  - generic [ref=f1e117]:
+    - generic [ref=f1e119]:
+      - button "Islam" [disabled]:
+        - img "Character for Islam" [ref=f1e123]
+        - generic "بطاقة مقلوبة" [ref=f1e132]
+      - button "Sami" [disabled]:
+        - img "Character for Sami" [ref=f1e138]
+        - generic "بطاقة مقلوبة" [ref=f1e147]
+      - button "Lina" [disabled]:
+        - img "Character for Lina" [ref=f1e153]
+        - generic "بطاقة مقلوبة" [ref=f1e162]
+      - button "Omar" [disabled]:
+        - img "Character for Omar" [ref=f1e168]
+        - generic "بطاقة مقلوبة" [ref=f1e177]
+      - generic [ref=f1e182]:
+        - button "بطاقة الوسط 1" [disabled]:
+          - generic "بطاقة مقلوبة" [ref=f1e183]
+        - button "بطاقة الوسط 2" [disabled]:
+          - generic "بطاقة مقلوبة" [ref=f1e187]
+        - button "بطاقة الوسط 3" [disabled]:
+          - generic "بطاقة مقلوبة" [ref=f1e191]
+    - generic [ref=f1e195]: سكّر عيونك واحفظ دورك… اللي عليه الدور رح يشوف تعليماته على جهازه.

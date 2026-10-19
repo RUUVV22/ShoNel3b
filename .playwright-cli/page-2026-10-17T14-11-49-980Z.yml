@@ -1,0 +1,18 @@
+- generic [ref=f1e484]:
+  - generic [ref=f1e485]:
+    - generic [ref=f1e486]:
+      - text: ليلة العقارب
+      - generic [ref=f1e487]: • الليل في الحارة
+    - generic [ref=f1e488]:
+      - generic [ref=f1e489]: 00:00
+      - generic [ref=f1e490]: الغرفة KEKLW • الجولة 1
+      - generic [ref=f1e491] [cursor=pointer]: تفعيل الصوت
+  - generic [ref=f1e493]:
+    - generic [ref=f1e498]:
+      - button "بطاقة الوسط 1" [disabled]:
+        - generic [ref=f1e499]: ✦
+      - button "بطاقة الوسط 2" [disabled]:
+        - generic [ref=f1e500]: ✦
+      - button "بطاقة الوسط 3" [disabled]:
+        - generic [ref=f1e501]: ✦
+    - generic [ref=f1e502]: سكّر عيونك واحفظ دورك… اللي عليه الدور رح يشوف تعليماته على جهازه.

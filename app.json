@@ -3,7 +3,7 @@
     "name": "شو نلعب؟",
     "slug": "sho-nel3b",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "scheme": "shonel3b",
     "icon": "./assets/Warm retro Arabic-only game logo.png",
     "userInterfaceStyle": "light",
@@ -11,6 +11,7 @@
     "plugins": [
       "expo-font",
       "expo-asset",
+      "expo-screen-orientation",
       [
         "expo-audio",
         {
@@ -31,6 +32,7 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "requireFullScreen": true,
       "bundleIdentifier": "com.arabiccodenames.game",
       "icon": "./assets/Warm retro Arabic-only game logo.png",
       "infoPlist": {
@@ -90,7 +92,7 @@
       "display": "standalone",
       "startUrl": ".",
       "scope": ".",
-      "orientation": "portrait",
+      "orientation": "any",
       "themeColor": "#351326",
       "backgroundColor": "#FFF0CF",
       "barStyle": "black-translucent",

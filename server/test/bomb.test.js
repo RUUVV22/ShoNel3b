@@ -3,6 +3,7 @@ const {test}=require('node:test');
 const bomb=require('../src/games/bomb');
 const {RoomManager}=require('../src/game/RoomManager');
 const {STATUS}=require('../src/game/constants');
+const {confirmScorpionCards}=require('./scorpion-setup-helper');
 
 const roomOf=n=>({players:Array.from({length:n},(_,i)=>({id:'p'+i,connected:true}))});
 
@@ -96,7 +97,14 @@ test('All game choices derive their playable count from the actual room roster',
   assert.equal(m.canStart(room),true,gameId+' supports current room');
   m.startGame('s0');
   assert.equal(room.status,STATUS.ACTIVE);
-  if(gameId==='WEREWOLF')assert.equal(Object.keys(room.gameSession.assignments).length,20);
+  if(gameId==='WEREWOLF'){
+   assert.equal(room.gameSession.phase,'SETUP');
+   confirmScorpionCards(m,[
+    'SCORPION','SCORPIONESS','MIMIC','MINION','MASON','MASON','SEER','ROBBER','TROUBLEMAKER',
+    'DRUNK','INSOMNIAC','HUNTER','TANNER',...Array(10).fill('VILLAGER'),
+   ]);
+   assert.equal(Object.keys(room.gameSession.assignments).length,20);
+  }
   if(gameId==='KHASERNY')assert.equal(Object.keys(room.gameSession.scores).length,20);
   if(gameId==='BOMB')assert.equal(room.gameSession.aliveIds.length,20);
   room.status=STATUS.FINISHED;
