@@ -1,0 +1,47 @@
+- generic [ref=f1e132]:
+  - generic [ref=f1e133]:
+    - generic [ref=f1e134]:
+      - text: ليلة العقارب
+      - generic [ref=f1e135]: • نتائج الليلة
+    - generic [ref=f1e136]:
+      - generic [ref=f1e137]: 00:00
+      - generic [ref=f1e138]: الغرفة YJ3LL • الجولة 1
+      - generic [ref=f1e139] [cursor=pointer]: تفعيل الصوت
+  - generic [ref=f1e141]:
+    - generic [ref=f1e143]:
+      - button "Islam" [disabled]:
+        - img "Character for Islam" [ref=f1e147]
+        - generic "العقربة" [ref=f1e253]
+        - generic [ref=f1e257]: ✕
+      - button "Sami" [disabled]:
+        - img "Character for Sami" [ref=f1e162]
+        - generic "الحرامي" [ref=f1e259]
+      - button "Lina" [disabled]:
+        - img "Character for Lina" [ref=f1e177]
+        - generic "بنت الليل" [ref=f1e263]
+      - button "Omar" [disabled]:
+        - img "Character for Omar" [ref=f1e192]
+        - generic "القلّاب" [ref=f1e267]
+      - generic [ref=f1e206]:
+        - button "بطاقة الوسط 1" [disabled]:
+          - generic "العرّافة" [ref=f1e271]
+        - button "بطاقة الوسط 2" [disabled]:
+          - generic "العقرب" [ref=f1e275]
+        - button "بطاقة الوسط 3" [disabled]:
+          - generic "المقلّد" [ref=f1e279]
+    - generic [ref=f1e284]:
+      - generic [ref=f1e285]: 🏆 أهل الحارة فازوا!
+      - generic [ref=f1e286]: "المقصيّون: Islam"
+      - generic [ref=f1e287]: "بطاقات الوسط: العرّافة • العقرب • المقلّد"
+      - generic [ref=f1e288]: "الأصوات:"
+      - generic [ref=f1e289]: Islam ← Sami
+      - generic [ref=f1e290]: Sami ← Islam
+      - generic [ref=f1e291]: Lina ← Islam
+      - generic [ref=f1e292]: Omar ← Islam
+      - generic [ref=f1e293]: "تسلسل أحداث الليل:"
+      - generic [ref=f1e294]: 1. بدأت الليلة، وأُخفيت جميع البطاقات.
+      - generic [ref=f1e295]: 2. Sami — تبديل بطاقتين بين لاعبين. (Sami، Islam)
+      - generic [ref=f1e296]: 3. Omar — تبديل بطاقتين بين لاعبين. (Islam، Sami)
+      - generic [ref=f1e297]: 4. طلع الفجر وبدأ النقاش.
+      - generic [ref=f1e298]: 5. بدأ التصويت السري.
+      - generic [ref=f1e299]: 6. انكشف التصويت والبطاقات النهائية.

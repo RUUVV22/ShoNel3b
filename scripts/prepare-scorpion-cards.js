@@ -19,8 +19,7 @@ const entries = {
   DRUNK:'10-sakran.png',
   INSOMNIAC:'11-bint-alleil.png',
   VILLAGER:'12-muwatin-1.png',
-  VILLAGER_2:'13-muwatin-2.png',
-  VILLAGER_3:'14-muwatin-3.png',
+  // The three villager cards intentionally share VILLAGER art (12-muwatin-1.png).
   HUNTER:'15-fazza.png',
   TANNER:'16-kabsh-alfida.png',
 };

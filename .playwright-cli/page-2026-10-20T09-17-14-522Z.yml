@@ -1,0 +1,45 @@
+- generic [ref=f1e107]:
+  - generic [ref=f1e108]:
+    - generic [ref=f1e109]: ليلة العقارب • تحضير البطاقات
+    - generic [ref=f1e110]: الغرفة YJ3LL • الجولة 1
+    - button "🔊 تفعيل الصوت" [ref=f1e111] [cursor=pointer]
+    - button "الرجوع للغرفة" [ref=f1e113] [cursor=pointer]
+  - generic [ref=f1e115]:
+    - generic [ref=f1e116]:
+      - generic [ref=f1e117]:
+        - generic [ref=f1e118]: اختاروا بطاقات ليلة العقارب
+        - generic [ref=f1e119]: اضغط على أي بطاقة لتختارها، واضغط عليها مرة ثانية لتشيلها.
+      - generic [ref=f1e120]:
+        - generic [ref=f1e121]: 0 / 7
+        - generic [ref=f1e122]: اللاعبون 4 + ٣ بطاقات للوسط
+    - generic [ref=f1e124]:
+      - button "المقلّد" [ref=f1e125] [cursor=pointer]
+      - button "العقرب" [ref=f1e133] [cursor=pointer]
+      - button "العقربة" [ref=f1e141] [cursor=pointer]
+      - button "المساعد" [ref=f1e149] [cursor=pointer]:
+        - generic "المساعد" [ref=f1e150]:
+          - generic [ref=f1e155]:
+            - generic [ref=f1e156]: المساعد
+            - generic [ref=f1e157]: الرسم مفقود
+      - button "الصحاب" [ref=f1e158] [cursor=pointer]
+      - button "الصحاب" [ref=f1e166] [cursor=pointer]
+      - button "العرّافة" [ref=f1e174] [cursor=pointer]
+      - button "الحرامي" [ref=f1e182] [cursor=pointer]
+      - button "القلّاب" [ref=f1e190] [cursor=pointer]
+      - button "السكران" [ref=f1e198] [cursor=pointer]
+      - button "بنت الليل" [ref=f1e206] [cursor=pointer]
+      - button "المواطن" [ref=f1e214] [cursor=pointer]
+      - button "المواطن" [ref=f1e222] [cursor=pointer]
+      - button "المواطن" [ref=f1e230] [cursor=pointer]
+      - button "المواطن" [ref=f1e238] [cursor=pointer]
+      - button "المواطن" [ref=f1e246] [cursor=pointer]
+      - button "المواطن" [ref=f1e254] [cursor=pointer]
+      - button "المواطن" [ref=f1e262] [cursor=pointer]
+      - button "الفزّاع" [ref=f1e270] [cursor=pointer]
+      - button "كبش الفدا" [ref=f1e278] [cursor=pointer]
+    - generic [ref=f1e286]:
+      - generic [ref=f1e287]: اختار 7 بطاقات إضافية
+      - button "اعتمد البطاقات ووزّعها" [disabled]:
+        - generic [ref=f1e288]:
+          - generic [ref=f1e289]: 
+          - generic [ref=f1e290]: اعتمد البطاقات ووزّعها

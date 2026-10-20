@@ -15,7 +15,8 @@ import {WerewolfRoleSetup} from '../components/WerewolfRoleSetup';
 import {SCORPION_CARD_HEIGHT_PER_WIDTH} from '../constants/scorpionCards';
 import {playScorpionSfx,stopScorpionSfx} from '../services/scorpionSfxPlayer';
 import {SCORPION_AUDIO_MODES,SCORPION_NARRATION} from '../constants/scorpionNarration';
-import {playScorpionCue} from '../services/scorpionAudio';
+import SCORPION_CUE_DURATIONS from '../../server/src/games/scorpionCueDurations.json';
+import {playScorpionCue,stopAllScorpionNarration} from '../services/scorpionAudio';
 import {colors} from '../theme/colors';
 
 const BOARD_RATIO=1672/941;
@@ -118,8 +119,11 @@ export function WerewolfScreen(){
  const isPortrait=height>width && width<900;
  const isBusy=busyAction==='game:action';
  const currentPhase=game?.currentRole;
- const activeRole=currentPhase==='MIMIC'&&game?.copiedRole?game.copiedRole:currentPhase;
+ const activeRole=currentPhase==='MIMIC'&&game?.copiedRole?game.copiedRole:
+  currentPhase==='SCORPIONS'?(game?.role==='MIMIC'?game?.copiedRole:game?.role):currentPhase;
  const isPairedScorpion=(game?.partnerIds?.length||0)>0;
+ const isSoloScorpioness=game?.phase==='NIGHT'&&game?.currentRole==='SCORPIONS'&&
+  (game?.role==='SCORPIONESS'||game?.role==='MIMIC'&&game?.copiedRole==='SCORPIONESS')&&!isPairedScorpion;
  const observations=game?.privateObservation||[];
  const hasSidebar=width>height&&width>=640;
  const sidebarWidth=Math.round(Math.min(315,Math.max(215,width*.28)));
@@ -137,6 +141,7 @@ export function WerewolfScreen(){
  const timeLabel=`${String(Math.floor(remaining/60)).padStart(2,'0')}:${String(remaining%60).padStart(2,'0')}`;
  useEffect(()=>{const timer=setInterval(()=>setNow(Date.now()),250);return()=>clearInterval(timer);},[]);
  useEffect(()=>{if(game?.serverNow)serverOffsetRef.current=game.serverNow-Date.now();},[game?.serverNow]);
+ useEffect(()=>{if(muted||audioMode===SCORPION_AUDIO_MODES.SAME_ROOM&&!isHost)stopAllScorpionNarration();},[muted,audioMode,isHost]);
  useEffect(()=>{
   if(Platform.OS==='web')return;
   let alive=true,previous=null;
@@ -164,19 +169,45 @@ export function WerewolfScreen(){
   if(audioAttempted===token)return;
   setAudioAttempted(token);
   // Future recordings can be registered in the audio service by cue ID.
-  playScorpionCue(cue,SCORPION_NARRATION[cue.id]).catch(()=>{});
+  playScorpionCue(cue,SCORPION_NARRATION[cue.id],serverOffsetRef.current).catch(()=>{});
  },[game?.cue?.id,game?.cue?.sequence,audioMode,isHost,muted,audioUnlocked]);
+ useEffect(()=>{
+  const cue=game?.cue;
+  if(!cue||!sharedSfxAllowed||Date.now()-cue.at>2500)return;
+  const id=cue.id;
+  if(id==='night_start')playScorpionSfx('night_bell');
+  else if(id.endsWith('_open'))playScorpionSfx('role_wake');
+  else if(id.endsWith('_close'))playScorpionSfx('role_sleep');
+  else if(id==='dawn')playScorpionSfx('dawn_transition');
+  else if(id==='one_minute_left'||id==='thirty_seconds_left')playScorpionSfx('timer_warning');
+  else if(id==='vote_now'||id==='vote_early')playScorpionSfx('night_bell');
+ },[game?.cue?.id,game?.cue?.sequence,sharedSfxAllowed]);
  useEffect(()=>{
   if(!audioUnlocked||muted||audioMode!==SCORPION_AUDIO_MODES.REMOTE||
     game?.phase!=='NIGHT'||!game?.isActor)return;
-  let cueId=null;
-  if(game.currentRole==='COPIED_HELPER')cueId='copied_helper_open';
-  else if(game.currentRole==='COPIED_NIGHT_GIRL')cueId='copied_night_girl_open';
-  else if(game.currentRole==='MIMIC'&&game.copiedRole)
-    cueId='copied_'+game.copiedRole.toLowerCase()+'_open';
-  if(cueId&&SCORPION_NARRATION[cueId])
-    playScorpionCue({id:cueId,at:Date.now(),sequence:game.step},SCORPION_NARRATION[cueId]).catch(()=>{});
- },[game?.phase,game?.currentRole,game?.copiedRole,game?.isActor,audioMode,audioUnlocked,muted]);
+  let openId=null,closeId=null;
+  if(game.currentRole==='COPIED_HELPER'){
+    openId='copied_helper_open';closeId='copied_helper_close';
+  }else if(game.currentRole==='COPIED_NIGHT_GIRL'){
+    openId='copied_night_girl_open';closeId='copied_night_girl_close';
+  }else if(game.currentRole==='MIMIC'&&game.copiedRole){
+    openId='copied_'+game.copiedRole.toLowerCase()+'_open';
+  }
+  if(!openId||!SCORPION_NARRATION[openId])return;
+  // These announcements are audible ONLY on the actor's own device.
+  const serverNow=Date.now()+serverOffsetRef.current;
+  if(game.currentRole!=='MIMIC'&&
+      serverNow-game.phaseStartedAt>SCORPION_CUE_DURATIONS[openId]+1500)return;
+  playScorpionCue({id:openId,at:Date.now(),sequence:game.step},SCORPION_NARRATION[openId]).catch(()=>{});
+  if(!closeId||!SCORPION_NARRATION[closeId])return;
+  const lead=Math.max(3000,(SCORPION_CUE_DURATIONS[closeId]||1600)+350);
+  const delay=Math.max(0,(game.deadline-lead)-serverNow);
+  const timer=setTimeout(()=>{
+    playScorpionCue({id:closeId,at:Date.now(),sequence:game.step},SCORPION_NARRATION[closeId]).catch(()=>{});
+  },delay);
+  return()=>clearTimeout(timer);
+ },[game?.phase,game?.step,game?.currentRole,game?.copiedRole,game?.isActor,
+    game?.phaseStartedAt,game?.deadline,audioMode,audioUnlocked,muted]);
  useEffect(()=>{
   if(!sharedSfxAllowed){stopScorpionSfx('courtyard_ambience');return;}
   playScorpionSfx('courtyard_ambience');
@@ -196,13 +227,22 @@ export function WerewolfScreen(){
  useEffect(()=>{
   if(!sharedSfxAllowed||!game||game.phase!=='RESULT'||sfxResultsRef.current===game.round)return;
   sfxResultsRef.current=game.round;
-  // One public flip sound for the entire reveal, never one per player.
+  // One shared reveal, followed by an appropriate results sting.
   playScorpionSfx('flip_card');
- },[sharedSfxAllowed,game?.phase,game?.round]);
+  const revealTimer=setTimeout(()=>playScorpionSfx('results_reveal'),800);
+  const outcomeTimer=setTimeout(
+    ()=>playScorpionSfx(game.winner==='NONE'?'lose_sting':'win_sting'),3600);
+  return()=>{clearTimeout(revealTimer);clearTimeout(outcomeTimer);};
+ },[sharedSfxAllowed,game?.phase,game?.round,game?.winner]);
  if(!game||!me)return null;
  const myId=me.id;
+ const localSfx=id=>{if(audioUnlocked&&!muted)playScorpionSfx(id);};
  const send=payload=>submitAndReset(()=>actions.gameAction(payload));
- const abilityAction=(target,second)=>send({action:'role',target,second});
+ const abilityAction=async(target,second)=>{
+   const reply=await send({action:'role',target,second});
+   if(reply?.ok)localSfx(['ROBBER','TROUBLEMAKER','DRUNK'].includes(activeRole)?'replace_card':'secret_look');
+   return reply;
+ };
  const waiting=game.acted||!game.isActor;
  const canChoose=game.phase==='NIGHT'&&game.isActor&&!game.acted&&!isBusy
   &&serverNow>=(game.phaseOpensAt||0);
@@ -210,10 +250,12 @@ export function WerewolfScreen(){
  const seerCenter=activeRole==='SEER';
  const selectMiddle=index=>{
   if(!canChoose)return;
+  localSfx(values.first===index?'deselect_card':'select_card');
   if(currentPhase==='SCORPIONS'){
    if(activeRole==='SCORPIONESS'&&!isPairedScorpion){
-    if(values.first===null)setField('first',index);
-    else if(values.first!==index)abilityAction(values.first,index);
+    if(values.first===index)setField('first',null);
+    else if(values.first===null)setField('first',index);
+    else abilityAction(values.first,index);
    }else if(activeRole==='SCORPION'&&!isPairedScorpion)abilityAction(index);
    return;
   }
@@ -224,8 +266,11 @@ export function WerewolfScreen(){
   }
  };
  const selectPlayer=id=>{
-  if(game.phase==='VOTING'&&!game.voted&&id!==myId&&!isBusy&&serverNow>=(game.voteOpensAt||0)){setField('vote',id);setVoteConfirm(false);return;}
+  if(game.phase==='VOTING'&&!game.voted&&id!==myId&&!isBusy&&serverNow>=(game.voteOpensAt||0)){
+    localSfx('vote_select');setField('vote',id);setVoteConfirm(false);return;
+  }
   if(!canChoose||id===myId)return;
+  localSfx(values.first===id?'deselect_card':'select_card');
   if(currentPhase==='MIMIC'&&!game.copiedRole){abilityAction(id);return;}
   if(requiresTwo) {
    if(values.first===null)setField('first',id);
@@ -263,13 +308,17 @@ export function WerewolfScreen(){
    <View style={st.setupHeader}>
      <ArabicText weight="extraBold" style={st.gameTitle}>ليلة العقارب • تحضير البطاقات</ArabicText>
      <ArabicText style={st.room}>الغرفة {s.roomId} • الجولة {game.round}</ArabicText>
+     {!audioUnlocked?<Pressable accessibilityRole="button" onPress={()=>setAudioUnlocked(true)} style={st.audioButton}><ArabicText style={st.audioText}>🔊 تفعيل الصوت</ArabicText></Pressable>:null}
      {isHost?<Pressable accessibilityRole="button" onPress={actions.returnToLobby} style={st.audioButton}>
        <ArabicText style={st.audioText}>الرجوع للغرفة</ArabicText>
      </Pressable>:null}
    </View>
    <WerewolfRoleSetup game={game} editable={isHost}
-     busy={isBusy} onToggle={cardKey=>actions.gameAction({action:'toggle-card',cardKey})}
-     onConfirm={()=>actions.gameAction({action:'confirm-cards'})}/>
+     busy={isBusy} onToggle={cardKey=>{
+       localSfx(game.selectedCards?.includes(cardKey)?'deselect_card':'select_card');
+       actions.gameAction({action:'toggle-card',cardKey});
+     }}
+     onConfirm={()=>{localSfx('button_click');actions.gameAction({action:'confirm-cards'});}}/>
  </ScreenContainer>;
  return <ScreenContainer contentStyle={st.screen}>
    <ScorpionAudioLayer />
@@ -330,13 +379,17 @@ export function WerewolfScreen(){
       }}/>:null}
       {reveal?<PrimaryButton compact title={game.revealReady?'أنا جاهز ✓':'حفظت دوري، جاهز'}
         disabled={game.revealReady||Date.now()-revealPressedAt<5000||isBusy}
-        onPress={async()=>{const reply=await send({action:'ready'});if(reply?.ok)setReveal(false);}}/>:null}
+        onPress={async()=>{const reply=await send({action:'ready'});if(reply?.ok){localSfx('button_click');setReveal(false);}}}/>:null}
       <ArabicText style={st.infoText}>{game.revealReady?'بنستنى باقي اللاعبين…':'بعد ما تشوف بطاقتك، تذكّر دورك وحافظ على سرّك.'}</ArabicText>
    </View>:null}
    {game.phase==='NIGHT'?<View style={st.bottomPanel}>
       {game.isActor?<><View style={st.inlineCopy}>
         <ArabicText weight="extraBold" style={st.roleText}>{roleName} • {NIGHT_LABELS[currentPhase]}</ArabicText>
-        <ArabicText style={st.infoText}>{getScorpionRole(activeRole)?.ability||'شوف معلوماتك بسرية.'}</ArabicText>
+        <ArabicText style={st.infoText}>{isSoloScorpioness?
+          'إنتِ العقربة الوحيدة. اختاري بطاقتين مختلفتين من الثلاث بطاقات بوسط الطاولة. اضغطي الأولى وبعدين الثانية. رح تعرفي إذا البطاقتين من نفس الفريق أو فريقين مختلفين، بدون ما تعرفي أدوارهم وبدون تبديل أي بطاقة.':
+          getScorpionRole(activeRole)?.ability||'شوف معلوماتك بسرية.'}</ArabicText>
+        {isSoloScorpioness&&!game.acted?<ArabicText weight="bold" style={st.infoText}>{values.first===null?'الخطوة ١ من ٢: اختاري أول بطاقة من الوسط.':'الخطوة ٢ من ٢: اختاري بطاقة ثانية مختلفة من الوسط. اضغطي الأولى مرة ثانية لإلغاء الاختيار.'}</ArabicText>:null}
+        {game.phase==='NIGHT'&&currentPhase==='SCORPIONS'&&isPairedScorpion?<ArabicText style={st.infoText}>العقارب تعرّفوا على بعض. ما إلكم حركة إضافية؛ أكّدوا إنكم شفتوا المعلومات.</ArabicText>:null}
        </View>
        {observations.length?<Memory observations={observations} players={players}/>:null}
        {!game.acted&&!isBusy?<ArabicText style={st.infoText}>
@@ -347,16 +400,16 @@ export function WerewolfScreen(){
          'شوف معلوماتك، وبعدين أكد دورك.'}
        </ArabicText>:null}
        {canChoose&&!canTargetPlayer&&!selectableMiddle?
-         <PrimaryButton compact title="تمام، سكّرت عيوني" onPress={()=>send({action:'ack'})} disabled={isBusy}/>:null}
+         <PrimaryButton compact title="تمام، سكّرت عيوني" onPress={async()=>{const reply=await send({action:'ack'});if(reply?.ok)localSfx('button_click');}} disabled={isBusy}/>:null}
        {canChoose&&['ROBBER','TROUBLEMAKER'].includes(activeRole)?
-         <PrimaryButton compact variant="ghost" title="ما بدي أبدّل" disabled={isBusy} onPress={()=>send({action:'role',skip:true})}/>:null}
+         <PrimaryButton compact variant="ghost" title="ما بدي أبدّل" disabled={isBusy} onPress={async()=>{const reply=await send({action:'role',skip:true});if(reply?.ok)localSfx('button_click');}}/>:null}
        {game.acted?<ArabicText style={st.infoText}>تم حفظ الحركة بسرية. استنى الفجر.</ArabicText>:null}
       </>:<ArabicText style={st.infoText}>سكّر عيونك واحفظ دورك… اللي عليه الدور رح يشوف تعليماته على جهازه.</ArabicText>}
     </View>:null}
    {game.phase==='DISCUSSION'?<View style={st.bottomPanel}>
       <ArabicText style={st.infoText}>٥ دقائق للنقاش • حرّك بطاقتك بدون كشفها. القرار بالإجماع على بدء التصويت المبكر.</ArabicText>
       <PrimaryButton compact title={game.readyToVote?'جاهز للتصويت ✓':'صوّت الآن • أنا جاهز'}
-        disabled={game.readyToVote||isBusy||serverNow<(game.discussionStartAt||0)} onPress={()=>send({action:'ready-vote'})}/>
+        disabled={game.readyToVote||isBusy||serverNow<(game.discussionStartAt||0)} onPress={async()=>{const reply=await send({action:'ready-vote'});if(reply?.ok)localSfx('button_click');}}/>
       <PrimaryButton compact variant="ghost" title={memoryOpen?'إخفاء معلوماتي':'معلوماتي من الليل'}
        onPress={()=>setMemoryOpen(x=>!x)}/>
       {memoryOpen?<Memory observations={game.nightMemory} players={players}/>:null}
@@ -364,7 +417,7 @@ export function WerewolfScreen(){
    {game.phase==='VOTING'?<View style={st.bottomPanel}>
      <ArabicText style={st.infoText}>{game.voted?'تم تسجيل صوتك بسرية.':'اختار لاعب من الطاولة، ثم أكد صوتك. ما بتقدر تصوّت لحالك.'}</ArabicText>
      {!game.voted&&values.vote?<PrimaryButton compact title={'تأكيد التصويت لـ '+players.find(p=>p.id===values.vote)?.name}
-       disabled={isBusy||serverNow<(game.voteOpensAt||0)} onPress={()=>send({action:'vote',target:values.vote})}/>:null}
+       disabled={isBusy||serverNow<(game.voteOpensAt||0)} onPress={async()=>{const reply=await send({action:'vote',target:values.vote});if(reply?.ok)localSfx('vote_confirm');}}/>:null}
      <PrimaryButton compact variant="ghost" title={memoryOpen?'إخفاء معلوماتي':'مراجعة معلوماتي'} onPress={()=>setMemoryOpen(x=>!x)}/>
      {memoryOpen?<Memory observations={game.nightMemory} players={players}/>:null}
     </View>:null}

@@ -1,0 +1,1 @@
+﻿async (page) => { await page.goto('http://localhost:8081'); await page.evaluate(session => localStorage.setItem("@arabic-codenames/session", JSON.stringify(session)), {"roomCode":"VDNZE","playerId":"84c003a1-36bf-4da8-972d-893dca3d5ffe","sessionToken":"ad4402552679a1596304e8e8f2983e3d2a08fbc41b2259e2"}); await page.reload(); }

@@ -38,10 +38,13 @@ test('Start opens shared card selection; host toggles individual cards, and conf
   assert.deepEqual(m.serializeFor(created.roomCode,room.players[1].id).werewolf.selectedCards,['SCORPION:0']);
   m.gameAction('s0',{action:'toggle-card',cardKey:'SCORPION:0'});
   assert.deepEqual(room.gameSession.selectedCards,[]);
-  for(let i=0;i<7;i++)m.gameAction('s0',{action:'toggle-card',cardKey:'VILLAGER:'+i});
-  assert.throws(()=>m.gameAction('s0',{action:'toggle-card',cardKey:'SEER:0'}),e=>e.code==='INVALID_ASSIGNMENT');
+  for(let i=0;i<3;i++)m.gameAction('s0',{action:'toggle-card',cardKey:'VILLAGER:'+i});
+  assert.throws(()=>m.gameAction('s0',{action:'toggle-card',cardKey:'VILLAGER:3'}),e=>e.code==='INVALID_CARD');
+  for(const role of ['SEER','ROBBER','TANNER','HUNTER'])
+    m.gameAction('s0',{action:'toggle-card',cardKey:role+':0'});
+  assert.throws(()=>m.gameAction('s0',{action:'toggle-card',cardKey:'SCORPION:0'}),e=>e.code==='INVALID_ASSIGNMENT');
   assert.throws(()=>m.gameAction('s0',{action:'confirm-cards'}),e=>e.code==='INVALID_ASSIGNMENT');
-  m.gameAction('s0',{action:'toggle-card',cardKey:'VILLAGER:6'});
+  m.gameAction('s0',{action:'toggle-card',cardKey:'HUNTER:0'});
   m.gameAction('s0',{action:'toggle-card',cardKey:'SCORPION:0'});
   assert.throws(()=>m.gameAction('s1',{action:'confirm-cards'}),e=>e.code==='NOT_HOST');
   m.gameAction('s0',{action:'confirm-cards'});
@@ -69,7 +72,7 @@ test('host deck requires exactly N+3, pairs of companions, and at least one scor
  assert.equal(wolf.validateDeck(['SCORPION','VILLAGER','VILLAGER','VILLAGER','SEER','ROBBER','TANNER'],4),true);
  assert.equal(wolf.validateDeck(Array(7).fill('VILLAGER'),4),false);
  assert.equal(wolf.validateDeck(['SCORPION','MASON','VILLAGER','VILLAGER','VILLAGER','VILLAGER','VILLAGER'],4),false);
- assert.equal(wolf.validateDeck(['SCORPION','MASON','MASON','VILLAGER','VILLAGER','VILLAGER','VILLAGER'],4),true);
+ assert.equal(wolf.validateDeck(['SCORPION','MASON','MASON','VILLAGER','VILLAGER','VILLAGER','SEER'],4),true);
  assert.equal(wolf.validateDeck(['SCORPION','SCORPION','VILLAGER','VILLAGER','VILLAGER','VILLAGER','VILLAGER'],4),false);
 });
 test('authoritative deal has fixed seats, exactly three center cards, and private role visibility',()=>{
@@ -87,7 +90,8 @@ test('ready gate waits until five seconds and cannot be skipped by host',()=>{
  for(const p of players())wolf.action(s,p,{action:'ready'},Math.random,null,1_000_200);
  assert.equal(s.phase,'REVEAL');assert.throws(()=>wolf.advance(s,null,1_001_000),e=>e.code==='NOT_READY');
  wolf.tick(s,1_005_100);
- assert.equal(s.phase,'NIGHT');assert.equal(wolf.currentRole(s),'MIMIC');
+ assert.equal(s.phase,'NIGHT');assert.equal(wolf.currentRole(s),'SCORPIONS');
+ assert.deepEqual(s.nightOrder,['SCORPIONS','SEER','ROBBER']);
 });
 test('copied scorpion counts as teammate and is invisible to others',()=>{
  const s=build(['MIMIC','SCORPION','VILLAGER','VILLAGER','SCORPIONESS','TANNER','VILLAGER']);
@@ -104,7 +108,7 @@ test('lone scorpioness compares affiliations without revealing exact middle role
  assert.throws(()=>wolf.action(s,players()[0],{action:'role',target:0,second:0}),e=>e.code==='INVALID_CARD');
  wolf.action(s,players()[0],{action:'role',target:0,second:1});
  const result=wolf.serialize(s,players()[0]).werewolf.privateObservation.at(-1);
- assert.equal(result.seen,'نفس الفريق');
+ assert.equal(result.seen,'البطاقتان من نفس الفريق');
  assert.equal(wolf.serialize(s,players()[1]).werewolf.privateObservation.length,0);
 });
 test('seer and robber see only their private result; identity of the old role persists',()=>{

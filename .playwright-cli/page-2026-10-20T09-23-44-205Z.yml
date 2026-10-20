@@ -1,0 +1,90 @@
+- generic [ref=f1e313]:
+  - generic [ref=f1e314]:
+    - button "العودة" [ref=f1e315] [cursor=pointer]:
+      - generic [ref=f1e316]: 
+    - generic [ref=f1e317]:
+      - generic [ref=f1e318]: غرفة الشِلّة
+      - generic [ref=f1e319]: الكل هون.. شو نلعب؟
+  - generic [ref=f1e321]:
+    - generic [ref=f1e322]: متصل
+    - generic [ref=f1e325]:
+      - generic [ref=f1e326]: 
+      - generic [ref=f1e327]: "المضيف: Islam"
+  - generic [ref=f1e328]:
+    - generic [ref=f1e329]:
+      - generic [ref=f1e330]: ✨ بطاقة اللمّة
+      - generic [ref=f1e331]: ابعث الرمز لأصحابك وخلي اللمّة تكبر!
+    - button "رمز الغرفة YJ3LL" [ref=f1e332] [cursor=pointer]:
+      - generic [ref=f1e333]:
+        - generic [ref=f1e334]: ✦ رمز اللمّة ✦
+        - generic [ref=f1e335]: YJ3LL
+      - generic [ref=f1e336]: 
+    - generic [ref=f1e338]:
+      - button "مشاركة" [ref=f1e346] [cursor=pointer]:
+        - generic [ref=f1e347]:
+          - generic [ref=f1e348]: 
+          - generic [ref=f1e349]: مشاركة
+      - generic [ref=f1e350]:
+        - generic [ref=f1e351]: جاهزين للّمة؟
+        - generic [ref=f1e352]: شارك الرابط أو خلّي صاحبك يمسح الرمز.
+        - generic [ref=f1e353]: http://localhost:8081/?room=YJ3LL
+  - generic [ref=f1e354]:
+    - generic [ref=f1e355]: اللي قاعدين معنا
+    - generic [ref=f1e356]: 1/20
+  - generic [ref=f1e359]:
+    - img "Character for Islam" [ref=f1e360]
+    - generic [ref=f1e368]: Islam
+    - generic [ref=f1e369]: 
+  - generic [ref=f1e370]:
+    - generic [ref=f1e371]: شو بدنا نلعب؟
+    - generic [ref=f1e372]: إنت صاحب القرار
+  - button "Decode the Clue" [ref=f1e373] [cursor=pointer]:
+    - generic "فك الشيفرة" [ref=f1e375]:
+      - img "فك الشيفرة" [ref=f1e377]
+    - generic [ref=f1e378]:
+      - generic [ref=f1e379]: فك الشيفرة
+      - generic [ref=f1e380]: فريقان، ٢٥ كلمة، وتلميحة واحدة تغيّر كل شيء
+      - generic [ref=f1e381]: 1 بالغرفة • 4–20 لاعبين
+    - generic [ref=f1e382]: 
+  - button "Scorpion Night" [ref=f1e384] [cursor=pointer]:
+    - generic "ليلة العقارب - Scorpion Night" [ref=f1e386]:
+      - img "ليلة العقارب - Scorpion Night" [ref=f1e388]
+    - generic [ref=f1e389]:
+      - generic [ref=f1e390]: ليلة العقارب
+      - generic [ref=f1e391]: بطاقات سرّية حول طاولة الحارة، ليلة ونقاش وتصويت
+      - generic [ref=f1e392]: 1 بالغرفة • 4–20 لاعبين
+    - generic [ref=f1e393]: 
+  - button "Stump Me!" [ref=f1e395] [cursor=pointer]:
+    - generic "خسرني" [ref=f1e397]:
+      - img "خسرني" [ref=f1e399]
+    - generic [ref=f1e400]:
+      - generic [ref=f1e401]: خسّرني!
+      - generic [ref=f1e402]: اختار الفئة، جاوب قبل ما يخلص الوقت، وتحدى الشلة
+      - generic [ref=f1e403]: 1 بالغرفة • 2–20 لاعبين
+    - generic [ref=f1e404]: 
+  - button "WHO BOMBED ME?" [ref=f1e406] [cursor=pointer]:
+    - generic "مين فجرني" [ref=f1e408]:
+      - img "مين فجرني" [ref=f1e410]
+    - generic [ref=f1e411]:
+      - generic [ref=f1e412]: مين فجّرني؟
+      - generic [ref=f1e413]: واحد معه القنبلة، يبعثها بالسر. هل الضحية بتعرف مين ورّطها؟
+      - generic [ref=f1e414]: 1 بالغرفة • 4–20 لاعبين
+    - generic [ref=f1e415]: 
+  - button "WHO DID IT?" [ref=f1e417] [cursor=pointer]:
+    - generic "مين وراها" [ref=f1e419]:
+      - img "مين وراها" [ref=f1e421]
+    - generic [ref=f1e422]:
+      - generic [ref=f1e423]: مين وراها
+      - generic [ref=f1e424]: "حققوا بسر صندوق أمانة الحارة: مين أخذه، من وين، وبأي غرض؟ تحرّك بنردين واكشف الأدلة."
+      - generic [ref=f1e425]: 1 بالغرفة • 3–6 لاعبين
+    - generic [ref=f1e426]: 
+  - generic [ref=f1e428]:
+    - generic [ref=f1e429]: 
+    - generic [ref=f1e430]: ألعاب ثانية بالطريق.. نفس الغرفة، نفس الشِلّة!
+  - generic [ref=f1e431]:
+    - generic [ref=f1e432]: 
+    - generic [ref=f1e433]: بانتظار العدد المطلوب من اللاعبين
+  - button "يلا نلعب!" [disabled]:
+    - generic [ref=f1e434]:
+      - generic [ref=f1e435]: 
+      - generic [ref=f1e436]: يلا نلعب!

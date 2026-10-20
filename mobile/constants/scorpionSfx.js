@@ -1,27 +1,23 @@
-// ElevenLabs SFX production plan. No voice, dialogue, or music in these files.
-// Add finished audio to assets/scorpion-sfx/ and run:
-//   node scripts/prepare-scorpion-audio.js
-// The adapter automatically skips missing clips without interrupting game timers.
+// Original ElevenLabs-generated Scorpion Night foley and ambience.
+// Files are loaded only if present in assets/scorpion-sfx.
 export const SCORPION_SFX = Object.freeze({
-  shuffle_cards: {
-    id: 'shuffle_cards', filename: 'shuffle_cards.mp3', durationMs: 1700, volume: 0.65, loop: false,
-    scope: 'shared', event: 'A new round starts and the face-down deck shuffles.',
-    elevenLabsPrompt: 'Warm close-mic shuffle of thick illustrated paper playing cards on an antique wooden table: 2 quick riffles, a light deck cut, and a gentle soft paper tap. Natural tactile tabletop sound, no speech, no music, no harsh transients. Approximately 1.7 seconds.',
-  },
-  deal_card: {
-    id: 'deal_card', filename: 'deal_card.mp3', durationMs: 300, volume: 0.5, loop: false,
-    scope: 'shared', event: 'A face-down card moves from center to a seat.',
-    elevenLabsPrompt: 'One thick paper playing card is dealt and slides a short distance over an old wooden tabletop, ending in a soft dry papery tap. Single isolated board-game sound, no voices or music. About 0.3 seconds.',
-  },
-  flip_card: {
-    id: 'flip_card', filename: 'flip_card.mp3', durationMs: 380, volume: 0.6, loop: false,
-    scope: 'private', event: 'A private starting card is revealed or publicly flipped at results.',
-    elevenLabsPrompt: 'A single thick collectible paper playing card quickly flips in a hand and lands face up on wood: short clean flutter and satisfying papery snap. No voices or music. About 0.38 seconds.',
-  },
-  courtyard_ambience: {
-    id: 'courtyard_ambience', filename: 'courtyard_ambience.mp3', durationMs: 30000,
-    volume: 0.17, loop: true, scope: 'shared',
-    event: 'Low-volume ambience underneath the landscape courtyard board.',
-    elevenLabsPrompt: 'Seamlessly looping quiet nighttime courtyard ambience in an old Arab neighborhood: gentle evening breeze, distant crickets, faint lantern flame and rustling plants. Intimate warm calm atmosphere. No speech, no recognizable conversations, no melody or beats. Even loudness; 30 seconds, perfect seamless loop.',
-  },
+  shuffle_cards: { volume: 0.36, loop: false, scope: 'shared', event: 'start round' },
+  deal_card: { volume: 0.23, loop: false, scope: 'shared', event: 'deal card' },
+  flip_card: { volume: 0.29, loop: false, scope: 'private', event: 'reveal card' },
+  courtyard_ambience: { volume: 0.09, loop: true, scope: 'shared', event: 'night ambience' },
+  replace_card: { volume: 0.38, loop: false, scope: 'private', event: 'swap cards' },
+  select_card: { volume: 0.28, loop: false, scope: 'private', event: 'select a card' },
+  deselect_card: { volume: 0.25, loop: false, scope: 'private', event: 'unselect a card' },
+  night_bell: { volume: 0.55, emphasis: true, loop: false, scope: 'shared', event: 'night begins' },
+  role_wake: { volume: 0.27, loop: false, scope: 'shared', event: 'role wakes' },
+  role_sleep: { volume: 0.25, loop: false, scope: 'shared', event: 'role sleeps' },
+  secret_look: { volume: 0.30, loop: false, scope: 'private', event: 'secret card inspection' },
+  dawn_transition: { volume: 0.53, emphasis: true, loop: false, scope: 'shared', event: 'dawn begins' },
+  timer_warning: { volume: 0.32, loop: false, scope: 'shared', event: 'discussion warning' },
+  vote_select: { volume: 0.32, loop: false, scope: 'private', event: 'select vote' },
+  vote_confirm: { volume: 0.40, loop: false, scope: 'private', event: 'confirm vote' },
+  results_reveal: { volume: 0.55, emphasis: true, loop: false, scope: 'shared', event: 'results reveal' },
+  win_sting: { volume: 0.50, emphasis: true, loop: false, scope: 'shared', event: 'victory' },
+  lose_sting: { volume: 0.44, emphasis: true, loop: false, scope: 'shared', event: 'no winner' },
+  button_click: { volume: 0.22, loop: false, scope: 'private', event: 'confirm action' },
 });

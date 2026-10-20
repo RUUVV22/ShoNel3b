@@ -94,17 +94,14 @@ test('All game choices derive their playable count from the actual room roster',
  assert.throws(()=>m.joinRoom({roomCode:session.roomCode,name:'زيادة',socketId:'s20'}),e=>e.code==='ROOM_FULL');
  for(const gameId of ['CODENAMES','WEREWOLF','KHASERNY','BOMB']){
   m.selectGame({socketId:'s0',gameId});
+  if(gameId==='WEREWOLF'){
+   // Fixed 16-card deck (+3 center cards) supports at most 13 players.
+   assert.equal(m.canStart(room),false);
+   continue;
+  }
   assert.equal(m.canStart(room),true,gameId+' supports current room');
   m.startGame('s0');
   assert.equal(room.status,STATUS.ACTIVE);
-  if(gameId==='WEREWOLF'){
-   assert.equal(room.gameSession.phase,'SETUP');
-   confirmScorpionCards(m,[
-    'SCORPION','SCORPIONESS','MIMIC','MINION','MASON','MASON','SEER','ROBBER','TROUBLEMAKER',
-    'DRUNK','INSOMNIAC','HUNTER','TANNER',...Array(10).fill('VILLAGER'),
-   ]);
-   assert.equal(Object.keys(room.gameSession.assignments).length,20);
-  }
   if(gameId==='KHASERNY')assert.equal(Object.keys(room.gameSession.scores).length,20);
   if(gameId==='BOMB')assert.equal(room.gameSession.aliveIds.length,20);
   room.status=STATUS.FINISHED;

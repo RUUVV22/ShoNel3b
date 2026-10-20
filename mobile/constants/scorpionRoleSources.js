@@ -11,8 +11,6 @@ export const SCORPION_IMAGE_SOURCES = Object.freeze({
   DRUNK: require('../../assets/scurbion nights assets/10-sakran.png'),
   INSOMNIAC: require('../../assets/scurbion nights assets/11-bint-alleil.png'),
   VILLAGER: require('../../assets/scurbion nights assets/12-muwatin-1.png'),
-  VILLAGER_2: require('../../assets/scurbion nights assets/13-muwatin-2.png'),
-  VILLAGER_3: require('../../assets/scurbion nights assets/14-muwatin-3.png'),
   HUNTER: require('../../assets/scurbion nights assets/15-fazza.png'),
   TANNER: require('../../assets/scurbion nights assets/16-kabsh-alfida.png'),
 });

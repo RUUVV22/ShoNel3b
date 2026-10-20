@@ -54,7 +54,7 @@ test('Scorpion and scorpioness recognize each other without leaking to villagers
  try{
   manager.selectGame({socketId:'s0',gameId:'WEREWOLF'});
   manager.startGame('s0');
-  confirmScorpionCards(manager,['SCORPION','SCORPIONESS','VILLAGER','VILLAGER','VILLAGER','VILLAGER','VILLAGER']);
+  confirmScorpionCards(manager,['SCORPION','SCORPIONESS','VILLAGER','VILLAGER','VILLAGER','SEER','TANNER']);
   const game=require('../src/games/werewolf');
   for(let i=0;i<20&&(room.gameSession.phase!=='NIGHT'||game.currentRole(room.gameSession)!=='SCORPIONS');i++){
    game.tick(room.gameSession,room.gameSession.deadline+1,()=>.5);
@@ -77,7 +77,7 @@ test('Scorpion Night finishes voting when connected players vote; disconnected p
  try{
   manager.selectGame({socketId:'s0',gameId:'WEREWOLF'});
   manager.startGame('s0');
-  confirmScorpionCards(manager,['SCORPION','VILLAGER','VILLAGER','VILLAGER','VILLAGER','VILLAGER','VILLAGER']);
+  confirmScorpionCards(manager,['SCORPION','VILLAGER','VILLAGER','VILLAGER','SEER','ROBBER','TANNER']);
   const game=require('../src/games/werewolf');
   for(let i=0;i<20&&room.gameSession.phase!=='VOTING';i++)game.tick(room.gameSession,room.gameSession.deadline+1,()=>.5);
   room.gameSession.voteOpensAt=Date.now()-1;

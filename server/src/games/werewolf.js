@@ -1,17 +1,33 @@
 const { STATUS } = require('../game/constants');
 const { GameError } = require('../game/errors');
 const { roles,byId,validateDeck,DEFAULT_PHASES,selectionCards } = require('./scorpionRoles');
+const audioDurations = require('./scorpionCueDurations.json');
 
-const metadata={id:'WEREWOLF',title:'ليلة العقارب',englishTitle:'Scorpion Night',subtitle:'حكايات الحارة',description:'بطاقات سرّية حول طاولة الحارة، ليلة ونقاش وتصويت',minPlayers:4,maxPlayers:20};
+const metadata={id:'WEREWOLF',title:'ليلة العقارب',englishTitle:'Scorpion Night',subtitle:'حكايات الحارة',description:'بطاقات سرّية حول طاولة الحارة، ليلة ونقاش وتصويت',minPlayers:4,maxPlayers:13};
 const REVEAL_MIN_MS=5000, REVEAL_TIMEOUT_MS=20000, NIGHT_STEP_MS=17000, DISCUSSION_MS=300000, VOTE_MS=65000;
-const OPEN_CUE_MS=3500, DAWN_CUE_MS=3800, NIGHT_START_CUE_MS=3800, CLOSE_CUE_MS=1600;
+const AUDIO_MARGIN_MS=350;
+const cueDuration=(id,fallback=3500)=>id?(audioDurations[id]||fallback):0;
+const OPEN_CUES={MIMIC:'copycat_open',COPIED_HELPER:'copied_helper_open',COPIED_NIGHT_GIRL:'copied_night_girl_open',SCORPIONS:'scorpions_open',
+ MINION:'helper_open',MASON:'companions_open',SEER:'seer_open',ROBBER:'robber_open',
+ TROUBLEMAKER:'troublemaker_open',DRUNK:'drunk_open',INSOMNIAC:'night_girl_open'};
+const CLOSE_CUES={MIMIC:'copycat_close',COPIED_HELPER:'copied_helper_close',COPIED_NIGHT_GIRL:'copied_night_girl_close',SCORPIONS:'scorpions_close',
+ MINION:'helper_close',MASON:'companions_close',SEER:'seer_close',ROBBER:'robber_close',
+ TROUBLEMAKER:'troublemaker_close',DRUNK:'drunk_close',INSOMNIAC:'night_girl_close'};
+function selectedNightOrder(deck){
+ const has=new Set(deck);
+ return DEFAULT_PHASES.filter(phase=>{
+  if(phase==='COPIED_HELPER'||phase==='COPIED_NIGHT_GIRL')return false;
+  if(phase==='SCORPIONS')return has.has('SCORPION')||has.has('SCORPIONESS');
+  return has.has(phase);
+ });
+}
 const own=(obj,key)=>Object.prototype.hasOwnProperty.call(obj,key);
 const fail=()=>{throw new GameError('INVALID_GAME_ACTION');};
 const shuffle=(xs,random)=>{const a=[...xs];for(let i=a.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const activeIds=(s,connected)=>s.seats.filter(id=>!connected||connected.includes(id));
 function canStart(room) {
  const n=room.players.filter(p=>p.connected).length;
- return n>=4&&n<=20&&n===room.players.length;
+ return n>=4&&n<=13&&n===room.players.length;
 }
 function createSetupSession(round,room){
  if(!canStart(room))throw new GameError('NOT_READY');
@@ -72,14 +88,30 @@ function createSession(round,random=Math.random,room,now=Date.now()){
   log:[],cue:{id:'reveal_role',at:now,sequence:1},warnings:{},winner:null,eliminated:[],
   resultVotes:null,finalRoles:null};
 }
-const currentRole=s=>s.phase==='NIGHT'?DEFAULT_PHASES[s.step]:null;
+const currentRole=s=>s.phase==='NIGHT'?s.nightOrder?.[s.step]||null:null;
+function startNightStep(s,now){
+ const role=currentRole(s),opening=OPEN_CUES[role],closing=CLOSE_CUES[role];
+ s.phaseStartedAt=now;
+ s.phaseOpensAt=now+(opening?cueDuration(opening)+AUDIO_MARGIN_MS:0);
+ s.deadline=s.phaseOpensAt+NIGHT_STEP_MS;
+ // Finish the closing announcement before the authoritative phase deadline.
+ s.closeCueAt=s.deadline-Math.max(3000,cueDuration(closing,1600)+AUDIO_MARGIN_MS);
+ s.closingIssued=false;
+ enterStep(s);
+ if(opening&&!role.startsWith('COPIED_'))makeCue(s,opening,now);
+}
 function enterNight(s,now){
- s.phase='NIGHT';s.step=0;s.phaseStartedAt=now;
- s.phaseOpensAt=now+NIGHT_START_CUE_MS+OPEN_CUE_MS;
- s.deadline=s.phaseOpensAt+NIGHT_STEP_MS;s.closingIssued=false;
+ s.phase='NIGHT';s.step=0;s.nightOrder=selectedNightOrder(s.deck);
+ s.phaseStartedAt=now;s.introPending=true;
+ s.firstCueAt=now+cueDuration('night_start')+AUDIO_MARGIN_MS;
+ // Don't allow actions before both the intro and the first role announcement finish.
+ const first=OPEN_CUES[s.nightOrder[0]];
+ s.phaseOpensAt=s.firstCueAt+cueDuration(first)+AUDIO_MARGIN_MS;
+ s.deadline=s.phaseOpensAt+NIGHT_STEP_MS;
+ s.closeCueAt=s.deadline-Math.max(3000,cueDuration(CLOSE_CUES[s.nightOrder[0]],1600)+AUDIO_MARGIN_MS);
+ s.closingIssued=false;
  makeCue(s,'night_start',now);
  record(s,'بدأت الليلة، وأُخفيت جميع البطاقات.');
- enterStep(s);
 }
 function enterStep(s){
  const role=currentRole(s);
@@ -97,12 +129,12 @@ function enterStep(s){
    observe(s,id,role,{role:roleNow(s,id),changed:roleNow(s,id)!==startEffective(s,id)},'بطاقة المقلّد آخر الليل');
 }
 function enterDiscussion(s,now) {
- s.phase='DISCUSSION';s.phaseStartedAt=now;s.discussionStartAt=now+DAWN_CUE_MS;
+ s.phase='DISCUSSION';s.phaseStartedAt=now;s.discussionStartAt=now+cueDuration('dawn')+AUDIO_MARGIN_MS;
  s.phaseOpensAt=s.discussionStartAt;s.deadline=s.discussionStartAt+DISCUSSION_MS;
  makeCue(s,'dawn',now);record(s,'طلع الفجر وبدأ النقاش.');
 }
 function enterVoting(s,now,early=false) {
- s.phase='VOTING';s.phaseStartedAt=now;s.voteOpensAt=now+DAWN_CUE_MS;
+ s.phase='VOTING';s.phaseStartedAt=now;s.voteOpensAt=now+cueDuration(early?'vote_early':'vote_now')+AUDIO_MARGIN_MS;
  s.phaseOpensAt=s.voteOpensAt;s.deadline=s.voteOpensAt+VOTE_MS;
  makeCue(s,early?'vote_early':'vote_now',now);record(s,'بدأ التصويت السري.');
 }
@@ -172,6 +204,12 @@ function action(s,player,payload={},random=Math.random,connected,now=Date.now())
    const copied=startRole(s,payload.target);
    if(copied==='MIMIC')throw new GameError('INVALID_CARD');
    s.cards[s.startingCards[id]].copyRole=copied;
+   // The mimic may unlock a *private* follow-up turn, but only when that
+   // specific ability was actually copied. No unused phases run.
+   if(copied==='MINION'&&!s.nightOrder.includes('COPIED_HELPER'))
+     s.nightOrder.splice(s.step+1,0,'COPIED_HELPER');
+   if(copied==='INSOMNIAC'&&!s.nightOrder.includes('COPIED_NIGHT_GIRL'))
+     s.nightOrder.push('COPIED_NIGHT_GIRL');
    observe(s,id,phase,copied,'الدور الذي قلدته');
    record(s,'المقلّد نسخ دور بطاقة لاعب.',{actor:id,targets:[payload.target]});
    if(!['SEER','ROBBER','TROUBLEMAKER','DRUNK'].includes(copied))s.actions[phaseKey]={done:true};
@@ -195,7 +233,7 @@ function action(s,player,payload={},random=Math.random,connected,now=Date.now())
       throw new GameError('INVALID_CARD');
     const a=affiliation(roleOfCard(s,s.center[payload.target]));
     const b=affiliation(roleOfCard(s,s.center[payload.second]));
-    observe(s,id,phase,a===b?'نفس الفريق':'فريقان مختلفان','مقارنة فريق البطاقتين');
+    observe(s,id,phase,a===b?'البطاقتان من نفس الفريق':'البطاقتان من فريقين مختلفين','نتيجة العقربة — هل بطاقتا الوسط من نفس الفريق؟');
     record(s,'العقربة قارنت فريقي بطاقتين من الوسط.',{actor:id,centerIndices:[payload.target,payload.second]});
    }
   }
@@ -260,16 +298,16 @@ function vote(s,player,target,connected,now=Date.now()){
 function tick(s,now=Date.now(),random=Math.random,connected){
  let changed=false;
  for(let guard=0;guard<40&&s.status===STATUS.ACTIVE;guard++){
-  if(s.phase==='NIGHT'&&now<s.deadline){
-   if(s.step===0&&s.cue?.id==='night_start'&&now>=s.phaseStartedAt+NIGHT_START_CUE_MS){
-    makeCue(s,'copycat_open',now);changed=true;
+  if(s.phase==='NIGHT'){
+   if(s.introPending&&now>=s.firstCueAt){
+    s.introPending=false;
+    startNightStep(s,s.firstCueAt);
+    changed=true;
    }
-   if(!s.closingIssued&&now>=s.deadline-CLOSE_CUE_MS){
+   if(!s.introPending&&!s.closingIssued&&now>=s.closeCueAt&&now<s.deadline){
     s.closingIssued=true;
-    const close={MIMIC:'copycat_close',SCORPIONS:'scorpions_close',
-     MINION:'helper_close',MASON:'companions_close',SEER:'seer_close',ROBBER:'robber_close',
-     TROUBLEMAKER:'troublemaker_close',DRUNK:'drunk_close',INSOMNIAC:'night_girl_close'};
-    if(close[currentRole(s)]){makeCue(s,close[currentRole(s)],now);changed=true;}
+    const close=CLOSE_CUES[currentRole(s)];
+    if(close&&!currentRole(s)?.startsWith('COPIED_')){makeCue(s,close,now);changed=true;}
    }
   }
   const ready=s.phase==='REVEAL'&&now>=s.revealAt&&s.seats.every(id=>s.ready[id]);
@@ -279,12 +317,8 @@ function tick(s,now=Date.now(),random=Math.random,connected){
   else if(s.phase==='NIGHT'){
    automaticDrunks(s,currentRole(s),random);
    s.step++;
-   if(s.step>=DEFAULT_PHASES.length)enterDiscussion(s,edge);
-   else {s.phaseStartedAt=edge;s.phaseOpensAt=edge+OPEN_CUE_MS;
-     s.deadline=s.phaseOpensAt+NIGHT_STEP_MS;s.closingIssued=false;enterStep(s);
-     const cueMap={MIMIC:'copycat_open',COPIED_HELPER:null,SCORPIONS:'scorpions_open',MINION:'helper_open',MASON:'companions_open',SEER:'seer_open',ROBBER:'robber_open',TROUBLEMAKER:'troublemaker_open',DRUNK:'drunk_open',INSOMNIAC:'night_girl_open',COPIED_NIGHT_GIRL:null};
-     const cue=cueMap[currentRole(s)];if(cue)makeCue(s,cue,edge);
-   }
+   if(s.step>=s.nightOrder.length)enterDiscussion(s,edge);
+   else startNightStep(s,edge);
   }else if(s.phase==='DISCUSSION')enterVoting(s,edge);
   else if(s.phase==='VOTING')resolve(s,edge);
   else break;

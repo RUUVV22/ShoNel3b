@@ -1,1 +1,1 @@
-async (page) => { await page.evaluate(session => localStorage.setItem("@arabic-codenames/session", JSON.stringify(session)), {"roomCode":"3HAY9","playerId":"6ef2e6ea-d8b6-4d0c-9e98-3458b6a1ba22","sessionToken":"bcffc68326d4021a28b9abbbbe0314f48af55bb7319749cb"}); await page.reload(); }
+async (page) => { await page.evaluate(session => localStorage.setItem("@arabic-codenames/session", JSON.stringify(session)), {"roomCode":"VDNZE","playerId":"84c003a1-36bf-4da8-972d-893dca3d5ffe","sessionToken":"ad4402552679a1596304e8e8f2983e3d2a08fbc41b2259e2"}); await page.reload(); }

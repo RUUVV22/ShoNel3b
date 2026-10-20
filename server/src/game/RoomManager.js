@@ -291,8 +291,8 @@ class RoomManager {
     let next=s.deadline;
     if(s.phase==='REVEAL'&&!s.revealAtPassed&&s.revealAt>now)next=Math.min(next,s.revealAt);
     if(s.phase==='NIGHT'){
-      if(s.step===0&&s.cue?.id==='night_start')next=Math.min(next,s.phaseStartedAt+3800);
-      if(!s.closingIssued)next=Math.min(next,s.deadline-1600);
+      if(s.introPending)next=Math.min(next,s.firstCueAt);
+      else if(!s.closingIssued)next=Math.min(next,s.closeCueAt);
     }
     if(s.phase==='DISCUSSION')for(const [limit,id] of [[60000,'one_minute_left'],[30000,'thirty_seconds_left']]) {
       if(!s.warnings[id]&&s.deadline-limit>now)next=Math.min(next,s.deadline-limit);
