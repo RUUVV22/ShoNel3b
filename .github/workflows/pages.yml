@@ -16,7 +16,6 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ github.event_name == 'workflow_dispatch' || vars.EXPO_PUBLIC_SERVER_URL != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -42,10 +41,8 @@ jobs:
           SERVER_URL: ${{ vars.EXPO_PUBLIC_SERVER_URL }}
         run: |
           if [[ -z "$SERVER_URL" ]]; then
-            echo "::error::Create a repository Actions variable named EXPO_PUBLIC_SERVER_URL."
-            exit 1
-          fi
-          if [[ ! "$SERVER_URL" =~ ^https:// ]]; then
+            echo "::warning::EXPO_PUBLIC_SERVER_URL is not configured. Publishing the client; multiplayer requires a public HTTPS backend configured in the app or repository variable."
+          elif [[ ! "$SERVER_URL" =~ ^https:// ]]; then
             echo "::error::EXPO_PUBLIC_SERVER_URL must begin with https:// for GitHub Pages."
             exit 1
           fi

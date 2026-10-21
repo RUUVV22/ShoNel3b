@@ -107,7 +107,7 @@ This value is public by design because it is embedded in the browser bundle. Do 
 3. Open **Actions → Deploy web client to GitHub Pages**.
 4. Choose **Run workflow** for the first deployment.
 
-After the first successful run, pushes to `main` deploy automatically while the backend URL variable exists.
+After the first successful run, pushes to `main` deploy automatically. If the backend URL variable is missing, the client still deploys with a workflow warning; multiplayer requires a public HTTPS backend configured through the variable or the app's server settings.
 
 The workflow automatically:
 
