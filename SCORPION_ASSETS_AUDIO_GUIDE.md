@@ -50,8 +50,8 @@ The optional `scripts/import-scorpion-elevenlabs.js` utility imports temporary s
 ## October 20: selected-deck night flow and voice timing
 
 - Only night roles included in the host's **selected cards** receive turns. The order follows the standard role sequence but skips every role not selected. The mimic's private copied-helper/copied-night-girl turn is dynamically added only when that specific role is copied. Cards do not have to be in a player's hand to count as selected: cards in the middle still count as selected roles.
-- The 16 available cards are: one each of the 11 unique non-villager/non-companion roles, two companions and exactly three villagers. All three villagers always render `12-muwatin-1.png`; image files 13 and 14 are not used in the deck.
-- Because players need one card each plus **three center cards**, ليلة العقارب supports 4–13 players for the fixed 16-card pool. Other Sho Nel3b games retain their own limits.
+- The base 16-card catalog consists of eleven unique non-villager/non-companion cards, two companions, and three villagers. For 14–16-player games, add one extra villager per player above 13 (up to six villagers total). All villager copies use `12-muwatin-1.png`; image files 13 and 14 are not used.
+- Because players need one card each plus **three center cards**, ليلة العقارب supports **4–16 players**. The setup pool scales from 16 cards for up to 13 players to 19 cards for 16 players. Other Sho Nel3b games retain their own limits.
 - MP3 durations are measured with `node scripts/generate-scorpion-durations.cjs` (ffprobe required for new files); resulting synchronized metadata is `server/src/games/scorpionCueDurations.json`. After adding/replacing narration files regenerate this metadata and rebuild.
 - Each active public role announces its opening at the start of its phase, and the ability opens after the audio finishes (plus a short buffer). Closing speech starts at least 3 seconds before the server's phase deadline, or earlier for longer closing recordings, to finish before the next turn.
 - Private copied-role open and close audio is played only on the actor's opted-in device, never broadcast to the room.

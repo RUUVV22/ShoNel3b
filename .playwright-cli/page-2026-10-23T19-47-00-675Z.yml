@@ -1,0 +1,100 @@
+- generic [ref=e142]:
+  - generic [ref=e143]:
+    - button "العودة" [ref=e144] [cursor=pointer]:
+      - generic [ref=e145]: 
+    - generic [ref=e146]:
+      - generic [ref=e147]: غرفة الشِلّة
+      - generic [ref=e148]: الكل هون.. شو نلعب؟
+  - generic [ref=e150]:
+    - generic [ref=e151]: متصل
+    - generic [ref=e154]:
+      - generic [ref=e155]: 
+      - generic [ref=e156]: "المضيف: Islam"
+  - generic [ref=e157]:
+    - generic [ref=e158]:
+      - generic [ref=e159]: ✨ بطاقة اللمّة
+      - generic [ref=e160]: ابعث الرمز لأصحابك وخلي اللمّة تكبر!
+    - button "رمز الغرفة A5R8X" [ref=e161] [cursor=pointer]:
+      - generic [ref=e162]:
+        - generic [ref=e163]: ✦ رمز اللمّة ✦
+        - generic [ref=e164]: A5R8X
+      - generic [ref=e165]: 
+    - generic [ref=e167]:
+      - button "مشاركة" [ref=e175] [cursor=pointer]:
+        - generic [ref=e176]:
+          - generic [ref=e177]: 
+          - generic [ref=e178]: مشاركة
+      - generic [ref=e179]:
+        - generic [ref=e180]: جاهزين للّمة؟
+        - generic [ref=e181]: شارك الرابط أو خلّي صاحبك يمسح الرمز.
+        - generic [ref=e182]: http://localhost:8081/?room=A5R8X
+  - generic [ref=e183]:
+    - generic [ref=e184]: اللي قاعدين معنا
+    - generic [ref=e185]: 4/20
+  - generic [ref=e187]:
+    - generic [ref=e188]:
+      - img "Character for Islam" [ref=e189]
+      - generic [ref=e197]: Islam
+      - generic [ref=e198]: 
+    - generic [ref=e266]:
+      - img "Character for Sami" [ref=e267]
+      - generic [ref=e275]: Sami
+    - generic [ref=e276]:
+      - img "Character for Lina" [ref=e277]
+      - generic [ref=e285]: Lina
+    - generic [ref=e286]:
+      - img "Character for Omar" [ref=e287]
+      - generic [ref=e295]: Omar
+  - generic [ref=e199]:
+    - generic [ref=e200]: شو بدنا نلعب؟
+    - generic [ref=e201]: إنت صاحب القرار
+  - button "Decode the Clue" [ref=e202] [cursor=pointer]:
+    - generic "فك الشيفرة" [ref=e204]:
+      - img "فك الشيفرة" [ref=e206]
+    - generic [ref=e207]:
+      - generic [ref=e208]: فك الشيفرة
+      - generic [ref=e209]: فريقان، ٢٥ كلمة، وتلميحة واحدة تغيّر كل شيء
+      - generic [ref=e210]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=e211]: 
+  - button "Scorpion Night" [ref=e213] [cursor=pointer]:
+    - generic "ليلة العقارب - Scorpion Night" [ref=e215]:
+      - img "ليلة العقارب - Scorpion Night" [ref=e217]
+    - generic [ref=e218]:
+      - generic [ref=e219]: ليلة العقارب
+      - generic [ref=e220]: بطاقات سرّية حول طاولة الحارة، ليلة ونقاش وتصويت
+      - generic [ref=e221]: 4 بالغرفة • 4–16 لاعبين
+    - generic [ref=e222]: 
+  - button "Stump Me!" [ref=e224] [cursor=pointer]:
+    - generic "خسرني" [ref=e226]:
+      - img "خسرني" [ref=e228]
+    - generic [ref=e229]:
+      - generic [ref=e230]: خسّرني!
+      - generic [ref=e231]: اختار الفئة، جاوب قبل ما يخلص الوقت، وتحدى الشلة
+      - generic [ref=e232]: 4 بالغرفة • 2–20 لاعبين
+    - generic [ref=e233]: 
+  - button "WHO BOMBED ME?" [ref=e235] [cursor=pointer]:
+    - generic "مين فجرني" [ref=e237]:
+      - img "مين فجرني" [ref=e239]
+    - generic [ref=e240]:
+      - generic [ref=e241]: مين فجّرني؟
+      - generic [ref=e242]: واحد معه القنبلة، يبعثها بالسر. هل الضحية بتعرف مين ورّطها؟
+      - generic [ref=e243]: 4 بالغرفة • 4–20 لاعبين
+    - generic [ref=e244]: 
+  - button "WHO DID IT?" [ref=e246] [cursor=pointer]:
+    - generic "مين وراها" [ref=e248]:
+      - img "مين وراها" [ref=e250]
+    - generic [ref=e251]:
+      - generic [ref=e252]: مين وراها
+      - generic [ref=e253]: "حققوا بسر صندوق أمانة الحارة: مين أخذه، من وين، وبأي غرض؟ تحرّك بنردين واكشف الأدلة."
+      - generic [ref=e254]: 4 بالغرفة • 3–6 لاعبين
+    - generic [ref=e255]: 
+  - generic [ref=e257]:
+    - generic [ref=e258]: 
+    - generic [ref=e259]: ألعاب ثانية بالطريق.. نفس الغرفة، نفس الشِلّة!
+  - generic [ref=e260]:
+    - generic [ref=e261]: 
+    - generic [ref=e262]: يلا نبلّش! بعدها المضيف بختار بطاقات الجولة داخل اللعبة
+  - button "يلا نلعب!" [ref=e296] [cursor=pointer]:
+    - generic [ref=e263]:
+      - generic [ref=e264]: 
+      - generic [ref=e265]: يلا نلعب!

@@ -1,0 +1,41 @@
+- generic [ref=e302]:
+  - generic [ref=e303]:
+    - generic [ref=e304]: ليلة العقارب • تحضير البطاقات
+    - generic [ref=e305]: الغرفة A5R8X • الجولة 1
+    - button "🔊 تفعيل الصوت" [ref=e306] [cursor=pointer]
+    - generic [ref=e308] [cursor=pointer]: العودة للوبي
+  - generic [ref=e310]:
+    - generic [ref=e311]:
+      - generic [ref=e312]:
+        - generic [ref=e313]: اختاروا بطاقات ليلة العقارب
+        - generic [ref=e314]: اضغط على أي بطاقة لتختارها، واضغط عليها مرة ثانية لتشيلها.
+      - generic [ref=e315]:
+        - generic [ref=e316]: 0 / 7
+        - generic [ref=e317]: اللاعبون 4 + ٣ بطاقات للوسط • من أصل 16 بطاقة
+    - generic [ref=e319]:
+      - button "المقلّد" [ref=e320] [cursor=pointer]
+      - button "العقرب" [ref=e328] [cursor=pointer]
+      - button "العقربة" [ref=e336] [cursor=pointer]
+      - button "المساعد" [ref=e344] [cursor=pointer]:
+        - generic "المساعد" [ref=e345]:
+          - generic [ref=e350]:
+            - generic [ref=e351]: المساعد
+            - generic [ref=e352]: الرسم مفقود
+      - button "الصحاب" [ref=e353] [cursor=pointer]
+      - button "الصحاب" [ref=e361] [cursor=pointer]
+      - button "العرّافة" [ref=e369] [cursor=pointer]
+      - button "الحرامي" [ref=e377] [cursor=pointer]
+      - button "القلّاب" [ref=e385] [cursor=pointer]
+      - button "السكران" [ref=e393] [cursor=pointer]
+      - button "بنت الليل" [ref=e401] [cursor=pointer]
+      - button "المواطن" [ref=e409] [cursor=pointer]
+      - button "المواطن" [ref=e417] [cursor=pointer]
+      - button "المواطن" [ref=e425] [cursor=pointer]
+      - button "الفزّاع" [ref=e433] [cursor=pointer]
+      - button "كبش الفدا" [ref=e441] [cursor=pointer]
+    - generic [ref=e449]:
+      - generic [ref=e450]: اختار 7 بطاقات إضافية
+      - button "اعتمد البطاقات ووزّعها" [disabled]:
+        - generic [ref=e451]:
+          - generic [ref=e452]: 
+          - generic [ref=e453]: اعتمد البطاقات ووزّعها

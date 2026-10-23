@@ -33,7 +33,7 @@ export function WerewolfRoleSetup({game,editable,busy,onToggle,onConfirm}) {
    </View>
    <View style={st.counter}>
     <ArabicText weight="extraBold" style={st.count}>{selected.size} / {needed}</ArabicText>
-    <ArabicText style={st.countCaption}>اللاعبون {game.playerCount} + ٣ بطاقات للوسط • من أصل ١٦ بطاقة</ArabicText>
+    <ArabicText style={st.countCaption}>اللاعبون {game.playerCount} + ٣ بطاقات للوسط • من أصل {allCards.length} بطاقة</ArabicText>
    </View>
   </View>
   <ScrollView style={st.scroller} contentContainerStyle={[st.cards,{gap,paddingBottom:12}]}

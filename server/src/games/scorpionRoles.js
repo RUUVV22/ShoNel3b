@@ -11,7 +11,7 @@ const roles = Object.freeze([
  {id:'TROUBLEMAKER',name:'القلّاب',team:'VILLAGE',max:1,ability:'يبدّل بطاقتين للاعبين آخرين دون رؤيتهما.',cue:'troublemaker',art:'09-qallab.png'},
  {id:'DRUNK',name:'السكران',team:'VILLAGE',max:1,ability:'يبدّل بطاقته مع بطاقة من الوسط دون رؤيتها.',cue:'drunk',art:'10-sakran.png'},
  {id:'INSOMNIAC',name:'بنت الليل',team:'VILLAGE',max:1,ability:'تفحص بطاقتها في آخر الليل وتشوف إذا تغيّرت.',cue:'night_girl',art:'11-bint-alleil.png'},
- {id:'VILLAGER',name:'المواطن',team:'VILLAGE',max:3,ability:'من أهل الحارة، ليس له حركة ليلية.',cue:null,art:'12-muwatin-1.png'},
+ {id:'VILLAGER',name:'المواطن',team:'VILLAGE',max:6,ability:'من أهل الحارة، ليس له حركة ليلية.',cue:null,art:'12-muwatin-1.png'},
  {id:'HUNTER',name:'الفزّاع',team:'VILLAGE',max:1,ability:'إذا طلع من اللعبة، اللاعب اللي صوّت له يطلع معه.',cue:null,art:'15-fazza.png'},
  {id:'TANNER',name:'كبش الفدا',team:'INDEPENDENT',max:1,ability:'يفوز إذا تم إقصاؤه في التصويت النهائي.',cue:null,art:'16-kabsh-alfida.png'},
 ].map(role=>Object.freeze({
@@ -27,7 +27,7 @@ const DEFAULT_PHASES=Object.freeze(['MIMIC','COPIED_HELPER','SCORPIONS','MINION'
 function selectionCards(playerCount) {
  const out=[];
  for(const role of roles) {
-  const copies=role.max;
+  const copies=role.id==='VILLAGER'?3+Math.max(0,Math.min(16,playerCount||13)-13):role.max;
   for(let variant=0;variant<copies;variant++)out.push({
    key:role.id+':'+variant,roleId:role.id,variant,
   });
@@ -37,7 +37,8 @@ function selectionCards(playerCount) {
 function validateDeck(deck,n) {
  if(!Array.isArray(deck)||deck.length!==n+3)return false;
  const counts={};
- for(const id of deck) {if(!byId[id])return false;counts[id]=(counts[id]||0)+1;if(counts[id]>byId[id].max)return false;}
+ for(const id of deck) {if(!byId[id])return false;counts[id]=(counts[id]||0)+1;
+  if(counts[id]>(id==='VILLAGER'?3+Math.max(0,Math.min(16,n)-13):byId[id].max))return false;}
  return Boolean((counts.SCORPION||0)+(counts.SCORPIONESS||0)) && (!counts.MASON||counts.MASON===2);
 }
 module.exports={roles,byId,DEFAULT_PHASES,validateDeck,selectionCards};

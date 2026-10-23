@@ -1,0 +1,41 @@
+- generic [ref=e475]:
+  - generic [ref=e476]:
+    - button "العودة للوبي" [ref=e477] [cursor=pointer]:
+      - generic [ref=e478]: 
+    - button "كتم الصوت" [ref=e479] [cursor=pointer]:
+      - generic [ref=e480]: 
+  - generic:
+    - generic: ليلة العقارب
+    - generic: مرحلة الليل
+    - generic: 00:23
+  - generic [ref=e481]:
+    - generic [ref=e482]:
+      - generic [ref=e483]: 
+      - generic [ref=e484]: 4 / 16
+    - button "أحداث الليل" [active] [ref=e485] [cursor=pointer]:
+      - generic [ref=e487]: 
+    - generic [ref=e543]:
+      - generic [ref=e544]: أحداث الليل
+      - generic [ref=e545]: دور العقارب
+      - generic [ref=e546]: الجولة 1 • الغرفة A5R8X
+      - generic [ref=e547] [cursor=pointer]: "الصوت: جهاز المضيف • تغيير"
+  - button "Islam" [disabled]:
+    - generic "بطاقة مقلوبة" [ref=e542]
+    - generic [ref=e494]: 
+  - button "Sami" [disabled]:
+    - generic "بطاقة مقلوبة" [ref=e497]
+  - button "Lina" [disabled]:
+    - generic "بطاقة مقلوبة" [ref=e503]
+  - button "Omar" [disabled]:
+    - generic "بطاقة مقلوبة" [ref=e509]
+  - generic [ref=e514]:
+    - button "بطاقة الوسط 1" [disabled]:
+      - generic "بطاقة مقلوبة" [ref=e516]
+      - generic [ref=e520]: "1"
+    - button "بطاقة الوسط 2" [disabled]:
+      - generic "بطاقة مقلوبة" [ref=e522]
+      - generic [ref=e526]: "2"
+    - button "بطاقة الوسط 3" [disabled]:
+      - generic "بطاقة مقلوبة" [ref=e528]
+      - generic [ref=e532]: "3"
+  - generic [ref=e533]: بانتظار دورك

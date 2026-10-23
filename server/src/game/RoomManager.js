@@ -339,7 +339,10 @@ class RoomManager {
   returnToLobby(socketId) {
     const { room, player } = this.requireSocketPlayer(socketId);
     this.assertHost(room, player);
-    if (room.status === STATUS.ACTIVE && room.gameSession?.phase!=='SETUP')
+    // Scorpion Night permits an explicitly confirmed host return to the
+    // shared lobby without ejecting anybody. Other games keep their guard.
+    if (room.status === STATUS.ACTIVE && room.gameSession?.phase!=='SETUP' &&
+        room.selectedGameId !== 'WEREWOLF')
       throw new GameError('GAME_NOT_FINISHED');
     room.status = STATUS.LOBBY;
     room.gameSession = null;

@@ -3,7 +3,7 @@ const { GameError } = require('../game/errors');
 const { roles,byId,validateDeck,DEFAULT_PHASES,selectionCards } = require('./scorpionRoles');
 const audioDurations = require('./scorpionCueDurations.json');
 
-const metadata={id:'WEREWOLF',title:'ليلة العقارب',englishTitle:'Scorpion Night',subtitle:'حكايات الحارة',description:'بطاقات سرّية حول طاولة الحارة، ليلة ونقاش وتصويت',minPlayers:4,maxPlayers:13};
+const metadata={id:'WEREWOLF',title:'ليلة العقارب',englishTitle:'Scorpion Night',subtitle:'حكايات الحارة',description:'بطاقات سرّية حول طاولة الحارة، ليلة ونقاش وتصويت',minPlayers:4,maxPlayers:16};
 const REVEAL_MIN_MS=5000, REVEAL_TIMEOUT_MS=20000, NIGHT_STEP_MS=17000, DISCUSSION_MS=300000, VOTE_MS=65000;
 const AUDIO_MARGIN_MS=350;
 const cueDuration=(id,fallback=3500)=>id?(audioDurations[id]||fallback):0;
@@ -27,7 +27,7 @@ const shuffle=(xs,random)=>{const a=[...xs];for(let i=a.length-1;i>0;i--){const 
 const activeIds=(s,connected)=>s.seats.filter(id=>!connected||connected.includes(id));
 function canStart(room) {
  const n=room.players.filter(p=>p.connected).length;
- return n>=4&&n<=13&&n===room.players.length;
+ return n>=4&&n<=16&&n===room.players.length;
 }
 function createSetupSession(round,room){
  if(!canStart(room))throw new GameError('NOT_READY');
@@ -65,7 +65,7 @@ const copiedRole=(s,id)=>startRole(s,id)==='MIMIC' ? s.cards[s.startingCards[id]
 const startEffective=(s,id)=>copiedRole(s,id)||startRole(s,id);
 const startedAs=(s,id,role)=>startEffective(s,id)===role;
 const teamMembers=(s)=>s.seats.filter(id=>['SCORPION','SCORPIONESS'].includes(startEffective(s,id)));
-const observe=(s,id,phase,seen,description)=>{(s.observations[id]??=[]).push({phase,seen,description});};
+const observe=(s,id,phase,seen,description,location)=>{(s.observations[id]??=[]).push({phase,seen,description,...(location||{})});};
 const record=(s,text,details={})=>s.log.push({index:s.log.length+1,text,...details});
 function makeCue(s,id,now) {s.cue={id,at:now,sequence:(s.cue?.sequence||0)+1};}
 function createSession(round,random=Math.random,room,now=Date.now()){
@@ -124,9 +124,11 @@ function enterStep(s){
  if(role==='MASON')for(const id of s.seats.filter(id=>startedAs(s,id,'MASON')))
    observe(s,id,role,s.seats.filter(other=>other!==id&&startedAs(s,other,'MASON')),'الصحاب');
  if(role==='INSOMNIAC')for(const id of s.seats.filter(id=>startRole(s,id)==='INSOMNIAC'))
-   observe(s,id,role,{role:roleNow(s,id),changed:roleNow(s,id)!==startRole(s,id)},'بطاقتك آخر الليل');
+   observe(s,id,role,{role:roleNow(s,id),changed:roleNow(s,id)!==startRole(s,id)},'بطاقتك آخر الليل',
+     {target:id,cardVariant:s.cards[s.assignments[id]]?.variant||0});
  if(role==='COPIED_NIGHT_GIRL')for(const id of s.seats.filter(id=>startRole(s,id)==='MIMIC'&&copiedRole(s,id)==='INSOMNIAC'))
-   observe(s,id,role,{role:roleNow(s,id),changed:roleNow(s,id)!==startEffective(s,id)},'بطاقة المقلّد آخر الليل');
+   observe(s,id,role,{role:roleNow(s,id),changed:roleNow(s,id)!==startEffective(s,id)},'بطاقة المقلّد آخر الليل',
+     {target:id,cardVariant:s.cards[s.assignments[id]]?.variant||0});
 }
 function enterDiscussion(s,now) {
  s.phase='DISCUSSION';s.phaseStartedAt=now;s.discussionStartAt=now+cueDuration('dawn')+AUDIO_MARGIN_MS;
@@ -152,16 +154,18 @@ function applyAbility(s,player,role,payload,phase,random=Math.random){
  const middle=n=>Number.isInteger(n)&&n>=0&&n<3;
  if(role==='SEER'){
   if(middle(target)&&middle(second)&&target!==second) {
-   observe(s,id,phase,[roleOfCard(s,s.center[target]),roleOfCard(s,s.center[second])],'بطاقتان من الوسط');
+   observe(s,id,phase,[roleOfCard(s,s.center[target]),roleOfCard(s,s.center[second])],'بطاقتان من الوسط',
+     {centerIndices:[target,second],cardVariants:[s.cards[s.center[target]]?.variant||0,s.cards[s.center[second]]?.variant||0]});
    record(s,'العرّافة فحصت بطاقتين من الوسط.',{actor:id,centerIndices:[target,second]});
   }else if(other&&second===undefined){
-   observe(s,id,phase,roleNow(s,target),'بطاقة اللاعب المختار');
+   observe(s,id,phase,roleNow(s,target),'بطاقة اللاعب المختار',{target,cardVariant:s.cards[s.assignments[target]]?.variant||0});
    record(s,'العرّافة فحصت بطاقة لاعب.',{actor:id,targets:[target]});
   }else throw new GameError('INVALID_CARD');
  }else if(role==='ROBBER'){
   if(payload.skip!==true){
    if(!other)throw new GameError('INVALID_CARD');
-   swapPlayers(s,id,target,id);observe(s,id,phase,roleNow(s,id),'البطاقة التي أخذتها');
+   swapPlayers(s,id,target,id);observe(s,id,phase,roleNow(s,id),'البطاقة التي أخذتها',
+     {target:id,cardVariant:s.cards[s.assignments[id]]?.variant||0});
   }
   else record(s,'الحرامي تجاوز التبديل.',{actor:id});
  }else if(role==='TROUBLEMAKER'){
@@ -210,7 +214,8 @@ function action(s,player,payload={},random=Math.random,connected,now=Date.now())
      s.nightOrder.splice(s.step+1,0,'COPIED_HELPER');
    if(copied==='INSOMNIAC'&&!s.nightOrder.includes('COPIED_NIGHT_GIRL'))
      s.nightOrder.push('COPIED_NIGHT_GIRL');
-   observe(s,id,phase,copied,'الدور الذي قلدته');
+   observe(s,id,phase,copied,'الدور الذي قلدته',
+     {target:payload.target,cardVariant:s.cards[s.startingCards[payload.target]]?.variant||0});
    record(s,'المقلّد نسخ دور بطاقة لاعب.',{actor:id,targets:[payload.target]});
    if(!['SEER','ROBBER','TROUBLEMAKER','DRUNK'].includes(copied))s.actions[phaseKey]={done:true};
   }else {
@@ -225,7 +230,8 @@ function action(s,player,payload={},random=Math.random,connected,now=Date.now())
   if(group.length===1){
    if(effective==='SCORPION'){
     if(!Number.isInteger(payload.target)||payload.target<0||payload.target>2)throw new GameError('INVALID_CARD');
-    observe(s,id,phase,roleOfCard(s,s.center[payload.target]),'بطاقة من الوسط');
+    observe(s,id,phase,roleOfCard(s,s.center[payload.target]),'بطاقة من الوسط',
+      {centerIndices:[payload.target],cardVariants:[s.cards[s.center[payload.target]]?.variant||0]});
     record(s,'العقرب الوحيد فحص بطاقة من الوسط.',{actor:id,centerIndices:[payload.target]});
    } else {
     if(!Number.isInteger(payload.target)||!Number.isInteger(payload.second)||
@@ -357,7 +363,9 @@ function serialize(s,viewer,room){
  const obs=s.observations[id]||[];
  const phase=currentRole(s);
  return {werewolf:{
-   phase:s.phase,step:s.step,currentRole:phase,round:s.round,phaseStartedAt:s.phaseStartedAt,
+   phase:s.phase,step:s.step,
+   currentRole:phase?.startsWith('COPIED_')&&!acting?'PRIVATE_ACTION':phase,
+   round:s.round,phaseStartedAt:s.phaseStartedAt,
    phaseOpensAt:s.phaseOpensAt,discussionStartAt:s.discussionStartAt,voteOpensAt:s.voteOpensAt,deadline:s.deadline,
    seats:[...s.seats],centerCount:3,cue:s.cue,serverNow:Date.now(),
    role:startRole(s,id),roleName:byId[startRole(s,id)]?.name,

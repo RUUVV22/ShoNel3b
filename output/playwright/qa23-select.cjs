@@ -1,0 +1,1 @@
+﻿async(page)=>{for(const name of ['العقربة','العرّافة','الحرامي','القلّاب','السكران','الفزّاع','كبش الفدا']){await page.getByRole('button',{name,exact:true}).click();} await page.screenshot({path:'output/playwright/qa23-setup.png'});}
